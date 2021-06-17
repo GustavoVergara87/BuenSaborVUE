@@ -31,7 +31,7 @@
       <template
         v-if="['Administrador', 'Cajero', 'Cocinero'].includes(traerRol)"
       >
-        <router-link :to="{name:'AdminEditarArticulo', params:plato.id}">
+        <router-link :to="{name:'AdminEditarArticulo', params:{id:plato.id}}">
           <i class="fas fa-edit edit"></i>
         </router-link>
       </template>

@@ -17,21 +17,23 @@ export default {
 
     platosFiltrados() {
       var tmpPlatosFiltrados = [];
-      this.todosLosPlatos.forEach((element) => {
-        if (
-          (element.Descripcion &&
-            element.Descripcion.toLowerCase().includes(
-              this.$route.query.porPalabraClave.toLowerCase()
-            )) ||
-          (element.plato &&
-            element.plato
+
+      if (this.$route.query.porPalabraClave !== undefined) {
+        tmpPlatosFiltrados = this.todosLosPlatos
+          .filter(
+            (plato) =>
+              plato.Descripcion !== null &&
+              plato.plato !== null &&
+              plato.plato !== undefined
+          )
+          .filter((plato) =>
+            plato.plato
               .toLowerCase()
-              .includes(this.$route.query.porPalabraClave.toLowerCase()))
-        ) {
-          tmpPlatosFiltrados.push(element);
-        }
-      });
-      return tmpPlatosFiltrados;
+              .includes(this.$route.query.porPalabraClave.toLowerCase())
+          );
+        return tmpPlatosFiltrados;
+      }
+      return this.todosLosPlatos;
     },
   },
 
@@ -44,7 +46,6 @@ export default {
   created() {
     this.fetchTodosLosPlatos();
   },
-  
 };
 </script>
 

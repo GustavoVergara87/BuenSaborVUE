@@ -17,16 +17,14 @@ import { mapActions } from "vuex";
 
 export default {
   methods: {
-    ...mapActions(["setRol", "setProxyNavActual"]),
+    ...mapActions(["setRol"]),
     usuarioLoggin() {
       this.setRol("Usuario");
       this.$router.push("usuario");
-      this.setProxyNavActual("/usuario");
     },
     administradorLoggin() {
       this.setRol("Administrador");
       this.$router.push("administrador");
-      this.setProxyNavActual("/administrador");
     },
   },
 };
