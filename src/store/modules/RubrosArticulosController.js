@@ -10,13 +10,13 @@ const getters = { //devuelven los estados
 const actions = {
 
     async fetchTodosLosRubrosArticulos({ commit }) {
-        const response = await fetch("/RubrosArticulos");
+        const response = await fetch("/api/RubrosArticulos");
         const responseJson = await response.json();
         commit('setTodosLosRubrosArticulos', responseJson); //sintaxis commit("mutacion",variable)
     },
 
     async addRubroArticulo({ commit }, rubroArticulo) {
-        const response = await fetch(`/RubrosArticulos`, {
+        const response = await fetch(`/api/RubrosArticulos`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify(rubroArticulo),
@@ -26,10 +26,10 @@ const actions = {
     },
 
     async deleteRubroArticulo({ commit }, id) {
-        const rubroArticuloAborrar = await fetch(`/RubrosArticulos/${id}`);
+        const rubroArticuloAborrar = await fetch(`/api/RubrosArticulos/${id}`);
         const rubroArticuloAborrarJson = await rubroArticuloAborrar.json();
         rubroArticuloAborrarJson.disabled = true;
-        await fetch(`/RubrosArticulos/${id}`, { //disable el articulo del backEnd
+        await fetch(`/api/RubrosArticulos/${id}`, { //disable el articulo del backEnd
             method: "PUT",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify(rubroArticuloAborrarJson),
@@ -38,7 +38,7 @@ const actions = {
     },
 
     async editRubroArticulo({ commit }, rubroArticuloEditado) {
-        await fetch(`Articulos/${rubroArticuloEditado.id}`, {
+        await fetch(`/api/Articulos/${rubroArticuloEditado.id}`, {
             method: "PUT",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify(rubroArticuloEditado),

@@ -3,9 +3,10 @@
     <b-card tag="article" style="max-width: 20rem" class="mb-2">
       <b-card-title :title="plato.plato"></b-card-title>
 
-      <router-link :to="/DetallePlato/ + plato.id">
+      <!-- <router-link :to="/DetallePlato/ + plato.id"> -->
+       <router-link :to="{name:'DetallePlato', params:{id:plato.id}}">
         <b-card-img
-          :src="articulosImageApiProxy + plato.Imagen"
+          :src="'/image/' + plato.Imagen"
           :alt="plato.Imagen"
           style="max-height: 500px"
         ></b-card-img>
@@ -13,7 +14,7 @@
 
       <b-card-text>
         <p class="precio">${{ numFormat(plato.PrecioVenta) }}</p>
-        <p>Descripcion: {{ plato.Descripcion }}</p>
+        <p>{{ plato.Descripcion }}</p>
         <template
           v-if="['Administrador', 'Cajero', 'Cocinero'].includes(traerRol)"
         >
@@ -55,7 +56,6 @@ export default {
   props: ["plato"],
   computed: mapGetters([
     "traerRol",
-    "articulosImageApiProxy",
   ]),
   methods: {
     ...mapActions(["deleteArticulo"]),

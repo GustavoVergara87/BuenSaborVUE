@@ -1,64 +1,105 @@
 <template>
-     <div>
-    <b-container fluid>
-      <b-row>
-        <b-col>
-          <div style="padding: 10px">
-            <img
-              style="height: 400px"
-              :src=" platoEncontrado.imagen"
-            />
-            <b-row>Descripción</b-row>
-            <b-row>{{ platoEncontrado.descripcion }}</b-row>
-          </div>
-        </b-col>
-        <b-col style="border-left: 1px solid; text-align: left;">
-       
-           
-              <h2  style="font-weight: bold;">{{ platoEncontrado.plato }}</h2>
-              <h1>$ {{ platoEncontrado.precio }}</h1>
+  <div>
+    <div v-if="!plato">
+      <b-spinner class="spinner" variant="primary" label="Spinning"></b-spinner>
+    </div>
+    <div v-if="plato">
+      <b-container>
+        <b-row>
+          <b-col>
+            <div style="padding: 10px">
               <br />
-            
-             
-            </b-col>
-          </b-row>
-          <br />
-          <br />
-          <br />
-          <b-row style="text-align: center">
-            <b-col> 
-              
-              <router-link :to="['/']" > VOLVER</router-link>
-               
-              ></b-col
-            >
-          </b-row>
-   
-     
-    </b-container>
-  </div>
+              <b-img
+                class="imagen"
+                rounded
+                :src="'/image' + plato.Imagen"
+                alt="Rounded image"
+              ></b-img>
+              <br /><br />
+              <!-- <b-row>Descripción</b-row> -->
+              <h5>Descripción</h5>
+              {{ plato.Descripcion }}
+            </div>
+          </b-col>
+          <b-col style="border-left: 1px solid; text-align: left">
+            <br />
+            <h2 style="font-weight: bold">{{ plato.plato }}</h2>
+            <h1>$ {{ plato.PrecioVenta }}</h1>
+            <br />
 
+            <h5>TiempoEstimadoCocina</h5>
+            <p>{{ plato.TiempoEstimadoCocina }} min</p>
+            <br />
+
+            <h5>Categoria</h5>
+            <p>{{ plato.grupo }}</p>
+            <br />
+
+            <h5>Ingredientes</h5>
+            <ul>
+              <li
+                v-for="ingrediente in plato.ingredientes"
+                :key="ingrediente.id"
+              >
+                {{ ingrediente.Denominacion }}, {{ ingrediente.Cantidad }}
+                {{ ingrediente.UnidadMedida }}
+              </li>
+            </ul>
+          </b-col>
+        </b-row>
+        <br />
+        <br />
+        <br />
+        <b-row style="text-align: center">
+          <b-col>
+            <!-- <router-link :to="['/']" > VOLVER</router-link> -->
+            <b-button @click="$router.go(-1)">VOLVER</b-button>
+          </b-col>
+        </b-row>
+      </b-container>
+    </div>
+  </div>
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
+
   name: "DetallePlato",
-  mounted() {
-    this.getPlato();
+
+  beforeDestroy() {
+    this.$store.dispatch("deletePlatoTemporal");
   },
-  data() {
-    return {
-      platoEncontrado: [],
-    };
+
+  created() {
+    this.getPlato(this.$route.params.id);
   },
+
+  computed: {
+    ...mapGetters(["plato"]),
+  },
+
   methods: {
-    async getPlato() {
-      const parametroId = this.$route.params.id;
-      const res = await fetch(
-        `http://localhost:44350/api/Articulos/ParaFront/${parametroId}`
-      );
-      const resJson = await res.json();
-      this.platoEncontrado = resJson[0];
-    },
+    ...mapActions(["getPlato", "deletePlatoTemporal"]),
   },
+
 };
 </script>
+
+<style scoped>
+.imagen {
+  height: 400px;
+}
+
+.spinner {
+  --size: 6rem;
+  width: var(--size);
+  height: var(--size);
+  display: block;
+  position: fixed;
+  z-index: 1031; /* High z-index so it is on top of the page */
+  top: calc(50% - (var(--size) / 2));
+  left: calc(50% - (var(--size) / 2));
+}
+
+</style>

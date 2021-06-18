@@ -1,26 +1,24 @@
 const state = {
     articulos: [], //catalogo de todos los articulos, accesibles desde toda la aplicacion mediante el getter todoslosplatos
     articulo: {},
-    articulosImageApiProxy: "https://localhost:44350/api/Articulos/Image/",
 };
 
 const getters = { //devuelven los estados
     todosLosArticulos: (state) => state.articulos,
     elArticulo: (state) => state.articulo,
-    articulosImageApiProxy: (state) => state.articulosImageApiProxy,
 };
 
 //Las acciones llaman a las mutaciones(mutations) a traves de commits
 const actions = {
 
     async fetchTodosLosArticulos({ commit }) {
-        const response = await fetch("/Articulos");
+        const response = await fetch("/api/Articulos");
         const responseJson = await response.json();
         commit('setTodosLosArticulos', responseJson); //sintaxis commit("mutacion",variable)
     },
 
     async getArticulo({ commit }, id) {
-        const response = await fetch("/Articulos/" + id);
+        const response = await fetch("/api/Articulos/" + id);
         const responseJson = await response.json();
         commit('setArticulo', responseJson); //sintaxis commit("mutacion",variable)
         return responseJson
@@ -29,7 +27,7 @@ const actions = {
     async addArticulo({ commit }, { json, imagen }) {
 
         const articulo = json;
-        const response = await fetch("/Articulos", {
+        const response = await fetch("/api/Articulos", {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify(articulo),
@@ -42,7 +40,7 @@ const actions = {
             const formData = new FormData();
             formData.append("image", imagen);
             const response = await fetch(
-                "/Articulos/UploadImage/" + responseJson.id,
+                "/api/Articulos/UploadImage/" + responseJson.id,
                 {
                     method: "POST",
                     body: formData,
@@ -54,10 +52,10 @@ const actions = {
     },
 
     async deleteArticulo({ commit }, id) {
-        const articuloAborrar = await fetch("/Articulos/" + id);
+        const articuloAborrar = await fetch("/api/Articulos/" + id);
         const articuloAborrarJson = await articuloAborrar.json();
         articuloAborrarJson.disabled = true;
-        await fetch(`/Articulos/${id}`, { //disable el articulo del backEnd
+        await fetch(`/api/Articulos/${id}`, { //disable el articulo del backEnd
             method: "PUT",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify(articuloAborrarJson),
@@ -69,7 +67,7 @@ const actions = {
 
         const articuloEditado = json
         console.log(json)
-        await fetch("/Articulos/" + articuloEditado.id, {
+        await fetch("/api/Articulos/" + articuloEditado.id, {
             method: "PUT",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify(articuloEditado),
@@ -81,7 +79,7 @@ const actions = {
             const formData = new FormData();
             formData.append("image", imagen);
             const response = await fetch(
-                "https://localhost:44350/api/Articulos/UploadImage/" + articuloEditado.id,
+                "/api/Articulos/UploadImage/" + articuloEditado.id,
                 {
                     method: "POST",
                     body: formData,
