@@ -35,7 +35,7 @@
                 </b-form-group>
               </template>
             </template>
-            <b-img :src="imagenPreview" fluid :alt="imagenPreview"></b-img>
+            <b-img :src="imagenPreview" fluid alt=""></b-img>
           </td>
         </tr>
       </table>
@@ -48,7 +48,7 @@
 
 <script>
 export default {
-  props: ["formTemplate", "formACargar","imageApiProxy"],
+  props: ["formTemplate", "formACargar"],
   data() {
     return {
       form: null,
@@ -124,7 +124,7 @@ export default {
           for (const propTipo in this.formTemplate) {
             if (prop.toUpperCase() == propTipo.toUpperCase()) {
               if (this.formTemplate[propTipo] == "image") {
-                this.imagenPreview = this.imageApiProxy + this.form[prop];
+                this.imagenPreview = '/image/' + this.form[prop];
               }
             }
           }

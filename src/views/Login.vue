@@ -20,11 +20,11 @@ export default {
     ...mapActions(["setRol"]),
     usuarioLoggin() {
       this.setRol("Usuario");
-      this.$router.push("usuario");
+      this.$router.push({ name: 'UsuarioPlatos'});
     },
     administradorLoggin() {
       this.setRol("Administrador");
-      this.$router.push("administrador");
+      this.$router.push({ name: 'AdministradorPlatos'});
     },
   },
 };
@@ -36,9 +36,5 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
 }
 </style>

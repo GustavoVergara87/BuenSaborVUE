@@ -3,14 +3,17 @@
     <!-- toggleable="sm" puede ser tambien lg md, varia en cuando se toggle -->
     <b-navbar toggleable="sm" type="dark" variant="primary">
       <!-- ------------------------------------------------------Titulo y Rol -->
-      <b-navbar-brand
-        >El Buen Sabor<br />
-        <template v-if="traerRol">
-          <span class="rol d-flex justify-content-center">
-            ({{ traerRol }})
-          </span>
-        </template>
-      </b-navbar-brand>
+      <router-link :to="{ name: 'Home' }">
+        <b-navbar-brand>
+          El Buen Sabor
+          <br />
+          <template v-if="traerRol">
+            <span class="rol d-flex justify-content-center">
+              ({{ traerRol }})
+            </span>
+          </template>
+        </b-navbar-brand>
+      </router-link>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
@@ -38,10 +41,16 @@
             menu-class="w-100"
           >
             <template v-for="(item, index) in this.todosLosRubrosArticulos">
-              <b-dropdown-item :key="index">{{
-                item.denominacion
-              }}</b-dropdown-item>
+              <b-dropdown-item
+                @click="handleBusquedaPorRubro(item.denominacion)"
+                :key="index"
+                >{{ item.denominacion }}</b-dropdown-item
+              >
             </template>
+            <b-dropdown-divider></b-dropdown-divider>
+            <b-dropdown-item @click="handleBusquedaPorRubro('')">
+              Todos
+            </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
 
@@ -77,10 +86,16 @@ export default {
 
   methods: {
     ...mapActions(["fetchTodosLosRubrosArticulos"]),
-    handleBusqueda(event){
+    handleBusqueda(event) {
       event.preventDefault();
-      this.$router.push({  query: { porPalabraClave: event.target[0].value } }).catch(()=>{}) //el catch evita que salte un error 
-      console.log(this.$route.query)
+      this.$router
+        .push({ query: { porPalabraClave: event.target[0].value } })
+        .catch(() => {}); //el catch evita que salte un error
+      console.log(this.$route.query);
+    },
+    handleBusquedaPorRubro(rubro) {
+      this.$router.push({ query: { porRubro: rubro } }).catch(() => {}); //el catch evita que salte un error
+      console.log(this.$route.query);
     },
   },
 

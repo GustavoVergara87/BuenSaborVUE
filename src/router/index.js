@@ -51,7 +51,7 @@ const routes = [
     children: [
       {
         path: "/administrador/Platos",
-        name: "PlatosAdmin",
+        name: "AdministradorPlatos",
         component: () => import("../views/Platos.vue"),
       },
       {

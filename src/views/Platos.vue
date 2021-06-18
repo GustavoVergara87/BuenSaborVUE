@@ -30,6 +30,23 @@ export default {
           );
         return tmpPlatosFiltrados;
       }
+
+
+      if (this.$route.query.porRubro !== undefined) {
+        tmpPlatosFiltrados = this.todosLosPlatos
+          .filter(
+            (plato) =>
+              plato.grupo !== null &&
+              plato.grupo !== undefined
+          )
+          .filter((plato) =>
+            plato.grupo
+              .toLowerCase()
+              .includes(this.$route.query.porRubro.toLowerCase())
+          );
+        return tmpPlatosFiltrados;
+      }
+
       return this.todosLosPlatos;
     },
   },
