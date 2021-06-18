@@ -27,7 +27,7 @@ const routes = [
       {
         path: "/usuario/Carrito",
         name: "Carrito",
-        component: () => import("../views/Platos.vue"),
+        component: () => import("../views/Carrito.vue"),
       },
       {
         path: "/usuario/DetallePlato/:id",

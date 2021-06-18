@@ -3,8 +3,7 @@
     <b-card tag="article" style="max-width: 20rem" class="mb-2">
       <b-card-title :title="plato.plato"></b-card-title>
 
-      <!-- <router-link :to="/DetallePlato/ + plato.id"> -->
-       <router-link :to="{name:'DetallePlato', params:{id:plato.id}}">
+      <router-link :to="{ name: 'DetallePlato', params: { id: plato.id } }">
         <b-card-img
           :src="'/image/' + plato.Imagen"
           :alt="plato.Imagen"
@@ -27,12 +26,19 @@
           </ul>
         </template>
       </b-card-text>
+      <!-- --------------------------------------------AddToCarrito -->
+      <i
+        @click="addCarrito(plato)"
+        class="fas fa-shopping-cart addToCarrito"
+      ></i>
 
       <!-- --------------------------------------------Editar y Borrar -->
       <template
         v-if="['Administrador', 'Cajero', 'Cocinero'].includes(traerRol)"
       >
-        <router-link :to="{name:'AdminEditarArticulo', params:{id:plato.id}}">
+        <router-link
+          :to="{ name: 'AdminEditarArticulo', params: { id: plato.id } }"
+        >
           <i class="fas fa-edit edit"></i>
         </router-link>
       </template>
@@ -54,11 +60,9 @@ export default {
     };
   },
   props: ["plato"],
-  computed: mapGetters([
-    "traerRol",
-  ]),
+  computed: mapGetters(["traerRol"]),
   methods: {
-    ...mapActions(["deleteArticulo"]),
+    ...mapActions(["deleteArticulo","addCarrito"]),
     numFormat(nStr) {
       nStr += "";
       var x = nStr.split(".");
@@ -77,6 +81,9 @@ export default {
       this.mostrar = false;
       this.$emit("tarjeta-borrada");
     },
+    agregarAlCarrito(){
+
+    }
   },
 };
 </script>
@@ -86,9 +93,14 @@ i {
   font-size: 150%;
   position: relative;
   bottom: 0px;
-  right: 0px;
+  /* right: 0px; */
+  float: right;
   cursor: pointer;
   margin: 5%;
+}
+.addToCarrito {
+  color: rgb(0, 141, 146);
+  opacity: 50%;
 }
 .edit {
   color: rgb(0, 204, 211);
@@ -103,42 +115,6 @@ i {
   word-spacing: 2px;
   color: #000000;
   font-weight: 800;
-  text-decoration: none;
-  font-style: normal;
-  font-variant: normal;
-  text-transform: none;
-}
-.vendidos {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 15px;
-  letter-spacing: 0px;
-  word-spacing: 2px;
-  color: #000000;
-  font-weight: 400;
-  text-decoration: none;
-  font-style: normal;
-  font-variant: normal;
-  text-transform: none;
-}
-.costoEnvioGratis {
-  font-family: Verdana, sans-serif;
-  font-size: 12px;
-  letter-spacing: 0px;
-  word-spacing: 0px;
-  color: #00d9ff;
-  font-weight: 400;
-  text-decoration: none;
-  font-style: normal;
-  font-variant: normal;
-  text-transform: none;
-}
-.costoEnvio {
-  font-family: Verdana, sans-serif;
-  font-size: 12px;
-  letter-spacing: 0px;
-  word-spacing: 0px;
-  color: #ff9100;
-  font-weight: 400;
   text-decoration: none;
   font-style: normal;
   font-variant: normal;
