@@ -9,15 +9,12 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import Tarjeta from "@/components/Tarjeta.vue";
-
 export default {
   props: [],
   computed: {
     ...mapGetters(["todosLosPlatos"]),
-
     platosFiltrados() {
       var tmpPlatosFiltrados = [];
-
       if (this.$route.query.porPalabraClave !== undefined) {
         tmpPlatosFiltrados = this.todosLosPlatos
           .filter(
@@ -36,13 +33,10 @@ export default {
       return this.todosLosPlatos;
     },
   },
-
   components: { Tarjeta },
-
   methods: {
     ...mapActions(["fetchTodosLosPlatos"]), //los tres puntitos son para que ademas de las actions podamos poner otros metodos
   },
-
   created() {
     this.fetchTodosLosPlatos();
   },

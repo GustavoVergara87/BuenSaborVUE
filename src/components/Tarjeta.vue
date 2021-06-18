@@ -3,7 +3,7 @@
     <b-card tag="article" style="max-width: 20rem" class="mb-2">
       <b-card-title :title="plato.plato"></b-card-title>
 
-      <router-link :to="/Detalleplato/ + plato.id">
+      <router-link :to="/DetallePlato/ + plato.id">
         <b-card-img
           :src="articulosImageApiProxy + plato.Imagen"
           :alt="plato.Imagen"

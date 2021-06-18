@@ -29,6 +29,11 @@ const routes = [
         name: "Carrito",
         component: () => import("../views/Platos.vue"),
       },
+      {
+        path: "/usuario/DetallePlato/:id",
+        name: "DetallePlato",
+        component: () => import("../views/PlatoDetalle.vue"),
+      },
     ]
   },
 
