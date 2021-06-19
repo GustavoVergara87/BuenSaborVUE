@@ -27,11 +27,12 @@
         </template>
       </b-card-text>
       <!-- --------------------------------------------AddToCarrito -->
-      <i
-        @click="addCarrito(plato)"
-        class="fas fa-shopping-cart addToCarrito"
-      ></i>
-
+      <b-button variant="success"
+        ><i
+          @click="addCarrito(plato)"
+          class="fas fa-shopping-cart addToCarrito"
+        ></i
+      ></b-button>
       <!-- --------------------------------------------Editar y Borrar -->
       <template
         v-if="['Administrador', 'Cajero', 'Cocinero'].includes(traerRol)"
@@ -62,7 +63,7 @@ export default {
   props: ["plato"],
   computed: mapGetters(["traerRol"]),
   methods: {
-    ...mapActions(["deleteArticulo","addCarrito"]),
+    ...mapActions(["deleteArticulo", "addCarrito"]),
     numFormat(nStr) {
       nStr += "";
       var x = nStr.split(".");
@@ -81,9 +82,7 @@ export default {
       this.mostrar = false;
       this.$emit("tarjeta-borrada");
     },
-    agregarAlCarrito(){
-
-    }
+    agregarAlCarrito() {},
   },
 };
 </script>
@@ -99,8 +98,8 @@ i {
   margin: 5%;
 }
 .addToCarrito {
-  color: rgb(0, 141, 146);
-  opacity: 50%;
+  color: rgb(255, 255, 255);
+  opacity: 90%;
 }
 .edit {
   color: rgb(0, 204, 211);

@@ -26,12 +26,7 @@ export default {
     };
   },
   methods: {
-    // async getPlatos() {
-    //   const res = await fetch("/platos.json");
-    //   const resJson = await res.json();
-    //   console.log(resJson);
-    //   this.platosData = resJson.platos;
-    // }
+    
   },
 };
 </script>

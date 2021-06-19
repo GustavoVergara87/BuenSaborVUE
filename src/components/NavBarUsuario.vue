@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="fixed">
     <!-- toggleable="sm" puede ser tambien lg md, varia en cuando se toggle -->
     <b-navbar toggleable="sm" type="dark" variant="primary">
       <!-- ------------------------------------------------------Titulo y Rol -->
@@ -59,9 +59,16 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item>
             <router-link :to="{ name: 'Carrito' }" class="nav-link">
-              <i class="fas fa-shopping-cart mx-4 mt-1 carrito"></i>
+              <div class="sub-menu1-container">
+                <div class="numCarrito">{{ cantidadCarrito }}</div>
+                <div class="sub-menu1-img">
+                  <i class="fas fa-shopping-cart mx-4 mt-1 carrito"></i>
+                </div>
+                
+              </div>
             </router-link>
           </b-nav-item>
+
           <!-- -------------------------------------------------------Buscar -->
           <b-nav-form @submit="handleBusqueda">
             <b-form-input
@@ -82,8 +89,12 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-  computed: mapGetters(["todosLosRubrosArticulos", "traerRol"]), // pasamos un array de los getters que queremos usar. Esto nos permite usarlo
-
+  computed: {
+    ...mapGetters(["todosLosRubrosArticulos", "traerRol", "getCarrito"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
+    cantidadCarrito() {
+      return this.getCarrito.length;
+    },
+  },
   methods: {
     ...mapActions(["fetchTodosLosRubrosArticulos"]),
     handleBusqueda(event) {
@@ -91,14 +102,11 @@ export default {
       this.$router
         .push({ query: { porPalabraClave: event.target[0].value } })
         .catch(() => {}); //el catch evita que salte un error
-      console.log(this.$route.query);
     },
     handleBusquedaPorRubro(rubro) {
       this.$router.push({ query: { porRubro: rubro } }).catch(() => {}); //el catch evita que salte un error
-      console.log(this.$route.query);
     },
   },
-
   created() {
     const childrenRoutes = this.$router.options.routes.find(
       (r) => r.name == "usuario"
@@ -121,12 +129,42 @@ export default {
 </script>
 
 <style scoped>
+
 .carrito {
-  font-size: 150%;
+  font-size: 200%;
   cursor: pointer;
+  opacity: 50;
 }
 .rol {
   font-size: 80%;
 }
+.fixed {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.sub-menu1-container {
+  /* margin: 0 5%; */
+  /* background: rgb(255, 0, 0); */
+  height: 30px;
+  right: 80px;
+  position: relative;
+  /* z-index: -1; */
+}
+
+.sub-menu1-img {
+  /* padding: 1% 10%; */
+  position: absolute;
+}
+
+.numCarrito {
+  color:white;
+  position: absolute;
+  right: -50px;
+  margin-top: 4px;
+  margin-right: -4px;
+}
 </style>
+
 

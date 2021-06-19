@@ -21,14 +21,12 @@ const actions = {
         state.carrito.forEach(item => { item.cantidad = 1 })
         state.carrito.forEach(item => {
             var platoRepetido = detallesPedido.find(a => a.id == item.id)
-            console.log(platoRepetido)
             if (!detallesPedido || !platoRepetido) {
                 detallesPedido.push(item)
             } else if (platoRepetido) {
                 platoRepetido.cantidad++
             }
         })
-        console.log(detallesPedido)
         commit('setDetallesPedido', detallesPedido)
     },
 

@@ -3,7 +3,6 @@
     <template v-if="comportamiento == 'Agregar'">
       <h5>Agregar Articulo</h5>
       <Formulario
-        :imageApiProxy="articulosImageApiProxy"
         :formTemplate="form"
         @form-submited="addArticulo"
       ></Formulario>
@@ -12,7 +11,6 @@
     <template v-if="comportamiento == 'Editar'">
       <h5>Editar Articulo</h5>
       <Formulario
-        :imageApiProxy="articulosImageApiProxy"
         :formTemplate="form"
         :formACargar="elArticulo"
         @form-submited="editArticulo"
@@ -52,7 +50,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["elArticulo","articulosImageApiProxy"]),
+    ...mapGetters(["elArticulo"]),
   },
 
   created() {

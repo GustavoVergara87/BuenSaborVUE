@@ -66,7 +66,6 @@ const actions = {
     async editArticulo({ commit }, { json, imagen }) {
 
         const articuloEditado = json
-        console.log(json)
         await fetch("/api/Articulos/" + articuloEditado.id, {
             method: "PUT",
             headers: { "Content-type": "application/json" },

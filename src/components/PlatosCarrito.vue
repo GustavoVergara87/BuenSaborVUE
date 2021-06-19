@@ -26,7 +26,7 @@ export default {
   border: 1px;
   margin-top: 1em;
   /* height: calc(95vh - 150px); */
-  height: calc(50vh - 150px);
+  height: calc(95vh - 150px);
   /* overflow-y: scroll; */
   overflow-y: auto;
 }

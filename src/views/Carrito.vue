@@ -5,8 +5,8 @@
         <PlatosCarrito></PlatosCarrito>
       </b-col>
       <b-col>
-        <h3>Resumen</h3>
-        <h3>Total: {{ PrecioTotal }}</h3>
+        <h5>Resumen</h5>
+        <h6>Total: {{ PrecioTotal }}</h6>
       </b-col>
     </b-row>
   </b-container>
@@ -22,13 +22,15 @@ export default {
     ...mapGetters(["getCarrito"]),
     PrecioTotal() {
       return this.getCarrito.reduce(
-        (suma, item) => suma + this.val(item.PrecioVenta)
+        (suma, item) => suma + this.val(item.PrecioVenta),0
       );
     },
   },
   methods: {
     val(a) {
+        console.log(a)
       if (a!=null && a!= undefined) return parseInt(a);
+      if (a==null || a== undefined) return 0;
     },
   },
 };
