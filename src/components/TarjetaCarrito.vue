@@ -1,6 +1,7 @@
 <template>
   <div v-show="mostrar">
     <b-card img-left>
+      <i class="fas fa-times"></i>
       <table class="tablaTarjetaCarrito txtCol">
         <tr>
           <td class="imgCol">
@@ -29,6 +30,9 @@
           </td>
         </tr>
       </table>
+      <i class="fas fa-plus-square"></i>
+      <i class="fas fa-minus-square"></i>
+      
       <!-- <span class="descripcionCarrito">{{ plato.Descripcion }}</span>  -->
     </b-card>
   </div>
@@ -71,11 +75,16 @@ export default {
 </script>
 
 <style  scoped>
+.botonQuitarCarrito {
+  float: right;
+  opacity: 50;
+}
+
 .imgCol {
   width: 50px;
 }
 
-.imagenTarjetaCarrito{
+.imagenTarjetaCarrito {
   padding: 0.25em;
 }
 

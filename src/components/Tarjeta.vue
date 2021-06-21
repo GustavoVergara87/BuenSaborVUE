@@ -27,18 +27,23 @@
         </template>
       </b-card-text>
       <!-- --------------------------------------------AddToCarrito -->
-      <b-button variant="success"
-        ><i
-          @click="addCarrito(plato)"
-          class="fas fa-shopping-cart addToCarrito"
-        ></i
-      ></b-button>
+      <template v-if="['Administrador', 'Usuario'].includes(traerRol)">
+        <b-button @click="addCarrito(plato)" variant="success">
+          <i class="fas fa-shopping-cart addToCarrito"></i>
+        </b-button>
+      </template>
       <!-- --------------------------------------------Editar y Borrar -->
       <template
         v-if="['Administrador', 'Cajero', 'Cocinero'].includes(traerRol)"
       >
         <router-link
-          :to="{ name: 'AdminEditarArticulo', params: { id: plato.id } }"
+          :to="
+            traerRol == 'Administrador'
+              ? { name: 'AdminEditarArticulo', params: { id: plato.id } }
+              : traerRol == 'Cocinero'
+              ? { name: 'CocineroEditarArticulo', params: { id: plato.id } }
+              : {}
+          "
         >
           <i class="fas fa-edit edit"></i>
         </router-link>

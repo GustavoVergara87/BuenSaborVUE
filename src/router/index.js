@@ -6,6 +6,8 @@ Vue.use(VueRouter);
 
 
 const routes = [
+
+  //----------------------------------------------------------------------USUARIO
   {
     path: "/usuario",
     name: "usuario",
@@ -15,7 +17,7 @@ const routes = [
       if (rolesAutorizados.includes(rol)) next()
       else next(false)
     },
-    component: () => import("../views/NavUsuario.vue"),
+    component: () => import("../views/UsuarioNav.vue"),
 
     children: [
       {
@@ -34,9 +36,22 @@ const routes = [
         name: "DetallePlato",
         component: () => import("../views/PlatoDetalle.vue"),
       },
+      {
+        path: "/usuario/MercadoPago/:idPedido",
+        name: "usuarioMercadoPago",
+        component: () => import("../views/MercadoPago.vue"),
+        beforeEnter: (to, from, next) => {
+          const rolesAutorizados = ["Usuario", "Administrador", "Cajero"]
+          const rol = Store.getters['traerRol']
+          //evaluar si hay alguna comprobación extra antes de permitirle entrar a Pagar con Mercado pago
+          if (rolesAutorizados.includes(rol)) next()
+          else next(false)
+        }
+      },
     ]
   },
 
+  //----------------------------------------------------------------------ADMINISTRADOR
   {
     path: "/administrador",
     name: "administrador",
@@ -46,7 +61,7 @@ const routes = [
       if (rolesAutorizados.includes(rol)) next()
       else next(false)
     },
-    component: () => import("../views/NavUsuario.vue"),
+    component: () => import("../views/AdministradorNav.vue"),
 
     children: [
       {
@@ -69,6 +84,101 @@ const routes = [
     ]
 
   },
+  //-----------------------------------------------------------------------------------
+
+  //---------------------------------------------------------------------------CAJERO
+  {
+    path: "/cajero",
+    name: "cajero",
+    beforeEnter: (to, from, next) => {
+      const rolesAutorizados = ["Administrador", "Cajero"]
+      const rol = Store.getters['traerRol']
+      if (rolesAutorizados.includes(rol)) next()
+      else next(false)
+    },
+    component: () => import("../views/CajeroNav.vue"),
+
+    children: [
+      {
+        path: "/cajero/ListaDePedidos",
+        name: "CajeroListaDePedidos",
+        component: () => import("../views/CajeroListaDePedidos.vue"),
+      },
+      {
+        path: "/cajero/PedidosDetalle/:idPedido",
+        name: "CajeroPedidoDetalle",
+        component: () => import("../views/PedidoDetalle.vue"),
+      },
+    ]
+  },
+  //--------------------------------------------------------------------------------------
+
+
+  //---------------------------------------------------------------------------COCINERO
+  {
+    path: "/cocinero",
+    name: "cocinero",
+    beforeEnter: (to, from, next) => {
+      const rolesAutorizados = ["Administrador", "Cocinero"]
+      const rol = Store.getters['traerRol']
+      if (rolesAutorizados.includes(rol)) next()
+      else next(false)
+    },
+    component: () => import("../views/CocineroNav.vue"),
+
+    children: [
+      {
+        path: "/cocinero/ListaDePedidos",
+        name: "CocineroListaDePedidos",
+        component: () => import("../views/CocineroListaDePedidos.vue"),
+      },
+      {
+        path: "/cocinero/PedidosDetalle/:idPedido",
+        name: "CocineroPedidoDetalle",
+        component: () => import("../views/CocineroPedidoDetalle.vue"),
+      },
+      {
+        path: "/cocinero/Platos",
+        name: "CocineroPlatos",
+        component: () => import("../views/Platos.vue"),
+      },
+      {
+        path: "/cocinero/Editar_Articulo/:id",
+        name: "CocineroEditarArticulo",
+        component: () => import("../views/AgregarEditar/AE_Articulo.vue"),
+        props: { comportamiento: 'Editar', }
+      },
+    ]
+  },
+  //--------------------------------------------------------------------------------------
+
+  //---------------------------------------------------------------------------Delivery
+  {
+    path: "/delivery",
+    name: "delivery",
+    beforeEnter: (to, from, next) => {
+      const rolesAutorizados = ["Administrador", "Delivery"]
+      const rol = Store.getters['traerRol']
+      if (rolesAutorizados.includes(rol)) next()
+      else next(false)
+    },
+    component: () => import("../views/DeliveryNav.vue"),
+
+    children: [
+      {
+        path: "/delivery/ListaDePedidos",
+        name: "DeliveryListaDePedidos",
+        component: () => import("../views/DeliveryListaDePedidos.vue"),
+      },
+      {
+        path: "/delivery/PedidosDetalle/:idPedido",
+        name: "DeliveryPedidoDetalle",
+        component: () => import("../views/DeliveryPedidoDetalle.vue"),
+      },
+    ]
+  },
+  //--------------------------------------------------------------------------------------
+
 
   {
     path: "/login",

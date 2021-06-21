@@ -14,7 +14,6 @@
           </template>
         </b-navbar-brand>
       </router-link>
-      <!-- ------------------------------------------------------FinTitulo y Rol -->
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
@@ -25,65 +24,15 @@
               Login
             </router-link>
           </b-nav-item>
-          <!-- --------------------------------------------------------FinLogin -->
 
           <!-- -------------------------------------------------------Platos -->
           <b-nav-item>
-            <router-link :to="{ name: 'UsuarioPlatos' }" class="nav-link">
-              Platos <i class="fas fa-utensils"></i>
+            <router-link :to="{ name: 'DeliveryListaDePedidos' }" class="nav-link">
+              A entregar <i class="fas fa-biking"></i>
             </router-link>
           </b-nav-item>
-          <!-- -------------------------------------------------------FinPlatos -->
-
-          <!-- -------------------------------------------------------Rubros -->
-          <b-nav-item-dropdown
-            text="Categorias"
-            block
-            variant="primary"
-            class="m-2"
-            menu-class="w-100"
-          >
-            <template v-for="(item, index) in this.todosLosRubrosArticulos">
-              <b-dropdown-item
-                @click="handleBusquedaPorRubro(item.denominacion)"
-                :key="index"
-                >{{ item.denominacion }}</b-dropdown-item
-              >
-            </template>
-            <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item @click="handleBusquedaPorRubro('')">
-              Todos
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
         </b-navbar-nav>
-        <!-- -------------------------------------------------------FinRubros -->
 
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-          <!-- -------------------------------------------------------Carrito -->
-          <b-nav-item>
-            <router-link :to="{ name: 'Carrito' }" class="nav-link">
-              <div class="sub-menu1-container">
-                <div class="numCarrito">{{ cantidadCarrito }}</div>
-                <div class="sub-menu1-img">
-                  <i class="fas fa-shopping-cart mx-4 mt-1 carrito"></i>
-                </div>
-              </div>
-            </router-link>
-          </b-nav-item>
-          <!-- -------------------------------------------------------FinCarrito -->
-          <!-- -------------------------------------------------------Buscar -->
-          <b-nav-form @submit="handleBusqueda">
-            <b-form-input
-              size="sm"
-              class="mr-sm-2"
-              placeholder="Buscar"
-            ></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">
-              <i class="fas fa-search"></i>
-            </b-button>
-          </b-nav-form>
-        </b-navbar-nav>
       </b-collapse>
     </b-navbar>
   </div>
@@ -132,6 +81,7 @@ export default {
 </script>
 
 <style scoped>
+
 .carrito {
   font-size: 200%;
   cursor: pointer;
@@ -161,7 +111,7 @@ export default {
 }
 
 .numCarrito {
-  color: white;
+  color:white;
   position: absolute;
   right: -50px;
   margin-top: 4px;

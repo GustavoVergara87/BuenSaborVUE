@@ -27,9 +27,20 @@
           </b-nav-item>
           <!-- --------------------------------------------------------FinLogin -->
 
+          <!-- -------------------------------------------------------ListaPedidos -->
+          <b-nav-item>
+            <router-link
+              :to="{ name: 'CocineroListaDePedidos' }"
+              class="nav-link"
+            >
+              Lista de Pedidos <i class="fas fa-clipboard-list"></i>
+            </router-link>
+          </b-nav-item>
+          <!-- -------------------------------------------------------FinListaPedidos -->
+
           <!-- -------------------------------------------------------Platos -->
           <b-nav-item>
-            <router-link :to="{ name: 'UsuarioPlatos' }" class="nav-link">
+            <router-link :to="{ name: 'CocineroPlatos' }" class="nav-link">
               Platos <i class="fas fa-utensils"></i>
             </router-link>
           </b-nav-item>
@@ -60,18 +71,6 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <!-- -------------------------------------------------------Carrito -->
-          <b-nav-item>
-            <router-link :to="{ name: 'Carrito' }" class="nav-link">
-              <div class="sub-menu1-container">
-                <div class="numCarrito">{{ cantidadCarrito }}</div>
-                <div class="sub-menu1-img">
-                  <i class="fas fa-shopping-cart mx-4 mt-1 carrito"></i>
-                </div>
-              </div>
-            </router-link>
-          </b-nav-item>
-          <!-- -------------------------------------------------------FinCarrito -->
           <!-- -------------------------------------------------------Buscar -->
           <b-nav-form @submit="handleBusqueda">
             <b-form-input

@@ -6,8 +6,9 @@
       <b-dropdown-item @click="administradorLoggin"
         >Administrador</b-dropdown-item
       >
-      <b-dropdown-item>Cajero</b-dropdown-item>
-      <b-dropdown-item>Cocinero</b-dropdown-item>
+      <b-dropdown-item @click="cajeroLoggin">Cajero</b-dropdown-item>
+      <b-dropdown-item @click="cocineroLoggin">Cocinero</b-dropdown-item>
+      <b-dropdown-item @click="deliveryLoggin">Delivery</b-dropdown-item>
     </b-dropdown>
   </div>
 </template>
@@ -20,11 +21,23 @@ export default {
     ...mapActions(["setRol"]),
     usuarioLoggin() {
       this.setRol("Usuario");
-      this.$router.push({ name: 'UsuarioPlatos'});
+      this.$router.push({ name: "UsuarioPlatos" });
     },
     administradorLoggin() {
       this.setRol("Administrador");
-      this.$router.push({ name: 'AdministradorPlatos'});
+      this.$router.push({ name: "AdministradorPlatos" });
+    },
+    cajeroLoggin() {
+      this.setRol("Cajero");
+      this.$router.push({ name: "CajeroListaDePedidos" });
+    },
+    cocineroLoggin() {
+      this.setRol("Cocinero");
+      this.$router.push({ name: "CocineroListaDePedidos" });
+    },
+    deliveryLoggin() {
+      this.setRol("Delivery");
+      this.$router.push({ name: "DeliveryListaDePedidos" });
     },
   },
 };

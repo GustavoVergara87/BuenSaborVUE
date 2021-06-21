@@ -27,51 +27,21 @@
           </b-nav-item>
           <!-- --------------------------------------------------------FinLogin -->
 
-          <!-- -------------------------------------------------------Platos -->
+          <!-- -------------------------------------------------------ListaPedidos -->
           <b-nav-item>
-            <router-link :to="{ name: 'UsuarioPlatos' }" class="nav-link">
-              Platos <i class="fas fa-utensils"></i>
+            <router-link
+              :to="{ name: 'CajeroListaDePedidos' }"
+              class="nav-link"
+            >
+              Lista de Pedidos <i class="fas fa-clipboard-list"></i>
             </router-link>
           </b-nav-item>
-          <!-- -------------------------------------------------------FinPlatos -->
-
-          <!-- -------------------------------------------------------Rubros -->
-          <b-nav-item-dropdown
-            text="Categorias"
-            block
-            variant="primary"
-            class="m-2"
-            menu-class="w-100"
-          >
-            <template v-for="(item, index) in this.todosLosRubrosArticulos">
-              <b-dropdown-item
-                @click="handleBusquedaPorRubro(item.denominacion)"
-                :key="index"
-                >{{ item.denominacion }}</b-dropdown-item
-              >
-            </template>
-            <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item @click="handleBusquedaPorRubro('')">
-              Todos
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
+          <!-- -------------------------------------------------------FinListaPedidos -->
         </b-navbar-nav>
-        <!-- -------------------------------------------------------FinRubros -->
 
+        
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <!-- -------------------------------------------------------Carrito -->
-          <b-nav-item>
-            <router-link :to="{ name: 'Carrito' }" class="nav-link">
-              <div class="sub-menu1-container">
-                <div class="numCarrito">{{ cantidadCarrito }}</div>
-                <div class="sub-menu1-img">
-                  <i class="fas fa-shopping-cart mx-4 mt-1 carrito"></i>
-                </div>
-              </div>
-            </router-link>
-          </b-nav-item>
-          <!-- -------------------------------------------------------FinCarrito -->
           <!-- -------------------------------------------------------Buscar -->
           <b-nav-form @submit="handleBusqueda">
             <b-form-input
@@ -83,6 +53,7 @@
               <i class="fas fa-search"></i>
             </b-button>
           </b-nav-form>
+          <!-- -------------------------------------------------------FinBuscar -->
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -166,6 +137,9 @@ export default {
   right: -50px;
   margin-top: 4px;
   margin-right: -4px;
+  text-align: center;
+  align-content: center;
+  align-items: center;
 }
 </style>
 
