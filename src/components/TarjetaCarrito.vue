@@ -13,26 +13,27 @@
             ></b-img>
           </td>
           <td>
-            <ul class="leaders">
-              <li>
-                <span class="tituloTarjetaCarrito">{{ plato.plato }}</span>
-                <span class="precioUnitario"
+              <div class="dottedRow">
+                <span class="dottedLeft">{{ plato.plato }}</span>
+                <span class="dottedDots"></span>
+                <span class="dottedRight"
                   >${{ numFormat(plato.PrecioVenta) }}</span
                 >
-              </li>
-              <li>
-                <span class="precio">x{{ plato.cantidad }}</span>
-                <span class="precio"
+              </div>
+              <div class="dottedRow">
+                <span class="precio dottedLeft">x{{ plato.cantidad }}</span>
+                <span class="dottedDots"></span>
+                <span class="precio dottedRight"
                   >${{ numFormat(plato.PrecioVenta * plato.cantidad) }}</span
                 >
-              </li>
-            </ul>
+              </div>
+
           </td>
         </tr>
       </table>
       <i class="fas fa-plus-square"></i>
       <i class="fas fa-minus-square"></i>
-      
+
       <!-- <span class="descripcionCarrito">{{ plato.Descripcion }}</span>  -->
     </b-card>
   </div>
@@ -75,6 +76,7 @@ export default {
 </script>
 
 <style  scoped>
+
 .botonQuitarCarrito {
   float: right;
   opacity: 50;
@@ -92,31 +94,6 @@ export default {
   flex: 1 1 auto;
   min-height: 1px;
   padding: 0.25rem;
-}
-
-ul.leaders {
-  max-width: 40em;
-  padding: 0;
-  overflow-x: hidden;
-  list-style: none;
-}
-ul.leaders li:before {
-  float: left;
-  width: 0;
-  white-space: nowrap;
-  content: ". . . . . . . . . . . . . . . . . . . . "
-    ". . . . . . . . . . . . . . . . . . . . "
-    ". . . . . . . . . . . . . . . . . . . . "
-    ". . . . . . . . . . . . . . . . . . . . ";
-}
-ul.leaders span:first-child {
-  padding-right: 0.33em;
-  background: white;
-}
-ul.leaders span + span {
-  float: right;
-  padding-left: 0.33em;
-  background: white;
 }
 
 i {
@@ -143,19 +120,18 @@ i {
   color: #000000;
   font-weight: 400;
 }
+
 .descripcionCarrito {
-  /* font-family: Verdana, sans-serif; */
   font-size: 70%;
-  /* letter-spacing: 0px; */
-  /* word-spacing: 1px; */
   color: #000000;
-  /* font-weight: 400; */
-  /* text-decoration: none;
-  font-style: normal;
-  font-variant: normal;
-  text-transform: none; */
 }
+
 .precio {
   font-weight: 800;
 }
+
+
+
+
+
 </style>

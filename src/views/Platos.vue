@@ -1,8 +1,10 @@
 <template>
   <div class="contenedor">
-    <template v-for="plato in platosFiltrados">
-      <Tarjeta :plato="plato" :key="plato.id" />
-    </template>
+    <b-card-group deck>
+      <template v-for="plato in platosFiltrados">
+        <Tarjeta :plato="plato" :key="plato.id" />
+      </template>
+    </b-card-group>
   </div>
 </template>
 
@@ -31,14 +33,9 @@ export default {
         return tmpPlatosFiltrados;
       }
 
-
       if (this.$route.query.porRubro !== undefined) {
         tmpPlatosFiltrados = this.todosLosPlatos
-          .filter(
-            (plato) =>
-              plato.grupo !== null &&
-              plato.grupo !== undefined
-          )
+          .filter((plato) => plato.grupo !== null && plato.grupo !== undefined)
           .filter((plato) =>
             plato.grupo
               .toLowerCase()
@@ -62,9 +59,9 @@ export default {
 
 <style scoped>
 .contenedor {
-  padding: 1em;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
-  grid-gap: 1em;
+  /* display: flex; */
+  padding: 2em;
+  /* flex-direction:column; */
+  
 }
 </style>

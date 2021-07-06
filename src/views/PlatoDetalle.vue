@@ -91,15 +91,6 @@ export default {
   height: 400px;
 }
 
-.spinner {
-  --size: 6rem;
-  width: var(--size);
-  height: var(--size);
-  display: block;
-  position: fixed;
-  z-index: 1031; /* High z-index so it is on top of the page */
-  top: calc(50% - (var(--size) / 2));
-  left: calc(50% - (var(--size) / 2));
-}
+
 
 </style>

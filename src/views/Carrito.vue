@@ -7,19 +7,32 @@
           <b-col>
             <PlatosCarrito></PlatosCarrito>
           </b-col>
+
           <b-col>
             <form>
-              <p>N° de pedido:</p>
-              <span>{{ PrecioTotal }}</span>
+              <div class="dottedRow">
+                <label class="precio dottedLeft">N° de pedido:</label>
+                <span class="dottedDots"></span>
+                <span class="precio dottedRight">{{ PrecioTotal }}</span>
+              </div>
 
-              <p>Fecha:</p>
-              <span>{{ PrecioTotal }}</span>
+              <div class="dottedRow">
+                <label class="precio dottedLeft">Fecha:</label>
+                <span class="dottedDots"></span>
+                <span class="precio dottedRight">{{ PrecioTotal }}</span>
+              </div>
 
-              <p>Cliente:</p>
-              <span>{{ PrecioTotal }}</span>
+              <div class="dottedRow">
+                <label class="precio dottedLeft">Cliente:</label>
+                <span class="dottedDots"></span>
+                <span class="precio dottedRight">{{ PrecioTotal }}</span>
+              </div>
 
-              <p>Telefono:</p>
-              <span>{{ PrecioTotal }}</span>
+              <div class="dottedRow">
+                <label class="precio dottedLeft">Telefono:</label>
+                <span class="dottedDots"></span>
+                <span class="precio dottedRight">{{ PrecioTotal }}</span>
+              </div>
 
               <b-form-group label="Retira en:">
                 <b-form-radio v-model="selected2" name="Domicilio" value="A"
@@ -35,6 +48,7 @@
                 v-model="text"
                 placeholder="Direccion"
               ></b-form-input>
+
               <b-form-group id="input-group-3" label="" label-for="input-3">
                 <b-form-select
                   id="input-3"
@@ -44,10 +58,13 @@
                 ></b-form-select>
               </b-form-group>
 
-              <p>Descuentos:</p>
-              <span>{{ PrecioTotal }}</span>
+              <div class="dottedRow">
+                <label class="precio dottedLeft">Descuentos:</label>
+                <span class="dottedDots"></span>
+                <span class="precio dottedRight">{{ PrecioTotal }}</span>
+              </div>
 
-              <p>Forma de pago:</p>
+              <label>Forma de pago:</label>
               <b-form-radio v-model="selected" name="some-radios" value="A"
                 >Efectivo</b-form-radio
               >
@@ -55,11 +72,17 @@
                 >Mercado Pago</b-form-radio
               >
 
-              <p>Total:</p>
-              <span>{{ PrecioTotal }}</span>
+              <div class="dottedRow">
+                <label class="precio dottedLeft">Total:</label>
+                <span class="dottedDots"></span>
+                <span class="precio dottedRight">{{ PrecioTotal }}</span>
+              </div>
 
-              <p>Tiempo de entrega:</p>
-              <span>{{ PrecioTotal }}</span>
+              <div class="dottedRow">
+                <label class="precio dottedLeft">Tiempo de entrega:</label>
+                <span class="dottedDots"></span>
+                <span class="precio dottedRight">{{ PrecioTotal }}</span>
+              </div>
 
               <b-button @click="confirmarCarrito">Confirmar</b-button>
             </form>
@@ -111,7 +134,6 @@ export default {
       if (a == null || a == undefined) return 0;
     },
     confirmarCarrito() {
-    
       this.$router.push({
         name: "usuarioMercadoPago",
         params: { idPedido: 2 },

@@ -1,6 +1,6 @@
 <template>
-  <div v-show="mostrar">
-    <b-card tag="article" style="max-width: 20rem" class="mb-2">
+  
+    <b-card v-show="mostrar" tag="article" style="position:relativie; min-width: 15rem; max-width: 20rem" class="mb-2 tarjeta">
       <b-card-title :title="plato.plato"></b-card-title>
 
       <router-link :to="{ name: 'DetallePlato', params: { id: plato.id } }">
@@ -28,7 +28,7 @@
       </b-card-text>
       <!-- --------------------------------------------AddToCarrito -->
       <template v-if="['Administrador', 'Usuario'].includes(traerRol)">
-        <b-button @click="addCarrito(plato)" variant="success">
+        <b-button @click="addCarrito(plato)" class="button" variant="success">
           <i class="fas fa-shopping-cart addToCarrito"></i>
         </b-button>
       </template>
@@ -53,7 +53,7 @@
         <i @click="Borrarplato" class="fas fa-trash-alt delete"></i>
       </template>
     </b-card>
-  </div>
+  
 </template>
 
 <script>
@@ -123,5 +123,17 @@ i {
   font-style: normal;
   font-variant: normal;
   text-transform: none;
+}
+
+.tarjeta{
+  filter: drop-shadow(0px 0px 8px #dfb6a6);
+}
+
+.button{
+  position: absolute; 
+  right:0.5em; 
+  bottom:0.5em;
+  font-size: 70%;
+
 }
 </style>

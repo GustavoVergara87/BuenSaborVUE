@@ -1,15 +1,15 @@
 <template>
   <div class="fixed">
     <!-- toggleable="sm" puede ser tambien lg md, varia en cuando se toggle -->
-    <b-navbar toggleable="sm" type="dark" variant="primary">
+    <b-navbar toggleable="sm" type="dark" variant="primary" class="test">
       <!-- ------------------------------------------------------Titulo y Rol -->
       <router-link :to="{ name: 'Home' }">
         <b-navbar-brand>
-          El Buen Sabor
+          <img src="../../public/images/logo.svg" class="logoPrincipal" />
           <br />
           <template v-if="traerRol">
             <span class="rol d-flex justify-content-center">
-              ({{ traerRol }})
+              <!-- ({{ traerRol }}) -->
             </span>
           </template>
         </b-navbar-brand>
@@ -17,11 +17,11 @@
       <!-- ------------------------------------------------------FinTitulo y Rol -->
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse id="nav-collapse" is-nav>
+      <b-collapse id="nav-collapse" is-nav class="outlined">
         <b-navbar-nav>
           <!-- --------------------------------------------------------Login -->
-          <b-nav-item>
-            <router-link :to="'/login'" class="nav-link btn btn-success">
+          <b-nav-item class="nav-item-mod">
+            <router-link :to="'/login'" class="nav-link nav-link-mod">
               Login
             </router-link>
           </b-nav-item>
@@ -29,8 +29,11 @@
 
           <!-- -------------------------------------------------------Platos -->
           <b-nav-item>
-            <router-link :to="{ name: 'UsuarioPlatos' }" class="nav-link">
-              Platos <i class="fas fa-utensils"></i>
+            <router-link
+              :to="{ name: 'UsuarioPlatos' }"
+              class="nav-link nav-link-mod"
+            >
+              Platos <i class="fas fa-utensils responsiveHide"></i>
             </router-link>
           </b-nav-item>
           <!-- -------------------------------------------------------FinPlatos -->
@@ -39,8 +42,7 @@
           <b-nav-item-dropdown
             text="Categorias"
             block
-            variant="primary"
-            class="m-2"
+            class="m-2 nav-link-mod"
             menu-class="w-100"
           >
             <template v-for="(item, index) in this.todosLosRubrosArticulos">
@@ -59,16 +61,16 @@
         <!-- -------------------------------------------------------FinRubros -->
 
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
+        <b-navbar-nav class="ml-auto outlined">
           <!-- -------------------------------------------------------Carrito -->
-          <b-nav-item>
-            <router-link :to="{ name: 'Carrito' }" class="nav-link">
-              <div class="sub-menu1-container">
-                <div class="numCarrito">{{ cantidadCarrito }}</div>
-                <div class="sub-menu1-img">
-                  <i class="fas fa-shopping-cart mx-4 mt-1 carrito"></i>
-                </div>
-              </div>
+          <b-nav-item class="outlined">
+            <router-link
+              :to="{ name: 'Carrito' }"
+              class="nav-link carritoBox outlined"
+            >
+              <span class="carritoRedCircle">&#11044;</span>
+              <span class="carritoNum outlined">{{ cantidadCarrito }}</span>
+              <i class="fas fa-shopping-cart carritoIco outlined"></i>
             </router-link>
           </b-nav-item>
           <!-- -------------------------------------------------------FinCarrito -->
@@ -79,7 +81,7 @@
               class="mr-sm-2"
               placeholder="Buscar"
             ></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">
+            <b-button size="sm" class="my-2 my-sm-0 responsiveHide btn-outline-light " type="submit">
               <i class="fas fa-search"></i>
             </b-button>
           </b-nav-form>
@@ -132,11 +134,6 @@ export default {
 </script>
 
 <style scoped>
-.carrito {
-  font-size: 200%;
-  cursor: pointer;
-  opacity: 50;
-}
 .rol {
   font-size: 80%;
 }
@@ -146,27 +143,60 @@ export default {
   z-index: 1000;
 }
 
-.sub-menu1-container {
-  /* margin: 0 5%; */
-  /* background: rgb(255, 0, 0); */
-  height: 30px;
-  right: 80px;
+.carritoBox {
+  width: 3em;
+  height: 2em;
   position: relative;
-  /* z-index: -1; */
 }
 
-.sub-menu1-img {
-  /* padding: 1% 10%; */
+.carritoNum {
   position: absolute;
+  --size: 1em;
+  width: 2em;
+  height: var(--size);
+  /* top: calc(50% - (var(--size) / 2));
+  left: calc(85% - (var(--size) / 2)); */
+  top: -0.45em;
+  right: -0.15em;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  font-size: 90%;
 }
 
-.numCarrito {
-  color: white;
+.carritoRedCircle {
   position: absolute;
-  right: -50px;
-  margin-top: 4px;
-  margin-right: -4px;
+  --size: 1em;
+  width: var(--size);
+  height: var(--size);
+  top: -0.6em;
+  right: 0em;
+  text-align: center;
+  color: rgba(255, 0, 0, 1);
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
+  font-size: 150%;
+}
+
+.carritoIco {
+  position: absolute;
+  --size: 1em;
+  width: var(--size);
+  height: var(--size);
+  top: calc(50% - (var(--size) / 2));
+  left: calc(40% - (var(--size) / 2));
+  color: rgba(255, 255, 255, 1);
+  font-size: 100%;
+  cursor: pointer;
+  opacity: 80;
+}
+
+.test {
+  block-size: 80px; /*alto de la nav bar*/
+  background-color: blueviolet !important;
+  background-image: url("../../public/images/hamb.jpg");
+  background-size: 200 500;
+  filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.5));
 }
 </style>
+
 
 

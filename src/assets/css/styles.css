@@ -1,0 +1,110 @@
+.spinner {
+  --size: 6rem;
+  width: var(--size);
+  height: var(--size);
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  /* High z-index so it is on top of the page */
+  top: calc(50% - (var(--size) / 2));
+  left: calc(50% - (var(--size) / 2));
+}
+
+.outlined {
+  outline: 0px solid orange;
+}
+
+.logoPrincipal {
+  /* width: 10vh; */
+  height: 70px;
+  float: left;
+  filter: drop-shadow(5px 5px 4px #444);
+}
+
+.nav-link-mod {
+  color: rgba(255, 255, 255, 1)!important;
+}
+
+/* Modifica el span dentro de categorias */
+
+.nav-link-mod span {
+  color: rgba(255, 255, 255, 1)!important;
+}
+
+.nav-link-mod:hover {
+  color: rgba(255, 255, 255, 1)!important;
+  filter: drop-shadow(0px 0px 4px rgb(231, 231, 231, 0.5));
+}
+
+.nav-link-mod:hover {
+  color: rgba(255, 255, 255, 1)!important;
+  filter: drop-shadow(0px 0px 4px rgb(231, 231, 231, 0.5));
+}
+
+@media (max-width: 790px) {
+  .responsiveHide {
+    display: none
+  }
+}
+
+.sinFondo{
+  background: none;
+}
+
+/* DOTS ...........................................*/
+
+.dottedRow {
+  /* line-height: 1.5em; */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.dottedRow .dottedLeft {
+  display: block;
+  -webkit-box-ordinal-group: 1;
+  -webkit-order: 1;
+  -moz-order: 1;
+  -ms-order: 1;
+  order: 1;
+}
+
+.dottedRow .dottedRight {
+  display: block;
+  -webkit-box-ordinal-group: 3;
+  -webkit-order: 3;
+  -moz-order: 3;
+  -ms-order: 3;
+  order: 3;
+}
+
+.dottedRow .dottedDots {
+  display: block;
+  margin: 0px 4px;
+  background: -webkit-radial-gradient(50% 50%, circle, grey 12%, transparent 12%);
+  background: -moz-radial-gradient(50% 50%, circle, grey 12%, transparent 12%);
+  background: radial-gradient(circle at 50% 50%, grey 12%, transparent 12%);
+  background-size: 0.5em 0.7em;
+  background-position: 0 0.8em;
+  background-repeat: repeat-x;
+  /* -ms-flex: 1; */
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -moz-flex-grow: 1;
+  -ms-flex-grow: 1;
+  flex-grow: 1;
+  -webkit-box-ordinal-group: 2;
+  -webkit-order: 2;
+  -moz-order: 2;
+  -ms-order: 2;
+  order: 2;
+}
+
+/* END DOTS....................................... */
