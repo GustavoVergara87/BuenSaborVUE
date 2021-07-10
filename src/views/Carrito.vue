@@ -85,6 +85,7 @@
               </div>
 
               <b-button @click="confirmarCarrito">Confirmar</b-button>
+              <div class="cho-container"></div>
             </form>
           </b-col>
         </b-row>
@@ -127,6 +128,7 @@ export default {
       );
     },
   },
+
   methods: {
     val(a) {
       console.log(a);
@@ -139,6 +141,40 @@ export default {
         params: { idPedido: 2 },
       });
     },
+  },
+  created() {
+
+  },
+  mounted() {
+
+   // As an instance method inside a component
+  this.$loadScript("https://sdk.mercadopago.com/js/v2")
+    .then(() => {
+          console.log("hola")
+
+     // Agrega credenciales de SDK
+    // eslint-disable-next-line no-undef
+    const mp = new MercadoPago("PUBLIC_KEY", {
+      locale: "es-AR",
+    });
+
+    // Inicializa el checkout
+    mp.checkout({
+      preference: {
+        id: "YOUR_PREFERENCE_ID",
+      },
+      render: {
+        container: ".cho-container", // Indica dónde se mostrará el botón de pago
+        label: "Pagar", // Cambia el texto del botón de pago (opcional)
+      },
+    });
+    })
+    .catch(() => {
+      // Failed to fetch script
+    });
+
+
+
   },
 };
 </script>
