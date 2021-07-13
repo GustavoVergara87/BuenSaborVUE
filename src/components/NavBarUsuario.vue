@@ -46,7 +46,7 @@
             menu-class="w-100"
           >
             <template v-for="(item, index) in this.todosLosRubrosArticulos">
-              <b-dropdown-item
+              <b-dropdown-item v-if="item.denominacion!='Ingredientes'"
                 @click="handleBusquedaPorRubro(item.denominacion)"
                 :key="index"
                 >{{ item.denominacion }}</b-dropdown-item
