@@ -51,6 +51,10 @@
   background: none;
 }
 
+.contenedorPosRelative{
+  position: relative;
+}
+
 /* DOTS ...........................................*/
 
 .dottedRow {

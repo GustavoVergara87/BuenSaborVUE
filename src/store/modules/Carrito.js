@@ -1,14 +1,15 @@
+import Vue from "vue";
+
 const state = {
-    carrito: [],
-    detallesPedido: [] //articulos agrupados junto con la prop cantidad
+    carrito: [], //conjunto de "detallePedido", articulos agrupados junto con la prop cantidad
 };
 
 const getters = {
     getCarrito: (state) => state.carrito,
-    getDetallesPedido: (state) => state.detallesPedido,
+    getCarritoCantidad: (state) => state.carrito.reduce((acumulador, currentObject) => {
+        return acumulador + currentObject.cantidad
+    }, 0)
 };
-
-
 
 const actions = {
     setCarrito({ commit }, carrito) {
@@ -16,28 +17,38 @@ const actions = {
     },
 
     addCarrito({ commit }, articulo) {
-        commit('addCarrito', articulo)
-        let detallesPedido = []
-        state.carrito.forEach(item => { item.cantidad = 1 })
-        state.carrito.forEach(item => {
-            var platoRepetido = detallesPedido.find(a => a.id == item.id)
-            if (!detallesPedido || !platoRepetido) {
-                detallesPedido.push(item)
-            } else if (platoRepetido) {
-                platoRepetido.cantidad++
-            }
-        })
-        commit('setDetallesPedido', detallesPedido)
+        var platoRepetido = state.carrito.find(a => a.id == articulo.id)
+        if (!state.carrito || !platoRepetido) { //si el carrito esta vacio o no hay plato repetido, agregar el item
+            // articulo.cantidad  la propiedad dinamicamente agregada .cantidad NO es reactiva
+            Vue.set(articulo, 'cantidad', 1) //Si se agrega dinamicamente una propiedad a un objeto, debe hacerse de esta forma para ser reactivo
+            commit('addCarrito', articulo)
+        } else if (platoRepetido) { //si el plato esta repetido, aumentar el contador
+            commit('cantidadAumentar', articulo)
+        }
+
     },
 
+    cantidadAumentar({ commit }, articulo) {
+        commit('cantidadAumentar', articulo)
+    },
 
+    cantidadDisminuir({ commit }, articulo) {
+        if (articulo.cantidad > 1) {
+            commit('cantidadDisminuir', articulo)
+        } 
+    },
+
+    deleteFromCarrito({ commit }, articulo) {
+        commit('deleteFromCarrito', articulo)
+    },
 };
 
 
 const mutations = {
-    setCarrito: (state, carrito) => state.carrito = carrito,
     addCarrito: (state, articulo) => state.carrito.push(articulo),
-    setDetallesPedido: (state, detallesPedido) => state.detallesPedido = detallesPedido,
+    cantidadAumentar: (state, articulo) => state.carrito.find(a => a.id == articulo.id).cantidad++,
+    cantidadDisminuir: (state, articulo) => state.carrito.find(a => a.id == articulo.id).cantidad--,
+    deleteFromCarrito: (state, articulo) => state.carrito.splice(state.carrito.findIndex(a => a.id == articulo.id), 1) ,
 };
 
 export default {
@@ -47,14 +58,3 @@ export default {
     mutations,
 }
 
-
-// groupBy = (array, key) => {
-//     const result = {}
-//     array.forEach(item => {
-//         if (!result[item[key]]) {
-//             result[item[key]] = []
-//         }
-//         result[item[key]].push(item)
-//     })
-//     return result
-// }

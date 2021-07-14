@@ -95,9 +95,9 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["todosLosRubrosArticulos", "traerRol", "getCarrito"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
+    ...mapGetters(["todosLosRubrosArticulos", "traerRol", "getCarritoCantidad"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
     cantidadCarrito() {
-      return this.getCarrito.length;
+      return this.getCarritoCantidad;
     },
   },
   methods: {

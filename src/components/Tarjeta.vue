@@ -27,11 +27,11 @@
         </template>
       </b-card-text>
       <!-- --------------------------------------------AddToCarrito -->
-      <template v-if="['Administrador', 'Usuario'].includes(traerRol)">
+      
         <b-button @click="addCarrito(plato)" class="button" variant="success">
           <i class="fas fa-shopping-cart addToCarrito"></i>
         </b-button>
-      </template>
+      
       <!-- --------------------------------------------Editar y Borrar -->
       <template
         v-if="['Administrador', 'Cajero', 'Cocinero'].includes(traerRol)"
@@ -87,7 +87,6 @@ export default {
       this.mostrar = false;
       this.$emit("tarjeta-borrada");
     },
-    agregarAlCarrito() {},
   },
 };
 </script>

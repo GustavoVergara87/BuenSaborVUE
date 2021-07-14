@@ -35,17 +35,17 @@
               </div>
 
               <b-form-group label="Retira en:">
-                <b-form-radio v-model="selected2" name="Domicilio" value="A"
+                <b-form-radio v-model="form.retiraEn" name="Domicilio" value="A"
                   >Domicilio</b-form-radio
                 >
-                <b-form-radio v-model="selected2" name="some-radios" value="B"
+                <b-form-radio v-model="form.retiraEn" name="some-radios" value="B"
                   >Local</b-form-radio
                 >
               </b-form-group>
 
               <p>Direccion de entrega:</p>
               <b-form-input
-                v-model="text"
+                v-model="form.direccionEntrega"
                 placeholder="Direccion"
               ></b-form-input>
 
@@ -65,10 +65,10 @@
               </div>
 
               <label>Forma de pago:</label>
-              <b-form-radio v-model="selected" name="some-radios" value="A"
+              <b-form-radio v-model="form.formaPago" name="some-radios" value="A"
                 >Efectivo</b-form-radio
               >
-              <b-form-radio v-model="selected" name="some-radios" value="B"
+              <b-form-radio v-model="form.formaPago" name="some-radios" value="B"
                 >Mercado Pago</b-form-radio
               >
 
@@ -104,10 +104,9 @@ export default {
   data() {
     return {
       form: {
-        email: "",
-        name: "",
-        food: null,
-        checked: [],
+        retiraEn:"",
+        direccionEntrega:"",
+        formaPago:"",
       },
       foods: [
         { text: "Direcciones guardadas", value: null },
@@ -150,8 +149,6 @@ export default {
    // As an instance method inside a component
   this.$loadScript("https://sdk.mercadopago.com/js/v2")
     .then(() => {
-          console.log("hola")
-
      // Agrega credenciales de SDK
     // eslint-disable-next-line no-undef
     const mp = new MercadoPago("PUBLIC_KEY", {

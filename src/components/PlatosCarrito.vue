@@ -1,6 +1,6 @@
 <template>
   <div class="contenedor">
-    <template v-for="plato in getDetallesPedido">
+    <template v-for="plato in getCarrito">
       <TarjetaCarrito class="mt-2" :plato="plato" :key="plato.id" />
     </template>
   </div>
@@ -13,7 +13,7 @@ import TarjetaCarrito from "./TarjetaCarrito.vue";
 export default {
   props: [],
   computed: {
-    ...mapGetters(["getCarrito", "getDetallesPedido"]),
+    ...mapGetters(["getCarrito"]),
   },
   components: { TarjetaCarrito },
   methods: {},
