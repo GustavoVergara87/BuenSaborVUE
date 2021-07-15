@@ -1,11 +1,15 @@
 <template>
   <div class="borde" v-show="mostrar">
     <div class="contenedorAumentarDisminuir outlined">
-      <span class="btn aumentarDisminuir" v-on:click="cantidadDisminuir(plato)"
+      <span
+        class="btn button-text aumentarDisminuir"
+        v-on:click="cantidadDisminuir(plato)"
         >-</span
       >
       <span class="cantidad">{{ plato.cantidad }}</span>
-      <span class="btn aumentarDisminuir" v-on:click="cantidadAumentar(plato)"
+      <span
+        class="btn button-text aumentarDisminuir"
+        v-on:click="cantidadAumentar(plato)"
         >+</span
       >
     </div>
@@ -29,7 +33,9 @@
       </div>
     </div>
 
-    <span class="tachito outlined" v-on:click="deleteFromCarrito(plato)"
+    <span
+      class="eliminar btn button-text outlined"
+      v-on:click="deleteFromCarrito(plato)"
       >x</span
     >
   </div>
@@ -128,23 +134,30 @@ export default {
   font-weight: 100;
 }
 
-.tachito {
+.eliminar {
   font-size: 150%;
   transform: scaleY(0.75);
   font-weight: 100;
-  color: lightgray;
   float: right;
   line-height: 0%;
   margin-top: -0.5em;
   margin-right: -0.5em;
-  cursor: pointer;
+
   height: 0.55em;
 }
 
-.tachito:hover {
-  color: black;
+.button-text {
+  color: gray;
+  cursor: pointer;
+  width: 1em;
+  box-sizing: border-box;
+  padding: 0.2em;
 }
-
+.button-text:hover {
+  color: black;
+  font-weight: 400;
+  /* background-color: lightgray; */
+}
 
 .tablaTarjetaCarrito {
   display: inline-block;

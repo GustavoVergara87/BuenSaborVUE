@@ -10,28 +10,28 @@
 
           <b-col>
             <form>
-              <div class="dottedRow">
+              <!-- <div class="dottedRow">
                 <label class="precio dottedLeft">N° de pedido:</label>
                 <span class="dottedDots"></span>
-                <span class="precio dottedRight">{{ PrecioTotal }}</span>
-              </div>
+                <span class="precio dottedRight">recien despues de crear el pedido lo obtenemos</span>
+              </div> -->
 
-              <div class="dottedRow">
+              <!-- <div class="dottedRow">
                 <label class="precio dottedLeft">Fecha:</label>
                 <span class="dottedDots"></span>
-                <span class="precio dottedRight">{{ PrecioTotal }}</span>
-              </div>
+                <span class="precio dottedRight"> despues de crear el pedido, fecha actual pedida por el servidor o un servidor externo</span>
+              </div> -->
 
               <div class="dottedRow">
                 <label class="precio dottedLeft">Cliente:</label>
                 <span class="dottedDots"></span>
-                <span class="precio dottedRight">{{ PrecioTotal }}</span>
+                <span class="precio dottedRight">{{traerUsuario}}</span>
               </div>
 
               <div class="dottedRow">
                 <label class="precio dottedLeft">Telefono:</label>
                 <span class="dottedDots"></span>
-                <span class="precio dottedRight">{{ PrecioTotal }}</span>
+                <span class="precio dottedRight">lo toma de usuario cuando esta logeado</span>
               </div>
 
               <b-form-group label="Retira en:">
@@ -46,7 +46,7 @@
               <p>Direccion de entrega:</p>
               <b-form-input
                 v-model="form.direccionEntrega"
-                placeholder="Direccion"
+                placeholder="Direccion deberia permitir escribir texto o elegir entre los cargados del usuario"
               ></b-form-input>
 
               <b-form-group id="input-group-3" label="" label-for="input-3">
@@ -69,7 +69,7 @@
                 >Efectivo</b-form-radio
               >
               <b-form-radio v-model="form.formaPago" name="some-radios" value="B"
-                >Mercado Pago</b-form-radio
+                >Mercado Pago habilita el boton de mercado pago</b-form-radio
               >
 
               <div class="dottedRow">
@@ -119,7 +119,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["getCarrito"]),
+    ...mapGetters(["getCarrito","traerUsuario"]),
     PrecioTotal() {
       return this.getCarrito.reduce(
         (suma, item) => suma + this.val(item.PrecioVenta),

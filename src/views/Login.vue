@@ -1,43 +1,65 @@
 <template>
-  <div class="centered">
-    <p>Elija su rol</p>
-    <b-dropdown text="Rol" class="m-md-2">
-      <b-dropdown-item @click="usuarioLoggin">Usuario</b-dropdown-item>
-      <b-dropdown-item @click="administradorLoggin"
-        >Administrador</b-dropdown-item
-      >
-      <b-dropdown-item @click="cajeroLoggin">Cajero</b-dropdown-item>
-      <b-dropdown-item @click="cocineroLoggin">Cocinero</b-dropdown-item>
-      <b-dropdown-item @click="deliveryLoggin">Delivery</b-dropdown-item>
-    </b-dropdown>
-  </div>
+  <form>
+    <div class="container">
+      <label for="NombreUsuario"><b>Usuario</b></label>
+      <input
+        type="text"
+        placeholder="Usuario"
+        name="NombreUsuario"
+        v-model="AuthRequest.NombreUsuario"
+        required
+      />
+
+      <label for="Clave"><b>Clave</b></label>
+      <input
+        type="password"
+        placeholder="Clave"
+        name="Clave"
+        v-model="AuthRequest.Clave"
+        required
+      />
+
+      <button type="button" @click="usuarioLoggin">Login</button>
+      <label>
+        <!-- <input type="checkbox" checked="checked" name="remember"> Remember me -->
+      </label>
+    </div>
+
+    <!-- <div class="container" style="background-color:#f1f1f1"> -->
+    <!-- <button type="button" class="cancelbtn">Cancelar</button> -->
+    <!-- <span class="psw">Forgot <a href="#">password?</a></span> -->
+    <!-- </div> -->
+  </form>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 
 export default {
+  data() {
+    return {
+      AuthRequest: {
+        NombreUsuario: "",
+        Clave: "",
+      },
+    };
+  },
+
   methods: {
-    ...mapActions(["setRol"]),
-    usuarioLoggin() {
-      this.setRol("Usuario");
-      this.$router.push({ name: "UsuarioPlatos" });
-    },
-    administradorLoggin() {
-      this.setRol("Administrador");
-      this.$router.push({ name: "AdministradorPlatos" });
-    },
-    cajeroLoggin() {
-      this.setRol("Cajero");
-      this.$router.push({ name: "CajeroListaDePedidos" });
-    },
-    cocineroLoggin() {
-      this.setRol("Cocinero");
-      this.$router.push({ name: "CocineroListaDePedidos" });
-    },
-    deliveryLoggin() {
-      this.setRol("Delivery");
-      this.$router.push({ name: "DeliveryListaDePedidos" });
+    ...mapActions(["setRol", "obtenerToken"]),
+
+    async usuarioLoggin() {
+      const enroute = {
+        Usuario: () => this.$router.push({ name: "UsuarioPlatos" }),
+        Administrador: () => this.$router.push({ name: "AdministradorPlatos" }),
+        Cajero: () => this.$router.push({ name: "CajeroListaDePedidos" }),
+        Cocinero: () => this.$router.push({ name: "CocineroListaDePedidos" }),
+        Delivery: () => this.$router.push({ name: "DeliveryListaDePedidos" }),
+      };
+
+      const resp = await this.obtenerToken(this.AuthRequest);
+      // console.log(resp);
+      enroute[resp.rol]();
     },
   },
 };
@@ -49,5 +71,78 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+/* Bordered form */
+form {
+  border: 3px solid #f1f1f1;
+}
+
+/* Full-width inputs */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #04aa6d;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+
+/* Extra style for the cancel button (red) */
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+/* Center the avatar image inside this container */
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+/* Avatar image */
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+/* Add padding to containers */
+.container {
+  padding: 16px;
+}
+
+/* The "Forgot password" text */
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+  .cancelbtn {
+    width: 100%;
+  }
 }
 </style>
