@@ -1,10 +1,10 @@
 <template>
   <form>
     <div class="container">
-      <label for="NombreUsuario"><b>Usuario</b></label>
+      <label for="NombreUsuario"><b>Cliente</b></label>
       <input
         type="text"
-        placeholder="Usuario"
+        placeholder="Cliente"
         name="NombreUsuario"
         v-model="AuthRequest.NombreUsuario"
         required
@@ -50,7 +50,7 @@ export default {
 
     async usuarioLoggin() {
       const enroute = {
-        Usuario: () => this.$router.push({ name: "UsuarioPlatos" }),
+        Cliente: () =>this.$router.push({ name: "ClientePlatos" }),
         Administrador: () => this.$router.push({ name: "AdministradorPlatos" }),
         Cajero: () => this.$router.push({ name: "CajeroListaDePedidos" }),
         Cocinero: () => this.$router.push({ name: "CocineroListaDePedidos" }),
@@ -58,7 +58,7 @@ export default {
       };
 
       const resp = await this.obtenerToken(this.AuthRequest);
-      // console.log(resp);
+      
       enroute[resp.rol]();
     },
   },

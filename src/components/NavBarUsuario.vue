@@ -114,7 +114,7 @@ export default {
   },
   created() {
     const childrenRoutes = this.$router.options.routes.find(
-      (r) => r.name == "usuario"
+      (r) => r.name == "cliente"
     ).children;
     childrenRoutes.forEach((element) => {
       this.rutas.push({

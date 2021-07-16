@@ -9,10 +9,10 @@ const routes = [
 
   //----------------------------------------------------------------------USUARIO
   {
-    path: "/usuario",
-    name: "usuario",
+    path: "/cliente",
+    name: "cliente",
     beforeEnter: (to, from, next) => {
-      const rolesAutorizados = ["Usuario", "Administrador", "Cajero", "Cocinero", ""]
+      const rolesAutorizados = ["Cliente", "Administrador", "Cajero", "Cocinero", ""]
       const rol = Store.getters['traerRol']
       if (rolesAutorizados.includes(rol)) next()
       else next(false)
@@ -21,27 +21,27 @@ const routes = [
 
     children: [
       {
-        path: "/usuario/Platos",
-        name: "UsuarioPlatos",
+        path: "/cliente/Platos",
+        name: "ClientePlatos",
         component: () => import("../views/Platos.vue"),
       },
 
       {
-        path: "/usuario/Carrito",
+        path: "/cliente/Carrito",
         name: "Carrito",
         component: () => import("../views/Carrito.vue"),
       },
       {
-        path: "/usuario/DetallePlato/:id",
+        path: "/cliente/DetallePlato/:id",
         name: "DetallePlato",
         component: () => import("../views/PlatoDetalle.vue"),
       },
       {
-        path: "/usuario/MercadoPago/:idPedido",
-        name: "usuarioMercadoPago",
+        path: "/cliente/MercadoPago/:idPedido",
+        name: "clienteMercadoPago",
         component: () => import("../views/MercadoPago.vue"),
         beforeEnter: (to, from, next) => {
-          const rolesAutorizados = ["Usuario", "Administrador", "Cajero"]
+          const rolesAutorizados = ["Cliente", "Administrador", "Cajero"]
           const rol = Store.getters['traerRol']
           //evaluar si hay alguna comprobación extra antes de permitirle entrar a Pagar con Mercado pago
           if (rolesAutorizados.includes(rol)) next()

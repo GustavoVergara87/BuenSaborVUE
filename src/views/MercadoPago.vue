@@ -12,7 +12,7 @@ export default {
       //Hacer algo con la Api de mercadoPago y volver a ver platos con algun mensaje
       //de  "Su pedido esta pendiente de aprobacion"
       alert("Su pedido esta pendiente de aprobacion");
-      this.$router.push({ name: 'UsuarioPlatos' });
+      this.$router.push({ name: 'ClientePlatos' });
     },
   },
 };

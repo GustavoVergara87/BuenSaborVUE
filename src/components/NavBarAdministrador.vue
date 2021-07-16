@@ -22,7 +22,7 @@
 
           <!-- -------------------------------------------------------Platos -->
           <b-nav-item>
-            <router-link :to="{ name: 'UsuarioPlatos' }" class="nav-link">
+            <router-link :to="{ name: 'ClientePlatos' }" class="nav-link">
               Platos <i class="fas fa-utensils"></i>
             </router-link>
           </b-nav-item>
@@ -79,7 +79,7 @@ export default {
 
   created() {
     const childrenRoutes = this.$router.options.routes.find(
-      (r) => r.name == "usuario"
+      (r) => r.name == "cliente"
     ).children;
     childrenRoutes.forEach((element) => {
       this.rutas.push({
