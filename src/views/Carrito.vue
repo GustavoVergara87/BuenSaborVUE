@@ -121,7 +121,7 @@ export default {
         direccionEntrega: "",
         formaPago: "",
       },
-      compraId: 2,
+      compraId:"",
     
 
       show: true,
@@ -147,29 +147,25 @@ export default {
 
   methods: {
     val(a) {
-      console.log(a);
+      
       if (a != null && a != undefined) return parseInt(a);
       if (a == null || a == undefined) return 0;
     },
     async confirmarCarrito() {
-    let pago = await fetch(`https://localhost:44350/api/pedidos/${this.PrecioTotal}`, {
-      method: "POST",
-    }).then(response => this.compraId = JSON.stringify(response));
-    
+    let pago = await fetch(`/api/pedidos/${this.PrecioTotal}`, {
+       method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
 
-    console.log(pago[0])
-    console.log(this.compraId)
-    },
+        },
+    });
+    let res =await pago.json()
+    this.compraId = String(res.id);
 
 
 
-
-
-  },
-  created() {},
-  mounted() {
-    // As an instance method inside a component
-    this.$loadScript("https://sdk.mercadopago.com/js/v2")
+ this.$loadScript("https://sdk.mercadopago.com/js/v2")
       .then(() => {
         // Agrega credenciales de SDK
         // eslint-disable-next-line no-undef
@@ -182,8 +178,8 @@ export default {
         // Inicializa el checkout
         mp.checkout({
           preference: {
-            
             id: this.compraId
+            
           },
           render: {
             container: ".cho-container", // Indica dónde se mostrará el botón de pago
@@ -194,7 +190,18 @@ export default {
       .catch(() => {
         // Failed to fetch script
       });
+  
+
+
+
+    },
+
+
+
+
+
   },
+ 
 };
 </script>
 
