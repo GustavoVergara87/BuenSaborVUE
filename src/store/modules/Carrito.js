@@ -27,6 +27,14 @@ const actions = {
         }
 
     },
+    // async mercadoPago (total) {
+    //     const response = await fetch(`/api/Pedidos/${total}`, {
+    //         method: "POST",
+    //            });
+
+     
+
+    // },
 
     cantidadAumentar({ commit }, articulo) {
         commit('cantidadAumentar', articulo)

@@ -121,6 +121,8 @@ export default {
         direccionEntrega: "",
         formaPago: "",
       },
+      compraId: 2,
+    
 
       show: true,
     };
@@ -149,12 +151,20 @@ export default {
       if (a != null && a != undefined) return parseInt(a);
       if (a == null || a == undefined) return 0;
     },
-    confirmarCarrito() {
-      this.$router.push({
-        name: "usuarioMercadoPago",
-        params: { idPedido: 2 },
-      });
+    async confirmarCarrito() {
+    let pago = await fetch(`https://localhost:44350/api/pedidos/${this.PrecioTotal}`, {
+      method: "POST",
+    }).then(response => this.compraId = JSON.stringify(response));
+    
+
+    console.log(pago[0])
+    console.log(this.compraId)
     },
+
+
+
+
+
   },
   created() {},
   mounted() {
@@ -163,14 +173,17 @@ export default {
       .then(() => {
         // Agrega credenciales de SDK
         // eslint-disable-next-line no-undef
-        const mp = new MercadoPago("PUBLIC_KEY", {
+        const mp = new MercadoPago("TEST-6a6c0062-d292-415b-bc19-b06e5773b493", {
           locale: "es-AR",
         });
+
+ 
 
         // Inicializa el checkout
         mp.checkout({
           preference: {
-            id: "YOUR_PREFERENCE_ID",
+            
+            id: this.compraId
           },
           render: {
             container: ".cho-container", // Indica dónde se mostrará el botón de pago
