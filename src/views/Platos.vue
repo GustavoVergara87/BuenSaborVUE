@@ -51,8 +51,8 @@ export default {
   methods: {
     ...mapActions(["fetchTodosLosPlatos"]), //los tres puntitos son para que ademas de las actions podamos poner otros metodos
   },
-  created() {
-    this.fetchTodosLosPlatos();
+  async created() {
+   await this.fetchTodosLosPlatos();
   },
 };
 </script>

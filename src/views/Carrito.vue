@@ -189,8 +189,8 @@
 <script>
 import { mapGetters } from "vuex";
 import PlatosCarrito from "../components/PlatosCarrito.vue";
-import { numFormat } from "../services/comunes";
-import {enviarCarrito}from "../services/Carrito.js";
+import { numFormat,val } from "../services/comunes";
+import { enviarCarrito } from "../services/Carrito.js";
 export default {
   components: { PlatosCarrito },
   data() {
@@ -237,10 +237,7 @@ export default {
   methods: {
     enviarCarrito,
     numFormat,
-    val(a) {
-      if (a != null && a != undefined) return parseInt(a);
-      if (a == null || a == undefined) return 0;
-    },
+    val,
     soloHabilitarMercadoPago() {
       this.form.formaPago = "MercadoPago";
     },
@@ -294,7 +291,7 @@ export default {
       if (this.domicilio == "DomicilioGuardado") {
         domicilioID = this.form.direccionEntrega;
       } else {
-        domicilio = JSON.parse(JSON.stringify(this.domicilioNuevo)) ;
+        domicilio = JSON.parse(JSON.stringify(this.domicilioNuevo));
       }
 
       this.enviarCarrito(domicilio, domicilioID, tipoEnvio);

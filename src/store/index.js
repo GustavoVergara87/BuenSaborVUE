@@ -1,9 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import Globales from "./modules/Globales"
+import Usuario from "./modules/Usuario"
 import Platos from "./modules/Platos"
-import ArticulosController from "./modules/ArticulosController"
-import RubrosArticulosController from "./modules/RubrosArticulosController"
+import Articulos from "./modules/Articulos"
+import Pedidos from "./modules/Pedidos"
+import RubrosArticulos from "./modules/RubrosArticulos"
 import Carrito from "./modules/Carrito"
 Vue.use(Vuex);
 
@@ -12,5 +13,5 @@ export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
-  modules: {Globales,Platos,ArticulosController,RubrosArticulosController,Carrito}
+  modules: {Usuario,Platos,Articulos,Pedidos,RubrosArticulos,Carrito}
 });

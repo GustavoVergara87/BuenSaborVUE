@@ -9,9 +9,6 @@ export async function enviarCarrito(domicilio, domicilioID, tipoEnvio) {
         //Creo un domicilio si es necesario
         //Envio domicilio
         domicilio.ClienteID = cliente.id;
-        console.log(carrito)
-        console.log(cliente)
-        console.log(domicilio)
 
         const response = await fetch("/api/Domicilios", {
             method: "POST",

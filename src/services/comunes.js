@@ -1,5 +1,3 @@
-
-
 export function numFormat(nStr) {
     nStr += "";
     var x = nStr.split(".");
@@ -10,4 +8,9 @@ export function numFormat(nStr) {
         x1 = x1.replace(rgx, "$1" + "." + "$2");
     }
     return x1 + x2;
+}
+
+export function val(a) {
+    if (a != null && a != undefined) return parseInt(a);
+    if (a == null || a == undefined) return 0;
 }

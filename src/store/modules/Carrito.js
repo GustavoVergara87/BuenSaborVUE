@@ -25,10 +25,7 @@ const actions = {
         } else if (platoRepetido) { //si el plato esta repetido, aumentar el contador
             commit('cantidadAumentar', articulo)
         }
-
     },
-
-   
 
     cantidadAumentar({ commit }, articulo) {
         commit('cantidadAumentar', articulo)
