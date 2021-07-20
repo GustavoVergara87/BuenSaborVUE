@@ -33,7 +33,7 @@
             block
             variant="primary"
             class="m-2"
-            menu-class="w-100"
+            menu-class=""
           >
             <template v-for="(item, index) in this.todosLosRubrosArticulos">
               <b-dropdown-item :key="index">{{

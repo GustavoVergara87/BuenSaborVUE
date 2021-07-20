@@ -30,7 +30,7 @@
           <!-- -------------------------------------------------------Platos -->
           <b-nav-item>
             <router-link
-              :to="{ name: 'UsuarioPlatos' }"
+              :to="{ name: 'ClientePlatos' }"
               class="nav-link nav-link-mod"
             >
               Platos <i class="fas fa-utensils responsiveHide"></i>
@@ -43,7 +43,7 @@
             text="Categorias"
             block
             class="m-2 nav-link-mod"
-            menu-class="w-100"
+            menu-class=""
           >
             <template v-for="(item, index) in this.todosLosRubrosArticulos">
               <b-dropdown-item v-if="item.denominacion!='Ingredientes'"

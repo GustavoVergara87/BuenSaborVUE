@@ -1,10 +1,11 @@
 <template>
-  <form>
+  <form @submit.prevent="usuarioLoggin">
     <div class="container">
       <label for="NombreUsuario"><b>Cliente</b></label>
       <input
         type="text"
         placeholder="Cliente"
+        autocomplete="username"
         name="NombreUsuario"
         v-model="AuthRequest.NombreUsuario"
         required
@@ -14,12 +15,13 @@
       <input
         type="password"
         placeholder="Clave"
+        autocomplete="current-password"
         name="Clave"
         v-model="AuthRequest.Clave"
         required
       />
 
-      <button type="button" @click="usuarioLoggin">Login</button>
+      <button type="submit">Login</button>
       <label>
         <!-- <input type="checkbox" checked="checked" name="remember"> Remember me -->
       </label>
@@ -50,7 +52,7 @@ export default {
 
     async usuarioLoggin() {
       const enroute = {
-        Cliente: () =>this.$router.push({ name: "ClientePlatos" }),
+        Cliente: () => this.$router.push({ name: "ClientePlatos" }),
         Administrador: () => this.$router.push({ name: "AdministradorPlatos" }),
         Cajero: () => this.$router.push({ name: "CajeroListaDePedidos" }),
         Cocinero: () => this.$router.push({ name: "CocineroListaDePedidos" }),
@@ -58,7 +60,7 @@ export default {
       };
 
       const resp = await this.obtenerToken(this.AuthRequest);
-      
+
       enroute[resp.rol]();
     },
   },
