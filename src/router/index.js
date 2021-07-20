@@ -36,18 +36,6 @@ const routes = [
         name: "DetallePlato",
         component: () => import("../views/PlatoDetalle.vue"),
       },
-      {
-        path: "/cliente/MercadoPago/:idPedido",
-        name: "clienteMercadoPago",
-        component: () => import("../views/MercadoPago.vue"),
-        beforeEnter: (to, from, next) => {
-          const rolesAutorizados = ["Cliente", "Administrador", "Cajero"]
-          const rol = Store.getters['traerRol']
-          //evaluar si hay alguna comprobación extra antes de permitirle entrar a Pagar con Mercado pago
-          if (rolesAutorizados.includes(rol)) next()
-          else next(false)
-        }
-      },
     ]
   },
 

@@ -27,14 +27,8 @@ const actions = {
         }
 
     },
-    // async mercadoPago (total) {
-    //     const response = await fetch(`/api/Pedidos/${total}`, {
-    //         method: "POST",
-    //            });
 
-     
-
-    // },
+   
 
     cantidadAumentar({ commit }, articulo) {
         commit('cantidadAumentar', articulo)
@@ -43,7 +37,7 @@ const actions = {
     cantidadDisminuir({ commit }, articulo) {
         if (articulo.cantidad > 1) {
             commit('cantidadDisminuir', articulo)
-        } 
+        }
     },
 
     deleteFromCarrito({ commit }, articulo) {
@@ -56,7 +50,7 @@ const mutations = {
     addCarrito: (state, articulo) => state.carrito.push(articulo),
     cantidadAumentar: (state, articulo) => state.carrito.find(a => a.id == articulo.id).cantidad++,
     cantidadDisminuir: (state, articulo) => state.carrito.find(a => a.id == articulo.id).cantidad--,
-    deleteFromCarrito: (state, articulo) => state.carrito.splice(state.carrito.findIndex(a => a.id == articulo.id), 1) ,
+    deleteFromCarrito: (state, articulo) => state.carrito.splice(state.carrito.findIndex(a => a.id == articulo.id), 1),
 };
 
 export default {

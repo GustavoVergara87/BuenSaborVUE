@@ -3,6 +3,7 @@ const state = {
     usuario: "",
     token: "",
     cliente: {
+        id:"",
         nombre: "",
         apellido: "",
         telefono: "" ,

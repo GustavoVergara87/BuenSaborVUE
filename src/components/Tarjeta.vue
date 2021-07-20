@@ -1,63 +1,65 @@
 <template>
-  
-    <b-card v-show="mostrar" tag="article" style="position:relativie; min-width: 15rem; max-width: 20rem" class="mb-2 tarjeta">
-      <b-card-title :title="plato.plato"></b-card-title>
+  <b-card
+    v-show="mostrar"
+    tag="article"
+    style="position: relativie; min-width: 15rem; max-width: 20rem"
+    class="mb-2 tarjeta"
+  >
+    <b-card-title :title="plato.plato"></b-card-title>
 
-      <router-link :to="{ name: 'DetallePlato', params: { id: plato.id } }">
-        <b-card-img
-          :src="'/image/' + plato.Imagen"
-          :alt="plato.Imagen"
-          style="max-height: 500px"
-        ></b-card-img>
-      </router-link>
+    <router-link :to="{ name: 'DetallePlato', params: { id: plato.id } }">
+      <b-card-img
+        :src="'/image/' + plato.Imagen"
+        :alt="plato.Imagen"
+        style="max-height: 500px"
+      ></b-card-img>
+    </router-link>
 
-      <b-card-text>
-        <p class="precio">${{ numFormat(plato.PrecioVenta) }}</p>
-        <p>{{ plato.Descripcion }}</p>
-        <template
-          v-if="['Administrador', 'Cajero', 'Cocinero'].includes(traerRol)"
-        >
-          <p>Ingredientes:</p>
-          <ul>
-            <li v-for="ingrediente in plato.Ingredientes" :key="ingrediente.id">
-              {{ ingrediente.Denominacion }}, {{ ingrediente.Cantidad }}
-              {{ ingrediente.UnidadMedida }}
-            </li>
-          </ul>
-        </template>
-      </b-card-text>
-      <!-- --------------------------------------------AddToCarrito -->
-      
-        <b-button @click="addCarrito(plato)" class="button" variant="success">
-          <i class="fas fa-shopping-cart addToCarrito"></i>
-        </b-button>
-      
-      <!-- --------------------------------------------Editar y Borrar -->
+    <b-card-text>
+      <p class="precio">${{ numFormat(plato.PrecioVenta) }}</p>
+      <p>{{ plato.Descripcion }}</p>
       <template
         v-if="['Administrador', 'Cajero', 'Cocinero'].includes(traerRol)"
       >
-        <router-link
-          :to="
-            traerRol == 'Administrador'
-              ? { name: 'AdminEditarArticulo', params: { id: plato.id } }
-              : traerRol == 'Cocinero'
-              ? { name: 'CocineroEditarArticulo', params: { id: plato.id } }
-              : {}
-          "
-        >
-          <i class="fas fa-edit edit"></i>
-        </router-link>
+        <p>Ingredientes:</p>
+        <ul>
+          <li v-for="ingrediente in plato.Ingredientes" :key="ingrediente.id">
+            {{ ingrediente.Denominacion }}, {{ ingrediente.Cantidad }}
+            {{ ingrediente.UnidadMedida }}
+          </li>
+        </ul>
       </template>
+    </b-card-text>
+    <!-- --------------------------------------------AddToCarrito -->
 
-      <template v-if="['Administrador'].includes(traerRol)">
-        <i @click="Borrarplato" class="fas fa-trash-alt delete"></i>
-      </template>
-    </b-card>
-  
+    <b-button @click="addCarrito(plato)" class="button" variant="success">
+      <i class="fas fa-shopping-cart addToCarrito"></i>
+    </b-button>
+
+    <!-- --------------------------------------------Editar y Borrar -->
+    <template v-if="['Administrador', 'Cajero', 'Cocinero'].includes(traerRol)">
+      <router-link
+        :to="
+          traerRol == 'Administrador'
+            ? { name: 'AdminEditarArticulo', params: { id: plato.id } }
+            : traerRol == 'Cocinero'
+            ? { name: 'CocineroEditarArticulo', params: { id: plato.id } }
+            : {}
+        "
+      >
+        <i class="fas fa-edit edit"></i>
+      </router-link>
+    </template>
+
+    <template v-if="['Administrador'].includes(traerRol)">
+      <i @click="Borrarplato" class="fas fa-trash-alt delete"></i>
+    </template>
+  </b-card>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { numFormat } from "../services/comunes.js";
 export default {
   name: "tarjeta",
   data() {
@@ -69,17 +71,7 @@ export default {
   computed: mapGetters(["traerRol"]),
   methods: {
     ...mapActions(["deleteArticulo", "addCarrito"]),
-    numFormat(nStr) {
-      nStr += "";
-      var x = nStr.split(".");
-      var x1 = x[0];
-      var x2 = x.length > 1 ? "." + x[1] : "";
-      var rgx = /(\d+)(\d{3})/;
-      while (rgx.test(x1)) {
-        x1 = x1.replace(rgx, "$1" + "." + "$2");
-      }
-      return x1 + x2;
-    },
+    numFormat,
     async Borrarplato() {
       //this.$router.push("/Productos"); //no refresca la pagina, no recarga la tarjeta
       //this.$router.go(0); //refrescar la pagina es una forma poco elegante de recargar la tarjeta
@@ -124,15 +116,14 @@ i {
   text-transform: none;
 }
 
-.tarjeta{
+.tarjeta {
   filter: drop-shadow(0px 0px 8px #dfb6a6);
 }
 
-.button{
-  position: absolute; 
-  right:0.5em; 
-  bottom:0.5em;
+.button {
+  position: absolute;
+  right: 0.5em;
+  bottom: 0.5em;
   font-size: 70%;
-
 }
 </style>

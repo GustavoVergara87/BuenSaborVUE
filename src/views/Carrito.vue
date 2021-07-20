@@ -9,7 +9,12 @@
           </b-col>
 
           <b-col>
-            <form>
+            <div>
+              <p v-show="traerCliente.nombre == ''">
+                Debe loggearse para poder pagar
+              </p>
+            </div>
+            <form class="columnaDerecha" :class="{ formDisabled: noHayLoggin }">
               <!-- <div class="dottedRow">
                 <label class="precio dottedLeft">N° de pedido:</label>
                 <span class="dottedDots"></span>
@@ -37,33 +42,82 @@
                   traerCliente.telefono
                 }}</span>
               </div>
-
+              <!-- --------------------------------------------------------------------------------Direccion de Entrega -->
               <b-form-group label="Retira en:">
-                <b-form-radio v-model="form.retiraEn" name="Domicilio" value="A"
+                <b-form-radio
+                  v-model="form.retiraEn"
+                  name="Domicilio"
+                  value="0"
+                  :disabled="noHayLoggin"
+                  @change="soloHabilitarMercadoPago"
                   >Domicilio</b-form-radio
                 >
                 <b-form-radio
                   v-model="form.retiraEn"
-                  name="some-radios"
-                  value="B"
+                  name="Local"
+                  value="1"
+                  :disabled="noHayLoggin"
                   >Local</b-form-radio
                 >
               </b-form-group>
 
-              <p>Direccion de entrega:</p>
-              <b-form-input
-                v-model="form.direccionEntrega"
-                placeholder="Direccion deberia permitir escribir texto o elegir entre los cargados del cliente"
-              ></b-form-input>
+              <div v-show="form.retiraEn == '0'">
+                <b-form-group label="Direccion de entrega:">
+                  <b-form-radio
+                    v-model="domicilio"
+                    name="DomicilioGuardado"
+                    value="DomicilioGuardado"
+                    :disabled="noHayLoggin"
+                    >Guardado</b-form-radio
+                  >
+                  <b-form-radio
+                    v-model="domicilio"
+                    name="DomicilioNuevo"
+                    value="DomicilioNuevo"
+                    :disabled="noHayLoggin"
+                    >Nuevo</b-form-radio
+                  >
+                </b-form-group>
 
-              <b-form-group id="input-group-3" label="" label-for="input-3">
-                <b-form-select
-                  id="input-3"
-                  v-model="form.food"
-                  :options="foods"
-                  required
-                ></b-form-select>
-              </b-form-group>
+                <b-form-group
+                  label=""
+                  v-show="domicilio == 'DomicilioGuardado'"
+                >
+                  <b-form-select
+                    v-model="form.direccionEntrega"
+                    required
+                    :disabled="noHayLoggin"
+                  >
+                    <option
+                      v-for="domicilio in domicilios"
+                      v-bind:value="domicilio.value"
+                      v-bind:key="domicilio.value"
+                    >
+                      {{ domicilio.text }}
+                    </option>
+                  </b-form-select>
+                </b-form-group>
+
+                <div v-show="domicilio == 'DomicilioNuevo'">
+                  <b-form-input
+                    v-model="domicilioNuevo.calle"
+                    placeholder="calle"
+                    :disabled="noHayLoggin"
+                  ></b-form-input>
+                  <b-form-input
+                    v-model="domicilioNuevo.numero"
+                    type="number"
+                    placeholder="numero"
+                    :disabled="noHayLoggin"
+                  ></b-form-input>
+                  <b-form-input
+                    v-model="domicilioNuevo.localidad"
+                    placeholder="localidad"
+                    :disabled="noHayLoggin"
+                  ></b-form-input>
+                </div>
+              </div>
+              <!-- --------------------------------------------------------------------------------Fin Direccion de Entrega -->
 
               <div class="dottedRow">
                 <label class="precio dottedLeft">Descuentos:</label>
@@ -74,31 +128,55 @@
               <label>Forma de pago:</label>
               <b-form-radio
                 v-model="form.formaPago"
-                name="some-radios"
-                value="A"
+                name="Efectivo"
+                value="Efectivo"
+                :disabled="noHayLoggin || form.retiraEn == '0'"
                 >Efectivo</b-form-radio
               >
               <b-form-radio
                 v-model="form.formaPago"
-                name="some-radios"
-                value="B"
-                >Mercado Pago habilita el boton de mercado pago</b-form-radio
+                name="MercadoPago"
+                value="MercadoPago"
+                :disabled="noHayLoggin"
+                >Mercado Pago</b-form-radio
               >
 
               <div class="dottedRow">
                 <label class="precio dottedLeft">Total:</label>
                 <span class="dottedDots"></span>
-                <span class="precio dottedRight">{{ PrecioTotal }}</span>
+                <span class="precio dottedRight"
+                  >$ {{ numFormat(PrecioTotal) }}</span
+                >
               </div>
 
-              <div class="dottedRow">
+              <!-- <div class="dottedRow">
                 <label class="precio dottedLeft">Tiempo de entrega:</label>
                 <span class="dottedDots"></span>
                 <span class="precio dottedRight">{{ PrecioTotal }}</span>
-              </div>
+              </div> -->
 
-              <b-button @click="confirmarCarrito">Confirmar</b-button>
-              <div class="cho-container"></div>
+              <b-button
+                class="btn btn-success"
+                @click="confirmarCarrito"
+                :disabled="noHayLoggin"
+                >Confirmar compra</b-button
+              >
+
+              <b-modal
+                v-model="mercadoPagoModalShow"
+                ok-only
+                ok-variant="secondary"
+                ok-title="Cancelar"
+                :hide-header="true"
+              >
+                <div class="cho-container centerDiv">
+                  <img
+                    src="../../public/images/mercadoPagoLogo.svg"
+                    width="20%"
+                    class="imagenMP"
+                  />
+                </div>
+              </b-modal>
             </form>
           </b-col>
         </b-row>
@@ -111,19 +189,25 @@
 <script>
 import { mapGetters } from "vuex";
 import PlatosCarrito from "../components/PlatosCarrito.vue";
-
+import { numFormat } from "../services/comunes";
+import {enviarCarrito}from "../services/Carrito.js";
 export default {
   components: { PlatosCarrito },
   data() {
     return {
       form: {
-        retiraEn: "",
+        retiraEn: "0",
         direccionEntrega: "",
-        formaPago: "",
+        formaPago: "MercadoPago",
       },
-      compraId:"",
-    
-
+      compraId: "",
+      domicilioNuevo: {
+        calle: "",
+        numero: "",
+        localidad: "",
+      },
+      domicilio: "DomicilioGuardado",
+      mercadoPagoModalShow: false,
       show: true,
     };
   },
@@ -132,76 +216,90 @@ export default {
     ...mapGetters(["getCarrito", "traerUsuario", "traerCliente"]),
     PrecioTotal() {
       return this.getCarrito.reduce(
-        (suma, item) => suma + this.val(item.PrecioVenta),
+        (suma, item) =>
+          suma + this.val(item.PrecioVenta) * this.val(item.cantidad),
         0
       );
     },
-    foods() {
-      return this.traerCliente.domicilios.map(d =>{return (d.calle + " " +  d.numero + ", " + d.localidad )})
-      // return [
-      //   { text: "Direcciones guardadas", value: null },
-      //   this.traerCliente.domicilios
-      // ];
+    noHayLoggin() {
+      return this.traerCliente.nombre == "";
+    },
+    domicilios() {
+      return this.traerCliente.domicilios.map((d) => {
+        return {
+          text: d.calle + " " + d.numero + ", " + d.localidad,
+          value: d.id,
+        };
+      });
     },
   },
 
   methods: {
+    enviarCarrito,
+    numFormat,
     val(a) {
-      
       if (a != null && a != undefined) return parseInt(a);
       if (a == null || a == undefined) return 0;
     },
-    async confirmarCarrito() {
-    let pago = await fetch(`/api/pedidos/${this.PrecioTotal}`, {
-       method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-
-        },
-    });
-    let res =await pago.json()
-    this.compraId = String(res.id);
-
-
-
- this.$loadScript("https://sdk.mercadopago.com/js/v2")
-      .then(() => {
-        // Agrega credenciales de SDK
-        // eslint-disable-next-line no-undef
-        const mp = new MercadoPago("TEST-6a6c0062-d292-415b-bc19-b06e5773b493", {
-          locale: "es-AR",
-        });
-
- 
-
-        // Inicializa el checkout
-        mp.checkout({
-          preference: {
-            id: this.compraId
-            
-          },
-          render: {
-            container: ".cho-container", // Indica dónde se mostrará el botón de pago
-            label: "Pagar", // Cambia el texto del botón de pago (opcional)
-          },
-        });
-      })
-      .catch(() => {
-        // Failed to fetch script
-      });
-  
-
-
-
+    soloHabilitarMercadoPago() {
+      this.form.formaPago = "MercadoPago";
     },
 
+    async confirmarCarrito() {
+      if (this.form.formaPago == "Efectivo") {
+        console.log("paga efectivo");
+      } else {
+        let pago = await fetch(`/api/pedidos/${this.PrecioTotal}`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+        let res = await pago.json();
+        this.compraId = String(res.id);
 
+        this.mercadoPagoModalShow = true;
 
+        this.$loadScript("https://sdk.mercadopago.com/js/v2")
+          .then(() => {
+            // Agrega credenciales de SDK
+            // eslint-disable-next-line no-undef
+            const mp = new MercadoPago(
+              "TEST-6a6c0062-d292-415b-bc19-b06e5773b493",
+              {
+                locale: "es-AR",
+              }
+            );
 
+            // Inicializa el checkout
+            mp.checkout({
+              preference: {
+                id: this.compraId,
+              },
+              render: {
+                container: ".cho-container", // Indica dónde se mostrará el botón de pago
+                label: "Pagar", // Cambia el texto del botón de pago (opcional)
+              },
+            });
+          })
+          .catch(() => {
+            // Failed to fetch script
+          });
+      }
 
+      let domicilio = {};
+      let domicilioID = undefined;
+      let tipoEnvio = this.form.retiraEn;
+      if (this.domicilio == "DomicilioGuardado") {
+        domicilioID = this.form.direccionEntrega;
+      } else {
+        domicilio = JSON.parse(JSON.stringify(this.domicilioNuevo)) ;
+      }
+
+      this.enviarCarrito(domicilio, domicilioID, tipoEnvio);
+    },
   },
- 
 };
 </script>
 
@@ -209,5 +307,24 @@ export default {
 <style  scoped>
 .resumenPedidoMarco {
   margin: 2em;
+}
+
+.imagenMP {
+  margin: 2em;
+}
+
+.centerDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formDisabled {
+  /* pointer-events: none; */
+  color: gray;
+}
+
+.columnaDerecha {
+  padding-top: 1.5em;
 }
 </style>
