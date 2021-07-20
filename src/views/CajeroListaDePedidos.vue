@@ -1,18 +1,25 @@
 <template>
   <div>
     <ul>
-      <li>
-        Pedido1<b-button @click="verDetallePedido(1)">Ver</b-button>
-        Estado:Aprobado
+      <li :key="pedido.id" v-for="pedido in pedidos">
+        <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+        Estado: {{ pedido.estado }}
+        <b-button variant="success" @click="aprobarPedido(pedido.id)"
+          >Aprobar</b-button
+        >
+        <b-button variant="danger" @click="cancelarPedido(pedido.id)"
+          >Cancelar</b-button
+        >
       </li>
-      <li>Pedido2<b-button>Ver</b-button> Estado:Aprobado</li>
-      <li>Pedido3<b-button>Ver</b-button> Estado:Anulado</li>
     </ul>
   </div>
 </template>
 
 <script>
 export default {
+  data(){
+    return {pedidos: [],
+  }},
   methods: {
     verDetallePedido(idPedido) {
       this.$router.push({
@@ -20,9 +27,51 @@ export default {
         params: { idPedido: idPedido },
       });
     },
+
+   async aprobarPedido(idPedido){
+ let res = await fetch(`https://localhost:44350/api/pedidos/${idPedido}`)
+   let pedido =await res.json();
+console.log(pedido)
+pedido.estado++;
+       await fetch(`https://localhost:44350/api/pedidos/${idPedido}`, {
+       method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'},
+   body: JSON.stringify(pedido),
+        
+    });
+   },
+
+   async cancelarPedido(idPedido){
+ let res = await fetch(`https://localhost:44350/api/pedidos/${idPedido}`)
+   let pedido =await res.json();
+console.log(pedido)
+pedido.estado = 4;
+       await fetch(`https://localhost:44350/api/pedidos/${idPedido}`, {
+       method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'},
+   body: JSON.stringify(pedido),
+        
+    });
+
+
+    }
+
+
+
+    
   },
+ async created(){
+     let res = await fetch("/api/pedidos/");
+         let todosPedidos =await res.json();
+console.log(todosPedidos)
+this.pedidos  = todosPedidos.filter(pedido => pedido.estado == 0)
+  }
 };
 </script>
 
-<style>
+<style scoped>
 </style>
