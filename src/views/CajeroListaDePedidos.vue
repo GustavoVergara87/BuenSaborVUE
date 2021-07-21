@@ -1,7 +1,9 @@
 <template>
-  <div>
+<div>
+  <div class="lista">
+    <h2>Pedidos Pendientes</h2>
     <ul>
-      <li :key="pedido.id" v-for="pedido in todosLosPedidos">
+      <li :key="pedido.id" v-for="pedido in todosLosPedidos.filter(pedido => pedido.estado == 0)">
         <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
 
         <span class="estado">
@@ -24,6 +26,60 @@
       </li>
     </ul>
   </div>
+
+   <div class="lista">
+         <h2>Pedidos Aprobados</h2>
+    <ul>
+      <li :key="pedido.id" v-for="pedido in todosLosPedidos.filter(pedido => pedido.estado == 1)">
+        <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+
+        <span class="estado">
+          Estado:
+          <span v-show="!cargando[pedido.id]">{{ pedido.estado }}</span>
+          <b-spinner
+            class="spinnerChico"
+            v-show="cargando[pedido.id]"
+            variant="primary"
+            label="Spinning"
+          ></b-spinner>
+        </span>
+
+        <b-button variant="success" @click="retornarPedidoPendiente(pedido.id)"
+          >Retornar a Pendientes
+        </b-button>
+     
+     
+      </li>
+    </ul>
+  </div>
+
+  <div class="lista">
+         <h2>Pedidos Cancelados</h2>
+    <ul>
+      <li :key="pedido.id" v-for="pedido in todosLosPedidos.filter(pedido => pedido.estado == 4)">
+        <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+
+        <span class="estado">
+          Estado:
+          <span v-show="!cargando[pedido.id]">{{ pedido.estado }}</span>
+          <b-spinner
+            class="spinnerChico"
+            v-show="cargando[pedido.id]"
+            variant="primary"
+            label="Spinning"
+          ></b-spinner>
+        </span>
+
+        <b-button variant="success" @click="retornarPedidoPendiente(pedido.id)"
+          >Retornar a Pendientes
+        </b-button>
+     
+      </li>
+    </ul>
+  </div>
+
+</div>
+
 </template>
 
 <script>
@@ -50,52 +106,42 @@ export default {
     },
 
     async aprobarPedido(idPedido) {
-      // let res = await fetch(`https://localhost:44350/api/pedidos/${idPedido}`);
-      // let pedido = await res.json();
-      const pedido = await this.getPedido(idPedido);
-      // console.log(pedido);
 
-      // pedido.estado++;
+      const pedido = await this.getPedido(idPedido);
+   
       pedido.estado = 1;
 
-      // await fetch(`https://localhost:44350/api/pedidos/${idPedido}`, {
-      //   method: "PUT",
-      //   headers: {
-      //     Accept: "application/json",
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(pedido),
-      // });
+    
       this.editPedido(pedido);
     },
 
     async cancelarPedido(idPedido) {
-      // let res = await fetch(`https://localhost:44350/api/pedidos/${idPedido}`);
-      // let pedido = await res.json();
+     
       const pedido = await this.getPedido(idPedido);
 
-      // console.log(pedido);
+     
       pedido.estado = 4;
 
-      // await fetch(`https://localhost:44350/api/pedidos/${idPedido}`, {
-      //   method: "PUT",
-      //   headers: {
-      //     Accept: "application/json",
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(pedido),
-      // });
+    
       this.editPedido(pedido);
     },
+  async retornarPedidoPendiente(idPedido) {
+     
+      const pedido = await this.getPedido(idPedido);
+
+     
+      pedido.estado = 0;
+
+    
+      this.editPedido(pedido);
+    },
+
   },
   async created() {
-    // let res = await fetch("/api/pedidos/");
-    // let todosPedidos = await res.json();
-    // const todosPedidos = await this.fetchTodosLosPedidos();
+ 
     await this.fetchTodosLosPedidos();
-    console.log(this.todosLosPedidos);
-    // this.pedidos = todosPedidos.filter((pedido) => pedido.estado == 0);
-    // this.pedidos = todosPedidos;
+    console.log(this.todosLosPedidos)
+  
   },
 };
 </script>
@@ -112,4 +158,10 @@ export default {
   width: 6em;
   margin-left: 1em;
 }
+
+.lista{
+  float: left;
+  width: 33.3%;
+}
+
 </style>
