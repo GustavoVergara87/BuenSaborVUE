@@ -7,8 +7,8 @@
         <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
 
         <span class="estado">
-          Estado:
-          <span v-show="!cargando[pedido.id]">{{ pedido.estado }}</span>
+         Cliente:
+          <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
           <b-spinner
             class="spinnerChico"
             v-show="cargando[pedido.id]"
@@ -34,8 +34,8 @@
         <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
 
         <span class="estado">
-          Estado:
-          <span v-show="!cargando[pedido.id]">{{ pedido.estado }}</span>
+           Cliente:
+          <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
           <b-spinner
             class="spinnerChico"
             v-show="cargando[pedido.id]"
@@ -60,8 +60,8 @@
         <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
 
         <span class="estado">
-          Estado:
-          <span v-show="!cargando[pedido.id]">{{ pedido.estado }}</span>
+          Cliente:
+          <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
           <b-spinner
             class="spinnerChico"
             v-show="cargando[pedido.id]"
@@ -93,7 +93,7 @@ export default {
   //   // return { pedidos: [] };
   // },
   computed: {
-    ...mapGetters(["todosLosPedidos", "cargando"]),
+    ...mapGetters(["todosLosPedidos", "cargando" , "todosLosClientes"]),
   },
   methods: {
     ...mapActions(["fetchTodosLosPedidos", "editPedido", "getPedido"]),
@@ -140,7 +140,7 @@ export default {
   async created() {
  
     await this.fetchTodosLosPedidos();
-    console.log(this.todosLosPedidos)
+    
   
   },
 };

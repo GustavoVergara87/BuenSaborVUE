@@ -7,7 +7,7 @@ const state = {
         nombre: "",
         apellido: "",
         telefono: "" ,
-        email: "",
+        // email: "",
         domicilios: []
     }
 };
