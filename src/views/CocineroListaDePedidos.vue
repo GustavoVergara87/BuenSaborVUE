@@ -1,28 +1,182 @@
 <template>
-  <div>
+<div>
+  <div class="lista">
+    <h2>Pedidos Pendientes</h2>
     <ul>
-      <li>
-        Pedido1<b-button @click="verDetallePedido(1)">Ver</b-button>
-        Estado:Aprobado
+      <li :key="pedido.id" v-for="pedido in todosLosPedidos.filter(pedido => pedido.estado == 1)">
+        <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+
+        <span class="estado">
+         Cliente:
+          <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
+          <b-spinner
+            class="spinnerChico"
+            v-show="cargando[pedido.id]"
+            variant="primary"
+            label="Spinning"
+          ></b-spinner>
+        </span>
+
+        <b-button variant="success" @click="aprobarPedido(pedido.id)"
+          >Aprobar
+        </b-button>
+      
       </li>
-      <li>Pedido2<b-button>Ver</b-button> Estado:Aprobado</li>
-      <li>Pedido3<b-button>Ver</b-button> Estado:Anulado</li>
     </ul>
   </div>
+
+   <div class="lista">
+         <h2>Pedidos Cocinando</h2>
+    <ul>
+      <li :key="pedido.id" v-for="pedido in todosLosPedidos.filter(pedido => pedido.estado == 2)">
+        <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+
+        <span class="estado">
+           Cliente:
+          <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
+          <b-spinner
+            class="spinnerChico"
+            v-show="cargando[pedido.id]"
+            variant="primary"
+            label="Spinning"
+          ></b-spinner>
+        </span>
+
+        <b-button variant="success" @click="retornarPedidoPendiente(pedido.id)"
+          >Retornar a Pendientes
+        </b-button>
+          <b-button variant="danger" @click="pedidoCocinado(pedido.id)"
+          >PedidoCocinado</b-button
+        >
+     
+     
+      </li>
+    </ul>
+  </div>
+
+  <div class="lista">
+         <h2>Pedidos Cocinados</h2>
+    <ul>
+      <li :key="pedido.id" v-for="pedido in todosLosPedidos.filter(pedido => pedido.estado == 3)">
+        <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+
+        <span class="estado">
+          Cliente:
+          <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
+          <b-spinner
+            class="spinnerChico"
+            v-show="cargando[pedido.id]"
+            variant="primary"
+            label="Spinning"
+          ></b-spinner>
+        </span>
+
+        <b-button variant="success" @click="retornarPedidoPendiente(pedido.id)"
+          >Retornar a Pendientes
+        </b-button>
+              <b-button variant="danger" @click="pedidoNoCocinado(pedido.id)"
+          >Retornar a Cocinando</b-button
+        >
+     
+      </li>
+    </ul>
+  </div>
+
+</div>
+
 </template>
 
 <script>
+//importo los Getters y las Acciones de Vuex
+//la idea es que: **con la acciones vas a modificar la lista en el BACK y en el FRONT (osea en el state de vuex)**
+//todo lo de vuex pedidos lo podes ver en src/store/modules/pedidos
+import { mapGetters, mapActions } from "vuex";
+
 export default {
+  // data() {
+  //   // return { pedidos: [] };
+  // },
+  computed: {
+    ...mapGetters(["todosLosPedidos", "cargando" , "todosLosClientes"]),
+  },
   methods: {
+    ...mapActions(["fetchTodosLosPedidos", "editPedido", "getPedido"]),
+
     verDetallePedido(idPedido) {
       this.$router.push({
-        name: "CocineroPedidoDetalle",
+        name: "CajeroPedidoDetalle",
         params: { idPedido: idPedido },
       });
     },
+
+    async aprobarPedido(idPedido) {
+
+      const pedido = await this.getPedido(idPedido);
+   
+      pedido.estado = 2;
+
+    
+      this.editPedido(pedido);
+    },
+
+    async pedidoCocinado(idPedido) {
+     
+      const pedido = await this.getPedido(idPedido);
+
+     
+      pedido.estado = 3;
+
+    
+      this.editPedido(pedido);
+    },
+
+     async pedidoNoCocinado(idPedido) {
+     
+      const pedido = await this.getPedido(idPedido);
+
+     
+      pedido.estado = 2;
+
+    
+      this.editPedido(pedido);
+    },
+  async retornarPedidoPendiente(idPedido) {
+     
+      const pedido = await this.getPedido(idPedido);
+
+     
+      pedido.estado = 0;
+
+    
+      this.editPedido(pedido);
+    },
+
+  },
+  async created() {
+ 
+    await this.fetchTodosLosPedidos();
+    
+  
   },
 };
 </script>
 
-<style>
+<style scoped>
+.spinnerChico {
+  --size: 1rem;
+  width: var(--size);
+  height: var(--size);
+}
+
+.estado {
+  display: inline-block;
+  width: 6em;
+  margin-left: 1em;
+}
+
+.lista{
+  float: left;
+  width: 33.3%;
+}
+
 </style>

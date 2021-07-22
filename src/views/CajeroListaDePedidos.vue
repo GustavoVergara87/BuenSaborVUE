@@ -56,7 +56,7 @@
   <div class="lista">
          <h2>Pedidos Cancelados</h2>
     <ul>
-      <li :key="pedido.id" v-for="pedido in todosLosPedidos.filter(pedido => pedido.estado == 4)">
+      <li :key="pedido.id" v-for="pedido in todosLosPedidos.filter(pedido => pedido.estado == 5)">
         <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
 
         <span class="estado">
@@ -120,7 +120,7 @@ export default {
       const pedido = await this.getPedido(idPedido);
 
      
-      pedido.estado = 4;
+      pedido.estado = 5;
 
     
       this.editPedido(pedido);
