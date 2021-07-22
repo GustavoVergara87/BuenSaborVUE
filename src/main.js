@@ -7,10 +7,12 @@ import router from "./router";
 import store from "./store";
 import "../src/assets/css/styles.css"
 import LoadScript from 'vue-plugin-load-script';
+// import '../src/services/Notificaciones'
+import Notificaciones from '../src/services/Notificaciones'
 
 Vue.config.productionTip = false;
 Vue.use(LoadScript);
-
+Vue.use(Notificaciones)
 
 new Vue({
   router,
