@@ -32,13 +32,21 @@ export async function deletePedido(id) {
     });
 }
 
-export async function editPedido(json) {
-    const pedidoEditado = json
+export async function editPedido(pedidoEditado) {
     await fetch("/api/Pedidos/" + pedidoEditado.id, {
         method: "PUT",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(pedidoEditado),
     });
+}
+
+export async function finalizarPedido(id) {
+    const response = await fetch("/api/Pedidos/Finalizar/" + id, {
+        method: "POST",
+        // headers: { "Content-type": "application/json" },
+    });
+    const responseJson = await response.json();
+    return responseJson
 }
 
 export default {
@@ -47,4 +55,5 @@ export default {
     addPedido,
     deletePedido,
     editPedido,
+    finalizarPedido,
 }

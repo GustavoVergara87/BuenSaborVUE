@@ -16,6 +16,7 @@ export default {
   computed: {
     ...mapGetters(["todosLosPlatos"]),
     platosFiltrados() {
+
       var tmpPlatosFiltrados = [];
       if (this.$route.query.porPalabraClave !== undefined) {
         tmpPlatosFiltrados = this.todosLosPlatos
@@ -23,7 +24,8 @@ export default {
             (plato) =>
               plato.Descripcion !== null &&
               plato.plato !== null &&
-              plato.plato !== undefined
+              plato.plato !== undefined &&
+              plato.disabled == false
           )
           .filter((plato) =>
             plato.plato
@@ -52,7 +54,7 @@ export default {
     ...mapActions(["fetchTodosLosPlatos"]), //los tres puntitos son para que ademas de las actions podamos poner otros metodos
   },
   async created() {
-   await this.fetchTodosLosPlatos();
+    await this.fetchTodosLosPlatos();
   },
 };
 </script>
@@ -62,6 +64,5 @@ export default {
   /* display: flex; */
   padding: 2em;
   /* flex-direction:column; */
-  
 }
 </style>

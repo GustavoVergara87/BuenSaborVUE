@@ -15,18 +15,6 @@
               </p>
             </div>
             <form class="columnaDerecha" :class="{ formDisabled: noHayLoggin }">
-              <!-- <div class="dottedRow">
-                <label class="precio dottedLeft">N° de pedido:</label>
-                <span class="dottedDots"></span>
-                <span class="precio dottedRight">recien despues de crear el pedido lo obtenemos</span>
-              </div> -->
-
-              <!-- <div class="dottedRow">
-                <label class="precio dottedLeft">Fecha:</label>
-                <span class="dottedDots"></span>
-                <span class="precio dottedRight"> despues de crear el pedido, fecha actual pedida por el servidor o un servidor externo</span>
-              </div> -->
-
               <div class="dottedRow">
                 <label class="precio dottedLeft">Cliente:</label>
                 <span class="dottedDots"></span>
@@ -149,12 +137,6 @@
                 >
               </div>
 
-              <!-- <div class="dottedRow">
-                <label class="precio dottedLeft">Tiempo de entrega:</label>
-                <span class="dottedDots"></span>
-                <span class="precio dottedRight">{{ PrecioTotal }}</span>
-              </div> -->
-
               <b-button
                 class="btn btn-success"
                 @click="confirmarCarrito"
@@ -189,8 +171,11 @@
 <script>
 import { mapGetters } from "vuex";
 import PlatosCarrito from "../components/PlatosCarrito.vue";
-import { numFormat,val } from "../services/comunes";
-import { enviarCarrito } from "../services/Carrito.js";
+import { numFormat, val } from "../services/comunes";
+import { enviarCarrito } from "../services/Carrito";
+import { GenerarTicketMercadoPagoPreference } from "../services/MercadoPago";
+import { addDomicilio } from "../services/DomiciliosController";
+
 export default {
   components: { PlatosCarrito },
   data() {
@@ -200,7 +185,7 @@ export default {
         direccionEntrega: "",
         formaPago: "MercadoPago",
       },
-      compraId: "",
+
       domicilioNuevo: {
         calle: "",
         numero: "",
@@ -238,6 +223,7 @@ export default {
     enviarCarrito,
     numFormat,
     val,
+
     soloHabilitarMercadoPago() {
       this.form.formaPago = "MercadoPago";
     },
@@ -246,55 +232,54 @@ export default {
       if (this.form.formaPago == "Efectivo") {
         console.log("paga efectivo");
       } else {
-        let pago = await fetch(`/api/pedidos/${this.PrecioTotal}`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        });
-        let res = await pago.json();
-        this.compraId = String(res.id);
-
-        this.mercadoPagoModalShow = true;
-
-        this.$loadScript("https://sdk.mercadopago.com/js/v2")
-          .then(() => {
-            // Agrega credenciales de SDK
-            // eslint-disable-next-line no-undef
-            const mp = new MercadoPago(
-              "TEST-6a6c0062-d292-415b-bc19-b06e5773b493",
-              {
-                locale: "es-AR",
-              }
-            );
-
-            // Inicializa el checkout
-            mp.checkout({
-              preference: {
-                id: this.compraId,
-              },
-              render: {
-                container: ".cho-container", // Indica dónde se mostrará el botón de pago
-                label: "Pagar", // Cambia el texto del botón de pago (opcional)
-              },
-            });
-          })
-          .catch(() => {
-            // Failed to fetch script
-          });
+        const res = await GenerarTicketMercadoPagoPreference(this.PrecioTotal);
+        const preferenceId = String(res.id);
+        this.MPcheckout(preferenceId);
       }
 
-      let domicilio = {};
       let domicilioID = undefined;
-      let tipoEnvio = this.form.retiraEn;
+
       if (this.domicilio == "DomicilioGuardado") {
         domicilioID = this.form.direccionEntrega;
       } else {
-        domicilio = JSON.parse(JSON.stringify(this.domicilioNuevo));
+        //Creo un domicilio si es necesario
+        const domicilio = JSON.parse(JSON.stringify(this.domicilioNuevo));
+        domicilio.clienteID = this.traerCliente.id;
+        const domicilioNuevo = await addDomicilio(domicilio);
+        domicilioID = domicilioNuevo.id;
+        //DEBERIA RECARGAR EL CLIENTE O LOS DOMICILIOS PARA QUE ESTÉ INCLUIDO EL NUEVO
       }
 
-      this.enviarCarrito(domicilio, domicilioID, tipoEnvio);
+      this.enviarCarrito(domicilioID, this.form.retiraEn);
+    },
+
+    MPcheckout(preferenceId) {
+      this.mercadoPagoModalShow = true;
+
+      this.$loadScript("https://sdk.mercadopago.com/js/v2")
+        .then(() => {
+          // Agrega credenciales de SDK
+          // eslint-disable-next-line no-undef
+          const mp = new MercadoPago(
+            "TEST-6a6c0062-d292-415b-bc19-b06e5773b493",
+            {
+              locale: "es-AR",
+            }
+          );
+          mp.checkout({
+            // Inicializa el checkout
+            preference: {
+              id: preferenceId,
+            },
+            render: {
+              container: ".cho-container", // Indica dónde se mostrará el botón de pago
+              label: "Pagar", // Cambia el texto del botón de pago (opcional)
+            },
+          });
+        })
+        .catch(() => {
+          // Failed to fetch script
+        });
     },
   },
 };

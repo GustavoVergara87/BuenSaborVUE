@@ -61,6 +61,13 @@ export default {
 
       const resp = await this.obtenerToken(this.AuthRequest);
 
+      //asocia el cliente que se acaba de loggear a un grupo (de un solo miembro) para recibir mensajes via SignalR
+      this.$connectionHub
+        .invoke("JoinClienteIDToGroup", 1)
+        .catch((err) => {
+          console.log(err);
+        });
+
       enroute[resp.rol]();
     },
   },

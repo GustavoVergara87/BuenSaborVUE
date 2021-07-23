@@ -111,6 +111,9 @@ export default {
     handleBusquedaPorRubro(rubro) {
       this.$router.push({ query: { porRubro: rubro } }).catch(() => {}); //el catch evita que salte un error
     },
+    onPedidoRecibido(mensaje,pedido){
+      console.log(mensaje,pedido)
+    }
   },
   created() {
     const childrenRoutes = this.$router.options.routes.find(
@@ -123,6 +126,8 @@ export default {
       });
     });
     this.fetchTodosLosRubrosArticulos();
+    // Listen to score changes coming from SignalR events
+    this.$notificacionesHub.$on('PedidoRecibido', this.onPedidoRecibido)
   },
 
   data() {
