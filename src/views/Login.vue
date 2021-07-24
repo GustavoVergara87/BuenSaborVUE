@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
@@ -46,13 +46,21 @@ export default {
       },
     };
   },
-
+  computed: { ...mapGetters(["traerCliente"]) },
   methods: {
     ...mapActions(["setRol", "obtenerToken"]),
 
     async usuarioLoggin() {
       const enroute = {
-        Cliente: () => this.$router.push({ name: "ClientePlatos" }),
+        Cliente: () => {
+          //asocia el cliente que se acaba de loggear a un grupo (de un solo miembro) para recibir mensajes via SignalR
+          this.$connectionHub
+            .invoke("JoinClienteIDToGroup", this.traerCliente.id)
+            .catch((err) => {
+              console.log(err);
+            });
+          this.$router.push({ name: "ClientePlatos" });
+        },
         Administrador: () => this.$router.push({ name: "AdministradorPlatos" }),
         Cajero: () => this.$router.push({ name: "CajeroListaDePedidos" }),
         Cocinero: () => this.$router.push({ name: "CocineroListaDePedidos" }),
@@ -60,13 +68,6 @@ export default {
       };
 
       const resp = await this.obtenerToken(this.AuthRequest);
-
-      //asocia el cliente que se acaba de loggear a un grupo (de un solo miembro) para recibir mensajes via SignalR
-      this.$connectionHub
-        .invoke("JoinClienteIDToGroup", 1)
-        .catch((err) => {
-          console.log(err);
-        });
 
       enroute[resp.rol]();
     },
