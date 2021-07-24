@@ -108,6 +108,9 @@ export default {
     handleBusquedaPorRubro(rubro) {
       this.$router.push({ query: { porRubro: rubro } }).catch(() => {}); //el catch evita que salte un error
     },
+    handleNotificacion(mensaje, pedido) {
+      console.log(mensaje, pedido);
+    },
   },
   created() {
     const childrenRoutes = this.$router.options.routes.find(
@@ -120,6 +123,7 @@ export default {
       });
     });
     this.fetchTodosLosRubrosArticulos();
+    this.$notificacionesHub.$on("Notificacion", this.handleNotificacion);
   },
 
   data() {

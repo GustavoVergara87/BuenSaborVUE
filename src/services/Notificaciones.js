@@ -38,10 +38,8 @@ export default {
         // every component will use this.$notificacionesHub to access the event bus
         Vue.prototype.$notificacionesHub = notificacionesHub
         // Forward server side SignalR events through $notificacionesHub, where components will listen to them
-        connection.on('NotificacionPedidoRecibido', (mensaje, pedido) => {
-            notificacionesHub.$emit('PedidoRecibido', { mensaje, pedido })
+        connection.on('Notificacion', (mensaje, pedido) => {
+            notificacionesHub.$emit('Notificacion', { mensaje, pedido })
         })
-
-
     }
 }

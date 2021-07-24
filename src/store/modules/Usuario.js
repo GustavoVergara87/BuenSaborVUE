@@ -1,5 +1,6 @@
 const state = {
     rol: "",
+    rolId:0,
     usuario: "",
     token: "",
     cliente: {
@@ -14,6 +15,7 @@ const state = {
 
 const getters = {
     traerRol: (state) => state.rol,
+    traerRolId: (state) => state.rolId,
     traerUsuario: (state) => state.usuario,
     traerToken: (state) => state.token,
     traerCliente: (state) => state.cliente,
@@ -23,6 +25,9 @@ const getters = {
 const actions = {
     setRol({ commit }, rol) {
         commit('setRol', rol)
+    },
+    setRolId({ commit }, rolId) {
+        commit('setRolId', rolId)
     },
     setUsuario({ commit }, usuario) {
         commit('setUsuario', usuario)
@@ -39,6 +44,7 @@ const actions = {
         });
         const responseJson = await response.json();
         commit('setRol', responseJson.rol);
+        commit('setRolId', responseJson.rolId);
         commit('setUsuario', responseJson.nombreUsuario);
         commit('setToken', responseJson.token);
         commit('setCliente', responseJson.cliente);
@@ -49,6 +55,7 @@ const actions = {
 
 const mutations = {
     setRol: (state, rol) => state.rol = rol,
+    setRolId: (state, rolId) => state.rolId = rolId,
     setUsuario: (state, usuario) => state.usuario = usuario,
     setToken: (state, token) => state.token = token,
     setCliente: (state, cliente) => state.cliente = cliente,

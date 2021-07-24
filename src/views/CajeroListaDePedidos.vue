@@ -123,7 +123,7 @@ export default {
 
     async aprobarPedido(idPedido) {
       const pedido = await this.getPedido(idPedido);
-      pedido.estado = PE.PENDIENTE;
+      pedido.estado = PE.APROBADO;
       this.editPedido(pedido);
     },
 

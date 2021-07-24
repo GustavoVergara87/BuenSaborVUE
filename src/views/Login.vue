@@ -46,7 +46,7 @@ export default {
       },
     };
   },
-  computed: { ...mapGetters(["traerCliente"]) },
+  computed: { ...mapGetters(["traerCliente", "traerRolId"]) },
   methods: {
     ...mapActions(["setRol", "obtenerToken"]),
 
@@ -62,9 +62,30 @@ export default {
           this.$router.push({ name: "ClientePlatos" });
         },
         Administrador: () => this.$router.push({ name: "AdministradorPlatos" }),
-        Cajero: () => this.$router.push({ name: "CajeroListaDePedidos" }),
-        Cocinero: () => this.$router.push({ name: "CocineroListaDePedidos" }),
-        Delivery: () => this.$router.push({ name: "DeliveryListaDePedidos" }),
+        Cajero: () => {
+          this.$connectionHub
+            .invoke("JoinRolIDToGroup", this.traerRolId)
+            .catch((err) => {
+              console.log(err);
+            });
+          this.$router.push({ name: "CajeroListaDePedidos" });
+        },
+        Cocinero: () => {
+          this.$connectionHub
+            .invoke("JoinRolIDToGroup", this.traerRolId)
+            .catch((err) => {
+              console.log(err);
+            });
+          this.$router.push({ name: "CocineroListaDePedidos" });
+        },
+        Delivery: () => {
+          this.$connectionHub
+            .invoke("JoinRolIDToGroup", this.traerRol.id)
+            .catch((err) => {
+              console.log(err);
+            });
+          this.$router.push({ name: "DeliveryListaDePedidos" });
+        },
       };
 
       const resp = await this.obtenerToken(this.AuthRequest);
