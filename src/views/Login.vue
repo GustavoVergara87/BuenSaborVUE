@@ -49,41 +49,54 @@ export default {
   computed: { ...mapGetters(["traerCliente", "traerRolId"]) },
   methods: {
     ...mapActions(["setRol", "obtenerToken"]),
+    joinRolIdToGroup() {
+      this.removeFromAllGroups();
+      this.$connectionHub
+        .invoke("JoinRolIDToGroup", this.traerRolId)
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    joinClienteToGroup() {
+      this.removeFromAllGroups();
+      this.$connectionHub
+        .invoke("JoinClienteIDToGroup", this.traerCliente.id)
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    removeFromAllGroups() {
+      this.$connectionHub
+        .invoke("RemoveRolIDFromGroup", this.traerRolId)
+        .catch((err) => {
+          console.log(err);
+        });
+      if (this.traerCliente == null) return;
+      this.$connectionHub
+        .invoke("RemoveClienteIDFromGroup", this.traerCliente.id)
+        .catch((err) => {
+          console.log(err);
+        });
+    },
 
     async usuarioLoggin() {
       const enroute = {
         Cliente: () => {
           //asocia el cliente que se acaba de loggear a un grupo (de un solo miembro) para recibir mensajes via SignalR
-          this.$connectionHub
-            .invoke("JoinClienteIDToGroup", this.traerCliente.id)
-            .catch((err) => {
-              console.log(err);
-            });
+          this.joinClienteToGroup();
           this.$router.push({ name: "ClientePlatos" });
         },
         Administrador: () => this.$router.push({ name: "AdministradorPlatos" }),
         Cajero: () => {
-          this.$connectionHub
-            .invoke("JoinRolIDToGroup", this.traerRolId)
-            .catch((err) => {
-              console.log(err);
-            });
+          this.joinRolIdToGroup();
           this.$router.push({ name: "CajeroListaDePedidos" });
         },
         Cocinero: () => {
-          this.$connectionHub
-            .invoke("JoinRolIDToGroup", this.traerRolId)
-            .catch((err) => {
-              console.log(err);
-            });
+          this.joinRolIdToGroup();
           this.$router.push({ name: "CocineroListaDePedidos" });
         },
         Delivery: () => {
-          this.$connectionHub
-            .invoke("JoinRolIDToGroup", this.traerRol.id)
-            .catch((err) => {
-              console.log(err);
-            });
+          this.joinRolIdToGroup();
           this.$router.push({ name: "DeliveryListaDePedidos" });
         },
       };

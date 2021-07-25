@@ -127,9 +127,11 @@ export default {
     });
     this.fetchTodosLosRubrosArticulos();
     // Listen to score changes coming from SignalR events
-    this.$notificacionesHub.$on('Notificacion', this.handleNotificacion)
+    this.$notificacionesHub.$on( 'Notificacion', this.handleNotificacion)
   },
-
+  beforeDestroy(){
+    this.$notificacionesHub.$off('Notificacion', this.handleNotificacion)
+  },
   data() {
     return {
       rutas: [],

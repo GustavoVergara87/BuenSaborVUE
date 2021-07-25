@@ -69,7 +69,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["fetchTodosLosRubrosArticulos"]),
+    ...mapActions(["fetchTodosLosPedidos"]),
     handleBusqueda(event) {
       event.preventDefault();
       this.$router
@@ -79,7 +79,9 @@ export default {
     handleBusquedaPorRubro(rubro) {
       this.$router.push({ query: { porRubro: rubro } }).catch(() => {}); //el catch evita que salte un error
     },
-    handleNotificacion(mensaje, pedido) {
+    async handleNotificacion(mensaje, pedido) {
+      //si entra un pedido, actualizar el vuex
+      await this.fetchTodosLosPedidos();
       console.log(mensaje, pedido);
     },
   },
@@ -93,10 +95,12 @@ export default {
         path: element.path,
       });
     });
-    this.fetchTodosLosRubrosArticulos();
-    this.$notificacionesHub.$on("Notificacion", this.handleNotificacion);
+  
+  this.$notificacionesHub.$on("Notificacion", this.handleNotificacion);
   },
-
+  beforeDestroy() {
+    this.$notificacionesHub.$off("Notificacion", this.handleNotificacion);
+  },
   data() {
     return {
       rutas: [],

@@ -33,10 +33,12 @@ export default {
         // loggin puede acceder this.$connectionHub para unir a los usuarios a grupos de SignalR
         Vue.prototype.$connectionHub = connection
 
-        // use new Vue instance as an event bus
+        // use new Vue instance as an Event Bus
         const notificacionesHub = new Vue()
+
         // every component will use this.$notificacionesHub to access the event bus
         Vue.prototype.$notificacionesHub = notificacionesHub
+
         // Forward server side SignalR events through $notificacionesHub, where components will listen to them
         connection.on('Notificacion', (mensaje, pedido) => {
             notificacionesHub.$emit('Notificacion', { mensaje, pedido })

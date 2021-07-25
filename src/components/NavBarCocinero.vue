@@ -45,29 +45,7 @@
             </router-link>
           </b-nav-item>
           <!-- -------------------------------------------------------FinPlatos -->
-
-          <!-- -------------------------------------------------------Rubros -->
-          <b-nav-item-dropdown
-            text="Categorias"
-            block
-            variant="primary"
-            class="m-2"
-            menu-class="w-100"
-          >
-            <template v-for="(item, index) in this.todosLosRubrosArticulos">
-              <b-dropdown-item
-                @click="handleBusquedaPorRubro(item.denominacion)"
-                :key="index"
-                >{{ item.denominacion }}</b-dropdown-item
-              >
-            </template>
-            <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item @click="handleBusquedaPorRubro('')">
-              Todos
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
         </b-navbar-nav>
-        <!-- -------------------------------------------------------FinRubros -->
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
@@ -92,13 +70,13 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["todosLosRubrosArticulos", "traerRol", "getCarrito"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
+    ...mapGetters(["traerRol", "getCarrito"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
     cantidadCarrito() {
       return this.getCarrito.length;
     },
   },
   methods: {
-    ...mapActions(["fetchTodosLosRubrosArticulos"]),
+    ...mapActions(["fetchTodosLosPedidos"]),
     handleBusqueda(event) {
       event.preventDefault();
       this.$router
@@ -108,7 +86,9 @@ export default {
     handleBusquedaPorRubro(rubro) {
       this.$router.push({ query: { porRubro: rubro } }).catch(() => {}); //el catch evita que salte un error
     },
-    handleNotificacion(mensaje, pedido) {
+    async handleNotificacion(mensaje, pedido) {
+      //si entra un pedido, actualizar el vuex
+      await this.fetchTodosLosPedidos();
       console.log(mensaje, pedido);
     },
   },
@@ -122,10 +102,12 @@ export default {
         path: element.path,
       });
     });
-    this.fetchTodosLosRubrosArticulos();
-    this.$notificacionesHub.$on("Notificacion", this.handleNotificacion);
-  },
 
+this.$notificacionesHub.$on("Notificacion", this.handleNotificacion);
+  },
+    beforeDestroy(){
+    this.$notificacionesHub.$off('Notificacion', this.handleNotificacion)
+  },
   data() {
     return {
       rutas: [],
