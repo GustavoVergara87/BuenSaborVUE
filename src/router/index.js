@@ -175,6 +175,12 @@ const routes = [
   },
 
   {
+    path: "/registro",
+    name: "Registro",
+    component: () => import("../views/Registro.vue")
+  },
+
+  {
     path: "/",
     name: "Home",
     component: () => import("../views/Home.vue")

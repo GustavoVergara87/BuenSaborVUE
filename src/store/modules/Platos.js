@@ -10,6 +10,9 @@ const getters = {
 
 //Las acciones llaman a las mutaciones(mutations) a traves de commits
 const actions = {
+    resetPlatos({ commit }) {
+        commit('resetPlatos')
+    },
     async fetchTodosLosPlatos({ commit }) {
         const response = await fetch("/api/Articulos/ParaFront");
         const responseJson = await response.json();
@@ -29,6 +32,10 @@ const actions = {
 
 //Las mutaciones(mutations) cambian los estados (states)
 const mutations = {
+    resetPlatos: (state) =>{
+        state.platos.splice(0);
+        state.plato = null;
+    },
     setTodosLosPlatos: (state, platos) => state.platos = platos, //sintaxis mutacion(estado, variable)
     setPlato: (state, plato) => state.plato = plato, //sintaxis mutacion(estado, variable)
 };

@@ -12,17 +12,21 @@ const getters = {
 };
 
 const actions = {
+    resetCarrito({ commit }) {
+        commit('resetCarrito')
+    },
+
     setCarrito({ commit }, carrito) {
         commit('setCarrito', carrito)
     },
 
     addCarrito({ commit }, articulo) {
-        var platoRepetido = state.carrito.find(a => a.id == articulo.id)
-        if (!state.carrito || !platoRepetido) { //si el carrito esta vacio o no hay plato repetido, agregar el item
+        var platoRepetido = state.carrito.filter(a => a.id == articulo.id)
+        if (state.carrito.length==0 || platoRepetido.length==0) { //si el carrito esta vacio o no hay plato repetido, agregar el item
             // articulo.cantidad  la propiedad dinamicamente agregada .cantidad NO es reactiva
             Vue.set(articulo, 'cantidad', 1) //Si se agrega dinamicamente una propiedad a un objeto, debe hacerse de esta forma para ser reactivo
             commit('addCarrito', articulo)
-        } else if (platoRepetido) { //si el plato esta repetido, aumentar el contador
+        } else if (platoRepetido.length>0) { //si el plato esta repetido, aumentar el contador
             commit('cantidadAumentar', articulo)
         }
     },
@@ -44,6 +48,7 @@ const actions = {
 
 
 const mutations = {
+    resetCarrito: (state) => state.carrito.splice(0), //Vue.set(state.carrito, 'length', 0), // state.carrito.length = 0, //tienen problemas de reactividad
     addCarrito: (state, articulo) => state.carrito.push(articulo),
     cantidadAumentar: (state, articulo) => state.carrito.find(a => a.id == articulo.id).cantidad++,
     cantidadDisminuir: (state, articulo) => state.carrito.find(a => a.id == articulo.id).cantidad--,

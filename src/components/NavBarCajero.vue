@@ -39,7 +39,6 @@
           <!-- -------------------------------------------------------FinListaPedidos -->
         </b-navbar-nav>
 
-        
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <!-- -------------------------------------------------------Buscar -->
@@ -70,7 +69,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["fetchTodosLosRubrosArticulos"]),
+    ...mapActions(["fetchTodosLosPedidos"]),
     handleBusqueda(event) {
       event.preventDefault();
       this.$router
@@ -79,6 +78,11 @@ export default {
     },
     handleBusquedaPorRubro(rubro) {
       this.$router.push({ query: { porRubro: rubro } }).catch(() => {}); //el catch evita que salte un error
+    },
+    async handleNotificacion(mensaje, pedido) {
+      //si entra un pedido, actualizar el vuex
+      await this.fetchTodosLosPedidos();
+      console.log(mensaje, pedido);
     },
   },
   created() {
@@ -91,9 +95,12 @@ export default {
         path: element.path,
       });
     });
-    this.fetchTodosLosRubrosArticulos();
+  
+  this.$notificacionesHub.$on("Notificacion", this.handleNotificacion);
   },
-
+  beforeDestroy() {
+    this.$notificacionesHub.$off("Notificacion", this.handleNotificacion);
+  },
   data() {
     return {
       rutas: [],

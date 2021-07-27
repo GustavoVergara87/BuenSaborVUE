@@ -1,89 +1,98 @@
 <template>
-<div>
-  <div class="lista">
-    <h2>Pedidos Pendientes</h2>
-    <ul>
-      <li :key="pedido.id" v-for="pedido in todosLosPedidos.filter(pedido => pedido.estado == 1)">
-        <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
-
-        <span class="estado">
-         Cliente:
-          <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
-          <b-spinner
-            class="spinnerChico"
-            v-show="cargando[pedido.id]"
-            variant="primary"
-            label="Spinning"
-          ></b-spinner>
-        </span>
-
-        <b-button variant="success" @click="aprobarPedido(pedido.id)"
-          >Aprobar
-        </b-button>
-      
-      </li>
-    </ul>
-  </div>
-
-   <div class="lista">
-         <h2>Pedidos Cocinando</h2>
-    <ul>
-      <li :key="pedido.id" v-for="pedido in todosLosPedidos.filter(pedido => pedido.estado == 2)">
-        <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
-
-        <span class="estado">
-           Cliente:
-          <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
-          <b-spinner
-            class="spinnerChico"
-            v-show="cargando[pedido.id]"
-            variant="primary"
-            label="Spinning"
-          ></b-spinner>
-        </span>
-
-        <b-button variant="success" @click="retornarPedidoPendiente(pedido.id)"
-          >Retornar a Pendientes
-        </b-button>
-          <b-button variant="danger" @click="pedidoCocinado(pedido.id)"
-          >PedidoCocinado</b-button
+  <div>
+    <div class="lista">
+      <h2>Pedidos Pendientes</h2>
+      <ul>
+        <li
+          :key="pedido.id"
+          v-for="pedido in todosLosPedidos.filter(
+            (pedido) => pedido.estado == PE.APROBADO
+          )"
         >
-     
-     
-      </li>
-    </ul>
-  </div>
+          <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
 
-  <div class="lista">
-         <h2>Pedidos Cocinados</h2>
-    <ul>
-      <li :key="pedido.id" v-for="pedido in todosLosPedidos.filter(pedido => pedido.estado == 3)">
-        <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+          <span class="estado">
+            Cliente:
+            <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
+            <b-spinner
+              class="spinnerChico"
+              v-show="cargando[pedido.id]"
+              variant="primary"
+              label="Spinning"
+            ></b-spinner>
+          </span>
 
-        <span class="estado">
-          Cliente:
-          <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
-          <b-spinner
-            class="spinnerChico"
-            v-show="cargando[pedido.id]"
-            variant="primary"
-            label="Spinning"
-          ></b-spinner>
-        </span>
+          <b-button variant="success" @click="aprobarPedido(pedido.id)"
+            >Aprobar
+          </b-button>
+        </li>
+      </ul>
+    </div>
 
-        <b-button variant="success" @click="retornarPedidoPendiente(pedido.id)"
-          >Retornar a Pendientes
-        </b-button>
-              <b-button variant="danger" @click="pedidoNoCocinado(pedido.id)"
-          >Retornar a Cocinando</b-button
+    <div class="lista">
+      <h2>Pedidos Cocinando</h2>
+      <ul>
+        <li
+          :key="pedido.id"
+          v-for="pedido in todosLosPedidos.filter(
+            (pedido) => pedido.estado == PE.COCINANDO
+          )"
         >
-     
-      </li>
-    </ul>
+          <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+
+          <span class="estado">
+            Cliente:
+            <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
+            <b-spinner
+              class="spinnerChico"
+              v-show="cargando[pedido.id]"
+              variant="primary"
+              label="Spinning"
+            ></b-spinner>
+          </span>
+
+          <b-button variant="danger" @click="retornarPedidoPendiente(pedido.id)"
+            >Retornar a Pendientes
+          </b-button>
+          <b-button variant="success" @click="pedidoCocinado(pedido.id)"
+            >PedidoCocinado</b-button
+          >
+        </li>
+      </ul>
+    </div>
+
+    <div class="lista">
+      <h2>Pedidos Cocinados</h2>
+      <ul>
+        <li
+          :key="pedido.id"
+          v-for="pedido in todosLosPedidos.filter(
+            (pedido) => pedido.estado == PE.TERMINADO
+          )"
+        >
+          <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+
+          <span class="estado">
+            Cliente:
+            <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
+            <b-spinner
+              class="spinnerChico"
+              v-show="cargando[pedido.id]"
+              variant="primary"
+              label="Spinning"
+            ></b-spinner>
+          </span>
+
+          <b-button variant="success" @click="pedidoTermiando(pedido.id)"
+            >Pedido terminado
+          </b-button>
+          <b-button variant="danger" @click="pedidoNoCocinado(pedido.id)"
+            >Retornar a Cocinando</b-button
+          >
+        </li>
+      </ul>
+    </div>
   </div>
-
-</div>
-
 </template>
 
 <script>
@@ -91,13 +100,14 @@
 //la idea es que: **con la acciones vas a modificar la lista en el BACK y en el FRONT (osea en el state de vuex)**
 //todo lo de vuex pedidos lo podes ver en src/store/modules/pedidos
 import { mapGetters, mapActions } from "vuex";
+import PE from "../services/PedidoEstados";
 
 export default {
-  // data() {
-  //   // return { pedidos: [] };
-  // },
+  data() {
+    return { PE: PE };
+  },
   computed: {
-    ...mapGetters(["todosLosPedidos", "cargando" , "todosLosClientes"]),
+    ...mapGetters(["todosLosPedidos", "cargando", "todosLosClientes"]),
   },
   methods: {
     ...mapActions(["fetchTodosLosPedidos", "editPedido", "getPedido"]),
@@ -110,53 +120,31 @@ export default {
     },
 
     async aprobarPedido(idPedido) {
-
       const pedido = await this.getPedido(idPedido);
-   
-      pedido.estado = 2;
-
-    
+      pedido.estado = PE.COCINANDO;
       this.editPedido(pedido);
     },
 
     async pedidoCocinado(idPedido) {
-     
       const pedido = await this.getPedido(idPedido);
-
-     
-      pedido.estado = 3;
-
-    
+      pedido.estado = PE.TERMINADO;
       this.editPedido(pedido);
     },
 
-     async pedidoNoCocinado(idPedido) {
-     
+    async pedidoNoCocinado(idPedido) {
       const pedido = await this.getPedido(idPedido);
-
-     
-      pedido.estado = 2;
-
-    
-      this.editPedido(pedido);
-    },
-  async retornarPedidoPendiente(idPedido) {
-     
-      const pedido = await this.getPedido(idPedido);
-
-     
-      pedido.estado = 0;
-
-    
+      pedido.estado = PE.COCINANDO;
       this.editPedido(pedido);
     },
 
+    async pedidoTermiando(idPedido) {
+      const pedido = await this.getPedido(idPedido);
+      pedido.estado = PE.TERMINADO;
+      this.editPedido(pedido);
+    },
   },
   async created() {
- 
     await this.fetchTodosLosPedidos();
-    
-  
   },
 };
 </script>
@@ -174,9 +162,8 @@ export default {
   margin-left: 1em;
 }
 
-.lista{
+.lista {
   float: left;
   width: 33.3%;
 }
-
 </style>

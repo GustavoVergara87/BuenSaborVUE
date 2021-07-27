@@ -14,7 +14,9 @@ const getters = {
 };
 
 const actions = {
-
+    resetPedidos({ commit }) {
+        commit('resetPedidos')
+    },
     async fetchTodosLosPedidos({ commit }) {
 
         const responseJson = await servicio.fetchTodosLosPedidos()
@@ -52,6 +54,11 @@ const actions = {
 
 //Las mutaciones(mutations) cambian los estados (states)
 const mutations = {
+    resetPedidos: (state) =>{
+        state.pedidos.splice(0);
+        state.pedido = {};
+        state.cargando = {};
+    },
     setPedido: (state, pedido) => state.pedido = pedido,
     setCargando: (state, idEstado) =>{
         Vue.set(state.cargando, idEstado.id,idEstado.estado) 
