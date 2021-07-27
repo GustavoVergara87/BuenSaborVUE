@@ -1,3 +1,5 @@
+import servicio from "../../services/AutenticacionController";
+
 const state = {
     rol: "",
     rolId:0,
@@ -23,6 +25,9 @@ const getters = {
 
 
 const actions = {
+    resetUsuarios({ commit }) {
+        commit('resetUsuarios')
+    },
     setRol({ commit }, rol) {
         commit('setRol', rol)
     },
@@ -36,24 +41,42 @@ const actions = {
         commit('setToken', token)
     },
 
-    async obtenerToken({ commit }, AuthRequest) {
-        const response = await fetch("/api/Usuarios/Login", {
-            method: "POST",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(AuthRequest),
-        });
-        const responseJson = await response.json();
+    async obtenerJwToken({ commit }, AuthRequest) {
+        const responseJson = await servicio.obtenerJwToken(AuthRequest)
         commit('setRol', responseJson.rol);
         commit('setRolId', responseJson.rolId);
         commit('setUsuario', responseJson.nombreUsuario);
         commit('setToken', responseJson.token);
         commit('setCliente', responseJson.cliente);
+        console.log(responseJson)
         return responseJson
     },
+
+    async obtenerJwTokenConGoogle({ commit }, id_token) {
+        const responseJson =await servicio.obtenerGoogleIdToken(id_token)
+        commit('setRol', responseJson.rol);
+        commit('setRolId', responseJson.rolId);
+        commit('setUsuario', responseJson.nombreUsuario);
+        commit('setToken', responseJson.token);
+        commit('setCliente', responseJson.cliente);
+        console.log(responseJson)
+        return responseJson
+    },
+
+
 };
 
 
 const mutations = {
+    resetUsuarios: (state) =>{
+        state.rol = "";
+        state.rolId = 0;
+        state.usuario = "";
+        state.cliente.id = "";
+        state.cliente.nombre = "";
+        state.cliente.apellido = "";
+        state.cliente.domicilios.splice(0);
+    },
     setRol: (state, rol) => state.rol = rol,
     setRolId: (state, rolId) => state.rolId = rolId,
     setUsuario: (state, usuario) => state.usuario = usuario,

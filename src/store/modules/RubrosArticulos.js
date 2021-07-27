@@ -10,6 +10,9 @@ const getters = { //devuelven los estados
 
 //Las acciones llaman a las mutaciones(mutations) a traves de commits
 const actions = {
+    resetRubrosArticulos({ commit }) {
+        commit('resetRubrosArticulos')
+    },
     async fetchTodosLosRubrosArticulos({ commit }) {
         const responseJson = await servicio.fetchTodosLosRubrosArticulos()
         commit('setTodosLosRubrosArticulos', responseJson); //sintaxis commit("mutacion",variable)
@@ -33,6 +36,9 @@ const actions = {
 
 //Las mutaciones(mutations) cambian los estados (states)
 const mutations = {
+    resetClientes: (state) =>{
+        state.rubrosArticulos.splice(0);
+    },
     setTodosLosRubrosArticulos: (state, rubrosArticulos) => state.rubrosArticulos = rubrosArticulos,
     nuevoRubroArticulo: (state, rubroArticulo) => state.rubrosArticulos.unshift(rubroArticulo),
     removerRubroArticulo: (state, id) => state.rubrosArticulos = state.rubrosArticulos.filter(rubroArticulo => rubroArticulo.id !== id),

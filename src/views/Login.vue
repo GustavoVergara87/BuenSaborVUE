@@ -1,43 +1,55 @@
 <template>
-  <form @submit.prevent="usuarioLoggin">
-    <div class="container">
-      <label for="NombreUsuario"><b>Cliente</b></label>
-      <input
-        type="text"
-        placeholder="Cliente"
-        autocomplete="username"
-        name="NombreUsuario"
-        v-model="AuthRequest.NombreUsuario"
-        required
-      />
+  <div>
+    <button class="btn btn-primary" @click="handleRegistrarse">
+      Registrarse
+    </button>
 
-      <label for="Clave"><b>Clave</b></label>
-      <input
-        type="password"
-        placeholder="Clave"
-        autocomplete="current-password"
-        name="Clave"
-        v-model="AuthRequest.Clave"
-        required
-      />
+    <form @submit.prevent="usuarioLoggin">
+      <div class="container">
+        <label for="NombreUsuario"><b>Cliente</b></label>
+        <input
+          type="text"
+          placeholder="Cliente"
+          autocomplete="username"
+          name="NombreUsuario"
+          v-model="AuthRequest.NombreUsuario"
+          required
+        />
 
-      <button type="submit">Login</button>
-      <label>
-        <!-- <input type="checkbox" checked="checked" name="remember"> Remember me -->
-      </label>
-    </div>
+        <label for="Clave"><b>Clave</b></label>
+        <input
+          type="password"
+          placeholder="Clave"
+          autocomplete="current-password"
+          name="Clave"
+          v-model="AuthRequest.Clave"
+          required
+        />
 
+        <button type="submit">Login</button>
+        <label>
+          <!-- <input type="checkbox" checked="checked" name="remember"> Remember me -->
+        </label>
+      </div>
+    </form>
+
+    <GoogleButton @singIn="signalRJoinYRedireccionar"></GoogleButton>
     <!-- <div class="container" style="background-color:#f1f1f1"> -->
     <!-- <button type="button" class="cancelbtn">Cancelar</button> -->
     <!-- <span class="psw">Forgot <a href="#">password?</a></span> -->
     <!-- </div> -->
-  </form>
+  </div>
 </template>
 
 <script>
+import GoogleButton from "../components/GoogleButton.vue";
+
 import { mapActions, mapGetters } from "vuex";
 
 export default {
+  components: {
+    GoogleButton,
+  },
   data() {
     return {
       AuthRequest: {
@@ -46,9 +58,9 @@ export default {
       },
     };
   },
-  computed: { ...mapGetters(["traerCliente", "traerRolId"]) },
+  computed: { ...mapGetters(["traerCliente", "traerRolId", "traerRol"]) },
   methods: {
-    ...mapActions(["setRol", "obtenerToken"]),
+    ...mapActions(["setRol", "obtenerJwToken"]),
     joinRolIdToGroup() {
       this.removeFromAllGroups();
       this.$connectionHub
@@ -80,6 +92,11 @@ export default {
     },
 
     async usuarioLoggin() {
+      const resp = await this.obtenerJwToken(this.AuthRequest)
+      this.signalRJoinYRedireccionar(resp)
+    },
+
+    signalRJoinYRedireccionar(resp) {
       const enroute = {
         Cliente: () => {
           //asocia el cliente que se acaba de loggear a un grupo (de un solo miembro) para recibir mensajes via SignalR
@@ -101,9 +118,11 @@ export default {
         },
       };
 
-      const resp = await this.obtenerToken(this.AuthRequest);
-
       enroute[resp.rol]();
+    },
+
+    handleRegistrarse() {
+      this.$router.push({ name: "Registro" });
     },
   },
 };

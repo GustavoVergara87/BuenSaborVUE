@@ -11,7 +11,9 @@ const getters = {
 };
 
 const actions = {
-
+    resetArticulos({ commit }) {
+        commit('resetArticulos')
+    },
     async fetchTodosLosArticulos({ commit }) {
         const responseJson = await servicio.fetchTodosLosArticulos()
         commit('setTodosLosArticulos', responseJson);
@@ -41,6 +43,10 @@ const actions = {
 
 //Las mutaciones(mutations) cambian los estados (states)
 const mutations = {
+    resetArticulos: (state) =>{
+        state.articulos.splice(0);
+        state.articulo = {};
+    },
     setArticulo: (state, articulo) => state.articulo = articulo,
     setTodosLosArticulos: (state, articulos) => state.articulos = articulos,
     nuevoArticulo: (state, articulo) => state.articulos.unshift(articulo),
