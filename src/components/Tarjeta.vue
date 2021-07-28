@@ -59,7 +59,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { numFormat } from "../services/comunes.js";
+import { numFormat } from "../services/Auxiliares.js";
 export default {
   name: "tarjeta",
   data() {

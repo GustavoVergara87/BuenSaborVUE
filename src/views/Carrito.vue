@@ -171,7 +171,7 @@
 <script>
 import { mapGetters } from "vuex";
 import PlatosCarrito from "../components/PlatosCarrito.vue";
-import { numFormat, val } from "../services/comunes";
+import { numFormat, val } from "../services/Auxiliares";
 import { enviarCarrito } from "../services/Carrito";
 import { GenerarTicketMercadoPagoPreference } from "../services/MercadoPago";
 import { addDomicilio } from "../services/DomiciliosController";

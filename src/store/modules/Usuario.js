@@ -48,7 +48,7 @@ const actions = {
         commit('setUsuario', responseJson.nombreUsuario);
         commit('setToken', responseJson.token);
         commit('setCliente', responseJson.cliente);
-        console.log(responseJson)
+        // console.log(responseJson)
         return responseJson
     },
 
@@ -59,7 +59,7 @@ const actions = {
         commit('setUsuario', responseJson.nombreUsuario);
         commit('setToken', responseJson.token);
         commit('setCliente', responseJson.cliente);
-        console.log(responseJson)
+        // console.log(responseJson)
         return responseJson
     },
 

@@ -1,13 +1,13 @@
 <template>
-  <form class="container">
+  <form class="container" @submit.prevent="handleRegistro">
     <label for="Email">Email</label>
-    <input type="email" name="email" v-model="form.email" placeholder="Email" />
+    <input type="email" name="email" v-model="form.Email" placeholder="Email" />
 
-    <label for="Clave">Cliente</label>
+    <label for="Clave">Clave</label>
     <input
       type="password"
       name="password"
-      v-model="form.password"
+      v-model="form.Clave"
       placeholder="Clave"
     />
 
@@ -15,7 +15,7 @@
     <input
       type="text"
       name="nombre"
-      v-model="form.nombre"
+      v-model="form.Nombre"
       placeholder="Nombre"
     />
 
@@ -23,7 +23,7 @@
     <input
       type="text"
       name="apellido"
-      v-model="form.apellido"
+      v-model="form.Apellido"
       placeholder="Apellido"
     />
 
@@ -31,7 +31,7 @@
     <input
       type="number"
       name="telefono"
-      v-model="form.telefono"
+      v-model="form.Telefono"
       placeholder="Telefono"
     />
 
@@ -40,17 +40,31 @@
 </template>
 
 <script>
+import { registrarCliente,login } from "../services/Login";
+
 export default {
   data() {
     return {
       form: {
-        email: "",
-        password: "",
-        nombre: "",
-        apellido: "",
-        telefono: "",
+        Email: "",
+        Clave: "",
+        Nombre: "",
+        Apellido: "",
+        Telefono: "",
       },
     };
+  },
+  methods: {
+    login,
+    handleRegistro() {
+      const AuthRequest = {
+        NombreUsuario: this.form.Email,
+        Clave: this.form.Clave,
+      };
+      registrarCliente(this.form).then(async () => {
+        await this.login(AuthRequest).then(this.$emit("registrado"));
+      });
+    },
   },
 };
 </script>
@@ -97,5 +111,4 @@ button {
 button:hover {
   opacity: 0.8;
 }
-
 </style>
