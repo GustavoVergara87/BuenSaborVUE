@@ -25,7 +25,8 @@
           <b-nav-item-dropdown
             text=""
             block
-            class="m-2 nav-link-mod noarrow nav-link-semiopaco"
+            class="m-2 nav-link-mod nav-link-semiopaco"
+            no-caret
             menu-class=""
           >
             <template slot="button-content">
@@ -105,14 +106,52 @@
             </div>
           </b-nav-form>
           <!-- -------------------------------------------------------Fin Buscar -->
-          <b-nav-item class="nav-link-semiopaco outlined">
-            <i class="fas fa-bell campana"></i>
-          </b-nav-item>
+
+          <!-- -------------------------------------------------------Notificaciones -->
+          <!-- <div @mouseover="onOver" @mouseleave="onLeave"> -->
+          <div>
+            <b-nav-item-dropdown
+              id="campana-notificacion"
+              ref="dropdown"
+              right
+              text=""
+              block
+              class="m-2 nav-link-mod nav-link-semiopaco"
+              no-caret
+              menu-class=""
+            >
+              <template slot="button-content">
+                <i class="fas fa-bell campana"></i>
+              </template>
+
+              <b-dropdown-form class="notificacion">
+                <template v-for="notificacion in traerTodasLasNotificaciones">
+                  <div :key="notificacion.id">
+                    <div class="cerrar">
+                      <i
+                        @click="deleteNotificacion(notificacion.id)"
+                        class="fas fa-times boton-cerrar-notificacion"
+                      ></i>
+                    </div>
+                    <Notificacion
+                      :id="notificacion.id"
+                      :mensaje="notificacion.mensaje"
+                      :pedido="notificacion.pedido"
+                    ></Notificacion>
+                  </div>
+                </template>
+              </b-dropdown-form>
+
+              <b-dropdown-divider></b-dropdown-divider>
+              <b-dropdown-item> Limpiar notificaciones </b-dropdown-item>
+            </b-nav-item-dropdown>
+          </div>
+          <!-- -------------------------------------------------------Fin Notificaciones-->
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
 
-    <!-- -------------------------------------------------------Login -->
+    <!-- -------------------------------------------------------Login Modal -->
     <b-modal
       v-model="loginShow"
       ok-only
@@ -125,9 +164,9 @@
         @registrarse="(loginShow = false), (registroShow = true)"
       ></Login>
     </b-modal>
-    <!-- -------------------------------------------------------Fin Login -->
+    <!-- -------------------------------------------------------Fin Login Modal-->
 
-    <!-- -------------------------------------------------------Registro -->
+    <!-- -------------------------------------------------------Registro Modal-->
     <b-modal
       v-model="registroShow"
       ok-only
@@ -137,7 +176,7 @@
     >
       <Registro @registrado="registroShow = false"></Registro>
     </b-modal>
-    <!-- -------------------------------------------------------Fin Registro -->
+    <!-- -------------------------------------------------------Fin Registro Modal-->
   </div>
 </template>
 
@@ -146,14 +185,17 @@ import { mapGetters, mapActions } from "vuex";
 import { logout } from "../services/Login";
 import Login from "../components/Login.vue";
 import Registro from "../components/Registro.vue";
+import Notificacion from "../components/Notificacion.vue";
 
 export default {
   components: {
     Login,
     Registro,
+    Notificacion,
   },
   computed: {
     ...mapGetters([
+      "traerTodasLasNotificaciones",
       "todosLosRubrosArticulos",
       "traerRol",
       "getCarritoCantidad",
@@ -163,8 +205,22 @@ export default {
     },
   },
   methods: {
+    showNotificacion() {
+      this.$refs.dropdown.visible = true;
+    },
+    onLeave() {
+      this.$refs.dropdown.visible = false;
+    },
     logout,
-    ...mapActions(["fetchTodosLosRubrosArticulos"]),
+    ...mapActions([
+      "fetchTodosLosRubrosArticulos",
+      "addNotificacion",
+      "deleteFromNotificaciones",
+    ]),
+    deleteNotificacion(id) {
+      this.deleteFromNotificaciones(id);
+    },
+
     handleBusqueda(event) {
       event.preventDefault();
       this.$router
@@ -174,8 +230,11 @@ export default {
     handleBusquedaPorRubro(rubro) {
       this.$router.push({ query: { porRubro: rubro } }).catch(() => {}); //el catch evita que salte un error
     },
-    handleNotificacion(mensaje, pedido) {
-      console.log(mensaje, pedido);
+    handleNotificacion(notificacion) {
+      //guarda como viene la notificacion en vuex
+      this.addNotificacion(notificacion);
+      //mostrar las notificaciones
+      this.showNotificacion();
     },
   },
   created() {
@@ -205,6 +264,14 @@ export default {
 };
 </script>
 
+<style>
+#campana-notificacion > ul {
+  transform: translateY(1.1em);
+  width: 19em;
+  height: 1vh;
+}
+</style>
+
 <style scoped>
 .avatar {
   font-size: 1.5em;
@@ -213,10 +280,6 @@ export default {
 .campana {
   transform: translateY(0.25em);
   font-size: 1.2em;
-}
-
-.noarrow > ::after {
-  display: none;
 }
 
 .nav-link-semiopaco > a > * {
@@ -287,7 +350,7 @@ export default {
 }
 
 .input-busqueda {
-  position: relative;
+  /* position: relative; */
   border-radius: 0px;
   border: none;
   height: 2em;
@@ -298,18 +361,30 @@ export default {
   color: gray;
   border: none;
   font-size: 0.875em;
-  position: relative;
-  height: 2em;
-  top:2px;
-
 }
 
 .form-busqueda {
+  display: flex;
   overflow: hidden;
-  position: relative;
-  /* outline: 1px solid red; */
-  height: 2em;
   border-radius: 5px;
+  /* outline: 1px solid red; */
+}
+
+.cerrar {
+  text-align: right;
+}
+
+.boton-cerrar-notificacion {
+  cursor: pointer;
+  padding: 0.5em;
+  padding-right: 0em;
+}
+.notificacion {
+  background-color: brown;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+  color: white;
 }
 </style>
 
