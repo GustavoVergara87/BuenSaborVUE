@@ -7,7 +7,7 @@ import router from "./router";
 import store from "./store";
 import "../src/assets/css/styles.css"
 import LoadScript from 'vue-plugin-load-script';
-import Notificaciones from '../src/services/Notificaciones'
+import Notificaciones from '../src/services/NotificacionesSetup'
 import GAuth from 'vue-google-oauth2'
 
 const gauthOption = {

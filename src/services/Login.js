@@ -27,6 +27,7 @@ export async function logout() {
     //Reset Vuex
     await store.dispatch("resetCarrito")
     await store.dispatch("resetUsuarios")
+    await store.dispatch("resetNotificaciones")
 
     //LogOut from google
     await Vue.prototype.$gAuth.signOut()
@@ -36,11 +37,11 @@ export async function logout() {
 export function posLogin(resp) {
     let rolId;
     if (store.getters.traerRolId != null) {
-        rolId = store.getters.traerRolId.id
+        rolId = store.getters.traerRolId
     }
     let clienteId;
     if (store.getters.traerCliente != null) {
-        clienteId = store.getters.traerCliente
+        clienteId = store.getters.traerCliente.id
     }
 
     const enroute = {
@@ -85,11 +86,11 @@ export function removeStoredFromAllGroups() {
 
     let rolId;
     if (store.getters.traerRolId != null) {
-        rolId = store.getters.traerRolId.id
+        rolId = store.getters.traerRolId
     }
     let clienteId;
     if (store.getters.traerCliente != null) {
-        clienteId = store.getters.traerCliente
+        clienteId = store.getters.traerCliente.id
     }
 
     Vue.prototype.$connectionHub
