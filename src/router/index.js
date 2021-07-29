@@ -140,46 +140,6 @@ const routes = [
   },
   //--------------------------------------------------------------------------------------
 
-  //---------------------------------------------------------------------------Delivery
-  {
-    path: "/delivery",
-    name: "delivery",
-    beforeEnter: (to, from, next) => {
-      const rolesAutorizados = ["Administrador", "Delivery"]
-      const rol = Store.getters['traerRol']
-      if (rolesAutorizados.includes(rol)) next()
-      else next(false)
-    },
-    component: () => import("../views/DeliveryNav.vue"),
-
-    children: [
-      {
-        path: "/delivery/ListaDePedidos",
-        name: "DeliveryListaDePedidos",
-        component: () => import("../views/DeliveryListaDePedidos.vue"),
-      },
-      {
-        path: "/delivery/PedidosDetalle/:idPedido",
-        name: "DeliveryPedidoDetalle",
-        component: () => import("../views/DeliveryPedidoDetalle.vue"),
-      },
-    ]
-  },
-  //--------------------------------------------------------------------------------------
-
-
-  {
-    path: "/login",
-    name: "Login",
-    component: () => import("../views/Login.vue")
-  },
-
-  {
-    path: "/registro",
-    name: "Registro",
-    component: () => import("../views/Registro.vue")
-  },
-
   {
     path: "/",
     name: "Home",
