@@ -67,7 +67,7 @@
         <li
           :key="pedido.id"
           v-for="pedido in todosLosPedidos.filter(
-            (pedido) => pedido.estado == PE.TERMINADO
+            (pedido) => pedido.estado == PE.LISTO_ENTREGA_LOCAL || pedido.estado == PE.PENDIENTE_ENTREGA
           )"
         >
           <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
@@ -83,9 +83,9 @@
             ></b-spinner>
           </span>
 
-          <b-button variant="success" @click="pedidoTermiando(pedido.id)"
+          <!-- <b-button variant="success" @click="pedidoTermiando(pedido.id)"
             >Pedido terminado
-          </b-button>
+          </b-button> -->
           <b-button variant="danger" @click="pedidoNoCocinado(pedido.id)"
             >Retornar a Cocinando</b-button
           >
@@ -125,21 +125,25 @@ export default {
       this.editPedido(pedido);
     },
 
+    async retornarPedidoPendiente(idPedido) {
+       const pedido = await this.getPedido(idPedido);
+      pedido.estado = PE.APROBADO;
+      this.editPedido(pedido);
+    },
     async pedidoCocinado(idPedido) {
       const pedido = await this.getPedido(idPedido);
-      pedido.estado = PE.TERMINADO;
+      if (pedido.TipoEnvio == 0) {
+        pedido.estado = PE.PENDIENTE_ENTREGA;
+      } else {
+        pedido.estado = PE.LISTO_ENTREGA_LOCAL;
+      }
+
       this.editPedido(pedido);
     },
 
     async pedidoNoCocinado(idPedido) {
       const pedido = await this.getPedido(idPedido);
       pedido.estado = PE.COCINANDO;
-      this.editPedido(pedido);
-    },
-
-    async pedidoTermiando(idPedido) {
-      const pedido = await this.getPedido(idPedido);
-      pedido.estado = PE.TERMINADO;
       this.editPedido(pedido);
     },
   },

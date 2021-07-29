@@ -33,7 +33,7 @@
     </div>
 
     <div class="lista">
-      <h2>Pedidos Aprobados</h2>
+      <h2>Pedidos Mandados a Cocina</h2>
       <ul>
         <li
           :key="pedido.id"
@@ -64,6 +64,132 @@
     </div>
 
     <div class="lista">
+      <h2>Pedidos Cocinando</h2>
+      <ul>
+        <li
+          :key="pedido.id"
+          v-for="pedido in todosLosPedidos.filter(
+            (pedido) => pedido.estado == PE.COCINANDO
+          )"
+        >
+          <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+
+          <span class="estado">
+            Cliente:
+            <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
+            <b-spinner
+              class="spinnerChico"
+              v-show="cargando[pedido.id]"
+              variant="primary"
+              label="Spinning"
+            ></b-spinner>
+          </span>
+
+          <b-button
+            variant="success"
+            @click="retornarPedidoPendiente(pedido.id)"
+            >Retornar a Pendientes
+          </b-button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="lista">
+      <h2>Pedidos para Retirar en Salón</h2>
+      <ul>
+        <li
+          :key="pedido.id"
+          v-for="pedido in todosLosPedidos.filter(
+            (pedido) => pedido.estado == PE.LISTO_ENTREGA_LOCAL
+          )"
+        >
+          <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+
+          <span class="estado">
+            Cliente:
+            <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
+            <b-spinner
+              class="spinnerChico"
+              v-show="cargando[pedido.id]"
+              variant="primary"
+              label="Spinning"
+            ></b-spinner>
+          </span>
+
+          <b-button
+            variant="success"
+            @click="pedidoEntregado(pedido.id)"
+            >Pedido entregado
+          </b-button>
+        </li>
+      </ul>
+    </div>
+
+  
+
+    <div class="lista">
+      <h2>Pedidos en Reparto</h2>
+      <ul>
+        <li
+          :key="pedido.id"
+          v-for="pedido in todosLosPedidos.filter(
+            (pedido) => pedido.estado == PE.PENDIENTE_ENTREGA
+          )"
+        >
+          <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+
+          <span class="estado">
+            Cliente:
+            <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
+            <b-spinner
+              class="spinnerChico"
+              v-show="cargando[pedido.id]"
+              variant="primary"
+              label="Spinning"
+            ></b-spinner>
+          </span>
+
+        <b-button
+            variant="success"
+            @click="pedidoEntregado(pedido.id)"
+            >Pedido entregado
+          </b-button>
+        </li>
+      </ul>
+    </div>
+
+     <div class="lista">
+      <h2>Pedidos Entregados</h2>
+      <ul>
+        <li
+          :key="pedido.id"
+          v-for="pedido in todosLosPedidos.filter(
+            (pedido) => pedido.estado == PE.ENTREGADO
+          )"
+        >
+          <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+
+          <span class="estado">
+            Cliente:
+            <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
+            <b-spinner
+              class="spinnerChico"
+              v-show="cargando[pedido.id]"
+              variant="primary"
+              label="Spinning"
+            ></b-spinner>
+          </span>
+
+          <b-button
+            variant="success"
+            @click="retornarPedidoPendiente(pedido.id)"
+            >Retornar a pendiente de entrega
+          </b-button>
+        </li>
+      </ul>
+    </div>
+
+     <div class="lista">
       <h2>Pedidos Cancelados</h2>
       <ul>
         <li
@@ -106,7 +232,7 @@ import PE from "../services/PedidoEstados";
 
 export default {
   data() {
-    return {PE: PE};
+    return { PE: PE };
   },
   computed: {
     ...mapGetters(["todosLosPedidos", "cargando", "todosLosClientes"]),
@@ -137,6 +263,11 @@ export default {
       pedido.estado = PE.PENDIENTE;
       this.editPedido(pedido);
     },
+    async pedidoEntregado(idPedido){
+        const pedido = await this.getPedido(idPedido);
+      pedido.estado = PE.ENTREGADO;
+      this.editPedido(pedido);
+    }
   },
   async created() {
     await this.fetchTodosLosPedidos();
