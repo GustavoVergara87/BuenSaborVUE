@@ -114,7 +114,7 @@ export default {
 
     verDetallePedido(idPedido) {
       this.$router.push({
-        name: "CajeroPedidoDetalle",
+        name: "CocineroPedidoDetalle",
         params: { idPedido: idPedido },
       });
     },
