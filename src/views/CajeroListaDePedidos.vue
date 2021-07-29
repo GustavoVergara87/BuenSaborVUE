@@ -291,5 +291,10 @@ export default {
 .lista {
   float: left;
   width: 33.3%;
+  border: 1px solid black;
+  height: 300px;
+  overflow: auto;
+
+
 }
 </style>

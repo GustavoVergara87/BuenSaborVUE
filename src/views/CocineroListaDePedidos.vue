@@ -132,7 +132,8 @@ export default {
     },
     async pedidoCocinado(idPedido) {
       const pedido = await this.getPedido(idPedido);
-      if (pedido.TipoEnvio == 0) {
+
+      if (pedido.tipoEnvio == 0) {
         pedido.estado = PE.PENDIENTE_ENTREGA;
       } else {
         pedido.estado = PE.LISTO_ENTREGA_LOCAL;
