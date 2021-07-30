@@ -40,8 +40,8 @@
 
           <!-- -------------------------------------------------------Platos -->
           <b-nav-item>
-            <router-link :to="{ name: 'CocineroPlatos' }" class="nav-link">
-              Platos <i class="fas fa-utensils"></i>
+            <router-link :to="{ name: 'Recetario' }" class="nav-link">
+              Recetario <i class="fas fa-utensils"></i>
             </router-link>
           </b-nav-item>
           <!-- -------------------------------------------------------FinPlatos -->

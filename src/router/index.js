@@ -126,9 +126,9 @@ const routes = [
         component: () => import("../views/CocineroPedidoDetalle.vue"),
       },
       {
-        path: "/cocinero/Platos",
-        name: "CocineroPlatos",
-        component: () => import("../views/Platos.vue"),
+        path: "/cocinero/recetario",
+        name: "Recetario",
+        component: () => import("../views/Recetario.vue"),
       },
       {
         path: "/cocinero/Editar_Articulo/:id",
