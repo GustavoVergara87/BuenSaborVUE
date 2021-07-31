@@ -10,6 +10,27 @@
   left: calc(50% - (var(--size) / 2));
 }
 
+/* ----------------------------------Bootstraup Fixes */
+.navbar-nav{
+  /*Hace que los items de las navbar se alinien verticalmente*/  
+  align-items: center;
+}
+
+.nav-link-semiopaco > a > * {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.modal-dialog {
+  pointer-events: auto;
+}
+.modalDialog2 {
+  pointer-events: auto;
+}
+#storeboxitem { /* A child element */
+  pointer-events: auto;
+}
+/* ----------------------------------Fin Bootstraup Fixes */
+
 .outlined {
   outline: 0px solid orange;
 }

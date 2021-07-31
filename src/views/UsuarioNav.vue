@@ -1,15 +1,15 @@
 <template>
   <div>
-    <NavBarUsuario></NavBarUsuario>
+    <NavBarCliente></NavBarCliente>
     <router-view />
   </div>
 </template>
 
 <script>
-import NavBarUsuario from "@/components/NavBarUsuario.vue";
+import NavBarCliente from "@/components/NavBarCliente.vue";
 export default {
   components: {
-    NavBarUsuario,
+    NavBarCliente,
   },
 };
 </script>

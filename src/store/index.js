@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import Usuario from "./modules/Usuario"
+import Login from "./modules/Login"
 import Platos from "./modules/Platos"
 import Articulos from "./modules/Articulos"
 import Pedidos from "./modules/Pedidos"
@@ -18,7 +18,7 @@ const store = new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
-  modules: { Usuario, Platos, Articulos, Pedidos, RubrosArticulos, Carrito, Clientes, Notificaciones },
+  modules: { Login, Platos, Articulos, Pedidos, RubrosArticulos, Carrito, Clientes, Notificaciones },
   plugins: [
     new VuexPersistence({
       storage: window.sessionStorage //.localStorage guarda los vuex "Para siempre" Sesion storage hasta que se cierre la ventana

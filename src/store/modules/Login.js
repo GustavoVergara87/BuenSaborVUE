@@ -1,23 +1,22 @@
 import servicio from "../../services/AutenticacionController";
 
 const state = {
-    rol: "",
-    rolId:0,
-    usuario: "",
-    token: "",
+    usuario: {
+        nombreUsuario: "",
+        rol: "",
+        rolId: 0,
+    },
     cliente: {
-        id:"",
+        id: "",
         nombre: "",
         apellido: "",
-        telefono: "" ,
-        // email: "",
+        telefono: "",
         domicilios: []
-    }
+    },
+    token: "",
 };
 
 const getters = {
-    traerRol: (state) => state.rol,
-    traerRolId: (state) => state.rolId,
     traerUsuario: (state) => state.usuario,
     traerToken: (state) => state.token,
     traerCliente: (state) => state.cliente,
@@ -28,11 +27,8 @@ const actions = {
     resetUsuarios({ commit }) {
         commit('resetUsuarios')
     },
-    setRol({ commit }, rol) {
-        commit('setRol', rol)
-    },
-    setRolId({ commit }, rolId) {
-        commit('setRolId', rolId)
+    setCliente({ commit }, cliente) {
+        commit('setRol', cliente)
     },
     setUsuario({ commit }, usuario) {
         commit('setUsuario', usuario)
@@ -43,22 +39,20 @@ const actions = {
 
     async obtenerJwToken({ commit }, AuthRequest) {
         const responseJson = await servicio.obtenerJwToken(AuthRequest)
-        commit('setRol', responseJson.rol);
-        commit('setRolId', responseJson.rolId);
-        commit('setUsuario', responseJson.nombreUsuario);
-        commit('setToken', responseJson.token);
+        if (responseJson == null) return null
+
+        commit('setUsuario', responseJson.usuario);
         commit('setCliente', responseJson.cliente);
-        // console.log(responseJson)
+        commit('setToken', responseJson.token);
+
         return responseJson
     },
 
     async obtenerJwTokenConGoogle({ commit }, id_token) {
-        const responseJson =await servicio.obtenerGoogleIdToken(id_token)
-        commit('setRol', responseJson.rol);
-        commit('setRolId', responseJson.rolId);
-        commit('setUsuario', responseJson.nombreUsuario);
-        commit('setToken', responseJson.token);
+        const responseJson = await servicio.obtenerGoogleIdToken(id_token)
+        commit('setUsuario', responseJson.usuario);
         commit('setCliente', responseJson.cliente);
+        commit('setToken', responseJson.token);
         // console.log(responseJson)
         return responseJson
     },
@@ -68,13 +62,16 @@ const actions = {
 
 
 const mutations = {
-    resetUsuarios: (state) =>{
-        state.rol = "";
-        state.rolId = 0;
-        state.usuario = "";
+    resetUsuarios: (state) => {
+
+        state.usuario.nombreUsuario = "";
+        state.usuario.rol = "";
+        state.usuario.rolId = 0;
+        // state.cliente={}; //check reactivity
         state.cliente.id = "";
         state.cliente.nombre = "";
         state.cliente.apellido = "";
+        // state.cliente.domicilios=[]; //check reactivity
         state.cliente.domicilios.splice(0);
     },
     setRol: (state, rol) => state.rol = rol,

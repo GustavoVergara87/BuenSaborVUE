@@ -53,7 +53,7 @@ export default {
     };
   },
   props: ["plato"],
-  computed: { ...mapGetters(["traerRol"]) },
+  computed: { ...mapGetters(["traerUsuario"]) },
   methods: {
     ...mapActions([
       "addCarrito",

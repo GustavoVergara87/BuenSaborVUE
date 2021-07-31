@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div>
-      <NavBarUsuario></NavBarUsuario>
+      <NavBarCliente></NavBarCliente>
       <b-jumbotron header="El Buen Sabor" lead="Comida">
         <p>Buena comida</p>
       </b-jumbotron>
@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import NavBarUsuario from "@/components/NavBarUsuario.vue";
+import NavBarCliente from "@/components/NavBarCliente.vue";
 export default {
   name: "Home",
   components: {
-    NavBarUsuario
+    NavBarCliente
   },
   mounted() {
     // this.getPlatos();

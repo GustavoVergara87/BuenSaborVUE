@@ -24,8 +24,6 @@
 </template>
 
 <script>
-import { googleLogin } from "../services/Login.js";
-
 export default {
   name: "test",
   data() {
@@ -36,7 +34,10 @@ export default {
   },
 
   methods: {
-    googleLogin,
+    async googleLogin(id_token) {
+      const resp = await this.obtenerJwTokenConGoogle(id_token);
+      this.posLogin(resp);
+    },
     async handleClickSignIn() {
       await this.$gAuth
         .signIn()
@@ -83,10 +84,10 @@ export default {
   background-color: white;
   filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.5));
   padding: 14px 20px;
-  
+
   margin-top: 1.5em;
   margin-bottom: 0.5em;
-  
+
   border: none;
   cursor: pointer;
   width: 100%;
@@ -95,7 +96,5 @@ export default {
 .google-button:active {
   filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.5));
   transform: translateX(2px) translateY(2px);
-
 }
-
 </style>

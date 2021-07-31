@@ -19,7 +19,7 @@
       <p class="precio">${{ numFormat(plato.PrecioVenta) }}</p>
       <p>{{ plato.Descripcion }}</p>
       <template
-        v-if="['Administrador', 'Cajero', 'Cocinero'].includes(traerRol)"
+        v-if="['Cocinero'].includes(traerUsuario.rol)"
       >
         <p>Ingredientes:</p>
         <ul>
@@ -37,12 +37,10 @@
     </b-button>
 
     <!-- --------------------------------------------Editar y Borrar -->
-    <template v-if="['Administrador', 'Cajero', 'Cocinero'].includes(traerRol)">
+    <template v-if="['Cocinero'].includes(traerUsuario.rol)">
       <router-link
         :to="
-          traerRol == 'Administrador'
-            ? { name: 'AdminEditarArticulo', params: { id: plato.id } }
-            : traerRol == 'Cocinero'
+            traerUsuario.rol == 'Cocinero'
             ? { name: 'CocineroEditarArticulo', params: { id: plato.id } }
             : {}
         "
@@ -50,10 +48,7 @@
         <i class="fas fa-edit edit"></i>
       </router-link>
     </template>
-
-    <template v-if="['Administrador'].includes(traerRol)">
-      <i @click="Borrarplato" class="fas fa-trash-alt delete"></i>
-    </template>
+    
   </b-card>
 </template>
 
@@ -68,7 +63,7 @@ export default {
     };
   },
   props: ["plato"],
-  computed: mapGetters(["traerRol"]),
+  computed: mapGetters(["traerUsuario"]),
   methods: {
     ...mapActions(["deleteArticulo", "addCarrito"]),
     numFormat,

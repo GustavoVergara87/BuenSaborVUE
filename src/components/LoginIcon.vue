@@ -1,0 +1,53 @@
+<template>
+  <div>
+    <b-nav-item-dropdown
+      text=""
+      block
+      class="m-2 nav-link-mod nav-link-semiopaco"
+      no-caret
+      menu-class=""
+    >
+      <template slot="button-content">
+        <div class="avatar-nombre-contenedor">
+          <i class="fas fa-user-circle avatar"></i>
+          {{ nombre }}
+        </div>
+      </template>
+
+      <b-dropdown-item v-b-modal.modal-login> Login </b-dropdown-item>
+
+      <b-dropdown-item v-b-modal.modal-registro>Registrarse</b-dropdown-item>
+
+      <b-dropdown-divider></b-dropdown-divider>
+      <b-dropdown-item @click="logout()"> Salir </b-dropdown-item>
+    </b-nav-item-dropdown>
+  </div>
+</template>
+
+<script>
+export default {
+  components: {
+  },
+  props: ["nombre"],
+  data() {
+    return {
+      loginShow: false,
+      registroShow: false,
+    };
+  },
+  methods: {},
+};
+</script>
+
+<style scoped>
+.avatar-nombre-contenedor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.avatar {
+  font-size: 1.5em;
+}
+</style>          
+          
+

@@ -12,8 +12,9 @@ const routes = [
     path: "/cliente",
     name: "cliente",
     beforeEnter: (to, from, next) => {
-      const rolesAutorizados = ["Cliente", "Administrador", "Cajero", "Cocinero", ""]
-      const rol = Store.getters['traerRol']
+      const rolesAutorizados = ["Cliente", "Cajero", "Cocinero", ""]
+      const usuario = Store.getters['traerUsuario']
+      const rol=usuario.rol
       if (rolesAutorizados.includes(rol)) next()
       else next(false)
     },
@@ -39,48 +40,14 @@ const routes = [
     ]
   },
 
-  //----------------------------------------------------------------------ADMINISTRADOR
-  {
-    path: "/administrador",
-    name: "administrador",
-    beforeEnter: (to, from, next) => {
-      const rolesAutorizados = ["Administrador"]
-      const rol = Store.getters['traerRol']
-      if (rolesAutorizados.includes(rol)) next()
-      else next(false)
-    },
-    component: () => import("../views/AdministradorNav.vue"),
-
-    children: [
-      {
-        path: "/administrador/Platos",
-        name: "AdministradorPlatos",
-        component: () => import("../views/Platos.vue"),
-      },
-      {
-        path: "/administrador/Agregar_Articulo",
-        name: "AdminAgregarArticulo",
-        component: () => import("../views/AgregarEditar/AE_Articulo.vue"),
-        props: { comportamiento: 'Agregar', }
-      },
-      {
-        path: "/administrador/Editar_Articulo/:id",
-        name: "AdminEditarArticulo",
-        component: () => import("../views/AgregarEditar/AE_Articulo.vue"),
-        props: { comportamiento: 'Editar', }
-      },
-    ]
-
-  },
-  //-----------------------------------------------------------------------------------
-
   //---------------------------------------------------------------------------CAJERO
   {
     path: "/cajero",
     name: "cajero",
     beforeEnter: (to, from, next) => {
       const rolesAutorizados = ["Administrador", "Cajero"]
-      const rol = Store.getters['traerRol']
+      const usuario = Store.getters['traerUsuario']
+      const rol=usuario.rol
       if (rolesAutorizados.includes(rol)) next()
       else next(false)
     },
@@ -107,8 +74,9 @@ const routes = [
     path: "/cocinero",
     name: "cocinero",
     beforeEnter: (to, from, next) => {
-      const rolesAutorizados = ["Administrador", "Cocinero"]
-      const rol = Store.getters['traerRol']
+      const rolesAutorizados = ["Cocinero"]
+      const usuario = Store.getters['traerUsuario']
+      const rol=usuario.rol
       if (rolesAutorizados.includes(rol)) next()
       else next(false)
     },
@@ -145,10 +113,6 @@ const routes = [
     name: "Home",
     component: () => import("../views/Home.vue")
   },
-
-
-
-
 
 ];
 

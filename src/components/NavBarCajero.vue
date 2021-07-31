@@ -7,9 +7,9 @@
         <b-navbar-brand>
           El Buen Sabor
           <br />
-          <template v-if="traerRol">
+          <template v-if="traerUsuario.rol">
             <span class="rol d-flex justify-content-center">
-              ({{ traerRol }})
+              ({{ traerUsuario.rol }})
             </span>
           </template>
         </b-navbar-brand>
@@ -20,11 +20,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <!-- --------------------------------------------------------Login -->
-          <b-nav-item>
-            <router-link :to="'/login'" class="nav-link btn btn-success">
-              Login
-            </router-link>
-          </b-nav-item>
+          <LoginIcon :nombre="traerUsuario.nombreUsuario"></LoginIcon>
           <!-- --------------------------------------------------------FinLogin -->
 
           <!-- -------------------------------------------------------ListaPedidos -->
@@ -61,9 +57,14 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import LoginIcon from "./LoginIcon.vue";
+
 export default {
+  components: {
+    LoginIcon,
+  },
   computed: {
-    ...mapGetters(["todosLosRubrosArticulos", "traerRol", "getCarrito"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
+    ...mapGetters(["todosLosRubrosArticulos", "traerUsuario", "getCarrito"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
     cantidadCarrito() {
       return this.getCarrito.length;
     },
@@ -95,8 +96,8 @@ export default {
         path: element.path,
       });
     });
-  
-  this.$notificacionesHub.$on("Notificacion", this.handleNotificacion);
+
+    this.$notificacionesHub.$on("Notificacion", this.handleNotificacion);
   },
   beforeDestroy() {
     this.$notificacionesHub.$off("Notificacion", this.handleNotificacion);
@@ -104,6 +105,8 @@ export default {
   data() {
     return {
       rutas: [],
+      loginShow: false,
+      registroShow: false,
     };
   },
 };

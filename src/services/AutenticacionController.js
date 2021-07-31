@@ -18,12 +18,31 @@ export async function obtenerJwToken(AuthRequest) {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(AuthRequest),
+    })
+    if (response.status == 400) {
+        console.log(await response.text())
+        return null
+    }
+    if (response.ok) {
+        const responseJson = await response.json();
+        return responseJson
+    }
+}
+
+export async function registrarNuevoCliente(RegistroRequest) {
+    const response = await fetch("/api/Auth/RegistrarCliente", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(RegistroRequest),
     });
     const responseJson = await response.json();
     return responseJson
 }
 
+
+
 export default {
     obtenerGoogleIdToken,
     obtenerJwToken,
+    registrarNuevoCliente,
 }

@@ -6,12 +6,6 @@
       <router-link :to="{ name: 'Home' }">
         <b-navbar-brand>
           <img src="../../public/images/logo.svg" class="logoPrincipal" />
-          <br />
-          <template v-if="traerRol">
-            <span class="rol d-flex justify-content-center">
-              <!-- ({{ traerRol }}) -->
-            </span>
-          </template>
         </b-navbar-brand>
       </router-link>
       <!-- ------------------------------------------------------FinTitulo y Rol -->
@@ -20,28 +14,7 @@
       <b-collapse id="nav-collapse" is-nav class="outlined">
         <b-navbar-nav>
           <!-- --------------------------------------------------------Login -->
-          <b-nav-item class="nav-item-mod"> </b-nav-item>
-
-          <b-nav-item-dropdown
-            text=""
-            block
-            class="m-2 nav-link-mod nav-link-semiopaco"
-            no-caret
-            menu-class=""
-          >
-            <template slot="button-content">
-              <i class="fas fa-user-circle avatar"></i>
-            </template>
-
-            <b-dropdown-item @click="loginShow = true"> Login </b-dropdown-item>
-
-            <b-dropdown-item @click="registroShow = true"
-              >Registrarse</b-dropdown-item
-            >
-
-            <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item @click="logout()"> Salir </b-dropdown-item>
-          </b-nav-item-dropdown>
+          <LoginIcon :nombre="traerCliente.nombre"></LoginIcon>
           <!-- --------------------------------------------------------FinLogin -->
 
           <!-- -------------------------------------------------------Platos -->
@@ -150,55 +123,27 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-
-    <!-- -------------------------------------------------------Login Modal -->
-    <b-modal
-      v-model="loginShow"
-      ok-only
-      ok-variant="secondary"
-      ok-title="Cancelar"
-      :hide-header="true"
-    >
-      <Login
-        @logeado="loginShow = false"
-        @registrarse="(loginShow = false), (registroShow = true)"
-      ></Login>
-    </b-modal>
-    <!-- -------------------------------------------------------Fin Login Modal-->
-
-    <!-- -------------------------------------------------------Registro Modal-->
-    <b-modal
-      v-model="registroShow"
-      ok-only
-      ok-variant="secondary"
-      ok-title="Cancelar"
-      :hide-header="true"
-    >
-      <Registro @registrado="registroShow = false"></Registro>
-    </b-modal>
-    <!-- -------------------------------------------------------Fin Registro Modal-->
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { logout } from "../services/Login";
-import Login from "../components/Login.vue";
-import Registro from "../components/Registro.vue";
-import Notificacion from "../components/Notificacion.vue";
+
+import Notificacion from "./Notificacion.vue";
+import LoginIcon from "./LoginIcon.vue";
 
 export default {
   components: {
-    Login,
-    Registro,
     Notificacion,
+    LoginIcon,
   },
   computed: {
     ...mapGetters([
       "traerTodasLasNotificaciones",
       "todosLosRubrosArticulos",
-      "traerRol",
+      "traerUsuario",
       "getCarritoCantidad",
+      "traerCliente",
     ]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
     cantidadCarrito() {
       return this.getCarritoCantidad;
@@ -211,7 +156,7 @@ export default {
     onLeave() {
       this.$refs.dropdown.visible = false;
     },
-    logout,
+
     ...mapActions([
       "fetchTodosLosRubrosArticulos",
       "addNotificacion",
@@ -238,15 +183,15 @@ export default {
     },
   },
   created() {
-    const childrenRoutes = this.$router.options.routes.find(
-      (r) => r.name == "cliente"
-    ).children;
-    childrenRoutes.forEach((element) => {
-      this.rutas.push({
-        name: element.name,
-        path: element.path,
-      });
-    });
+    // const childrenRoutes = this.$router.options.routes.find(
+    //   (r) => r.name == "cliente"
+    // ).children;
+    // childrenRoutes.forEach((element) => {
+    //   this.rutas.push({
+    //     name: element.name,
+    //     path: element.path,
+    //   });
+    // });
     this.fetchTodosLosRubrosArticulos();
     // Listen to score changes coming from SignalR events
     this.$notificacionesHub.$on("Notificacion", this.handleNotificacion);
@@ -254,13 +199,12 @@ export default {
   beforeDestroy() {
     this.$notificacionesHub.$off("Notificacion", this.handleNotificacion);
   },
-  data() {
-    return {
-      rutas: [],
-      loginShow: false,
-      registroShow: false,
-    };
-  },
+  // data() {
+  //   return {
+  //     rutas: [],
+
+  //   };
+  // },
 };
 </script>
 
@@ -273,17 +217,9 @@ export default {
 </style>
 
 <style scoped>
-.avatar {
-  font-size: 1.5em;
-}
-
 .campana {
   transform: translateY(0.25em);
   font-size: 1.2em;
-}
-
-.nav-link-semiopaco > a > * {
-  color: rgba(255, 255, 255, 0.9);
 }
 
 .rol {
