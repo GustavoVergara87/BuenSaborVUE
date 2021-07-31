@@ -46,7 +46,7 @@ export default {
     ]),
 
     async setPlatoCocinado(id) {
-      console.log(id);
+  
       let detalle = this.elPedido.detallesPedido.filter(
         (detalle) => detalle.id == id
       );
@@ -62,7 +62,7 @@ export default {
 
     platoListo(detalle) {
       if (detalle.estado == 1) {
-        return "green";
+        return "#7BDA01";
       } else {
         return "red";
       }
