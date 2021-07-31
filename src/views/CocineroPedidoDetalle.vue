@@ -1,38 +1,40 @@
 <template>
-<div>
-  <div v-if="elPedido.detallesPedido[0].cocinado === undefined">
-  comunismo
-  </div>
-    <div v-else>
-     <h1>
-      Detalle Pedido
-    
-    </h1>
-  
-    <ul>
-      <li :key="detalle.index" v-for="detalle in elPedido.detallesPedido" >
-        
-        <div class="elemento" :style="{'background-color' : detalle.cocinado}">
-        <p>
-          {{detalle.cantidad}}
-          </p>  
-      <p>{{detalle.articulo.denominacion}}
-        </p>   <b-button @click="setPlatoCocinado()">Cocinado</b-button>
-      
-        </div>
-        
-      </li>
-     
-    </ul>
-    <b-button @click="setPedidoCocinado(1)">Todo Cocinado</b-button>
-  </div>
+  <div>
+    <div>
+      <h1>Detalle Pedido</h1>
+
+      <ul>
+        <li :key="detalle.index" v-for="detalle in elPedido.detallesPedido">
+          <div
+            class="elemento"
+            :style="{ 'background-color': platoListo(detalle) }"
+          >
+            <p>
+              {{ detalle.cantidad }}
+            </p>
+            <p>{{ detalle.articulo.denominacion }}</p>
+            <b-button @click="setPlatoCocinado(detalle.id)">{{
+              detalle.estado ? "Pendiente" : "Cocinado"
+            }}</b-button>
+          </div>
+        </li>
+      </ul>
+      <b-button @click="volver()">Volver</b-button>
+      <b-button @click="setPedidoCocinado()">Todo Cocinado</b-button>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import PE from "../services/PedidoEstados";
+
 export default {
-    computed: {
+  data() {
+    return { PE: PE };
+  },
+
+  computed: {
     ...mapGetters(["elPedido"]),
   },
   methods: {
@@ -43,23 +45,45 @@ export default {
       "getCliente",
     ]),
 
-    setPlatoCocinado() {
-      this.elementoListo = "#3ade5b";
+    async setPlatoCocinado(id) {
+      console.log(id);
+      let detalle = this.elPedido.detallesPedido.filter(
+        (detalle) => detalle.id == id
+      );
+
+      detalle[0].estado = +!detalle[0].estado;
+
+      await fetch("/api/DetallesPedidos/" + id, {
+        method: "PUT",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(detalle[0]),
+      });
     },
-    setPedidoCocinado() {
-      //settear el pedido completo como cocinado y volver a la lista de pedidos
+
+    platoListo(detalle) {
+      if (detalle.estado == 1) {
+        return "green";
+      } else {
+        return "red";
+      }
+    },
+
+    async setPedidoCocinado() {
+      if (this.elPedido.tipoEnvio == 0) {
+        this.elPedido.estado = PE.PENDIENTE_ENTREGA;
+      } else {
+        this.elPedido.estado = PE.LISTO_ENTREGA_LOCAL;
+      }
+      this.editPedido(this.elPedido);
+
+      this.$router.push({ name: "CocineroListaDePedidos" });
+    },
+    volver() {
       this.$router.push({ name: "CocineroListaDePedidos" });
     },
   },
   async created() {
     await this.getPedido(this.$route.params.idPedido);
-
-    this.elPedido.detallesPedido.forEach((detalle) => {
-      detalle.cocinado = false;
-      console.log(detalle.cocinado);
-    });
-
-    console.log(this.elPedido.detallesPedido[0].cocinado)
   },
 };
 </script>
@@ -75,5 +99,8 @@ p {
   background-color: rgb(63, 216, 63);
   border: 1px solid black;
   width: 25%;
+}
+button {
+  margin: 10px;
 }
 </style>
