@@ -7,7 +7,7 @@ const state = {
         rolId: 0,
     },
     cliente: {
-        id: "",
+        id: 0,
         nombre: "",
         apellido: "",
         telefono: "",
@@ -24,8 +24,14 @@ const getters = {
 
 
 const actions = {
-    resetUsuarios({ commit }) {
-        commit('resetUsuarios')
+    resetUsuario({ commit }) {
+        commit('resetUsuario')
+    },
+    resetCliente({ commit }) {
+        commit('resetCliente')
+    },
+    resetToken({ commit }) {
+        commit('resetToken')
     },
     setCliente({ commit }, cliente) {
         commit('setRol', cliente)
@@ -62,23 +68,25 @@ const actions = {
 
 
 const mutations = {
-    resetUsuarios: (state) => {
-
+    resetUsuario: (state) => {
         state.usuario.nombreUsuario = "";
         state.usuario.rol = "";
         state.usuario.rolId = 0;
-        // state.cliente={}; //check reactivity
-        state.cliente.id = "";
+    },
+    resetCliente: (state) => {
+        state.cliente.id = 0;
         state.cliente.nombre = "";
         state.cliente.apellido = "";
-        // state.cliente.domicilios=[]; //check reactivity
-        state.cliente.domicilios.splice(0);
+        if (state.cliente.domicilios != null) {
+            state.cliente.domicilios.splice(0);
+        }
     },
-    setRol: (state, rol) => state.rol = rol,
-    setRolId: (state, rolId) => state.rolId = rolId,
+    resetToken: (state) => {
+        state.token = "";
+    },
     setUsuario: (state, usuario) => state.usuario = usuario,
-    setToken: (state, token) => state.token = token,
     setCliente: (state, cliente) => state.cliente = cliente,
+    setToken: (state, token) => state.token = token,
 };
 
 export default {

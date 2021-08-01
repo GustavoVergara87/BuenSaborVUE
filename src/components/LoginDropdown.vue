@@ -26,16 +26,12 @@
 
 <script>
 export default {
-  components: {
-  },
   props: ["nombre"],
-  data() {
-    return {
-      loginShow: false,
-      registroShow: false,
-    };
+  methods: {
+    logout() {
+      this.$root.$emit("logout"); //this.$root.$emit() emite un evento que puede ser escuchado globalmente
+    },
   },
-  methods: {},
 };
 </script>
 

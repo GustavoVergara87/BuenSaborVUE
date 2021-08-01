@@ -80,13 +80,10 @@ export default {
       this.AuthRequest.NombreUsuario = this.form.Email;
       this.AuthRequest.Clave = this.form.Clave;
 
-      console.log(this.registrarCliente);
-
       await this.registrarNuevoCliente(this.form).then(
-  //      this.$root.$emit("nuevoClienteRegistrado", this.AuthRequest), //this.$root.$emit() emite un evento que puede ser escuchado globalmente
+        this.$root.$emit("nuevoClienteRegistrado", this.AuthRequest), //this.$root.$emit() emite un evento que puede ser escuchado globalmente
         this.$bvModal.hide("modal-registro"),
         this.$bvModal.show("modal-login"),
-
       );
     },
   },

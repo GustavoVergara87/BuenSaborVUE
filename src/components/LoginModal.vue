@@ -65,17 +65,32 @@ export default {
     };
   },
   created() {
-    this.$root.$on('nuevoClienteRegistrado', AuthRequestInicial => {
-       this.AuthRequest = AuthRequestInicial;
+    //Cuando desde RegistroModal se emite el evento "nuevoClienteRegistrado" toma los datos del registro
+    this.$root.$on("nuevoClienteRegistrado", (AuthRequestInicial) => {
+      this.AuthRequest = AuthRequestInicial;
+    });
+    //Cuando un componente (como LoginDropdown) emite un  "logout", ejecuta el metodo logout
+    this.$root.$on("logout", () => {
+      this.logout();
     });
   },
   computed: {
     ...mapGetters(["traerCliente", "traerUsuario"]),
   },
   methods: {
-    ...mapActions(["setUsuario", "obtenerJwToken", "obtenerJwTokenConGoogle"]),
+    ...mapActions([
+      "setUsuario",
+      "obtenerJwToken",
+      "obtenerJwTokenConGoogle",
+      "resetUsuario",
+      "resetCarrito",
+      "resetCliente",
+      "resetNotificaciones",
+    ]),
     async handleLogin() {
-      await this.login(this.AuthRequest).then(this.$emit("logeado"));
+      await this.login(this.AuthRequest).then(
+        this.$bvModal.hide("modal-login")
+      ); //.then(this.$emit("logeado"));
     },
     handleRegistrarse() {
       this.$emit("registrarse");
@@ -96,12 +111,12 @@ export default {
       });
     },
     removeStoredFromAllGroups() {
-      let rolId;
-      if (this.traerUsuario != null) {
-        rolId = this.traerUsuario.RolId;
+      let rolId = 0;
+      if (this.traerUsuario.rolId != 0) {
+        rolId = this.traerUsuario.rolId;
       }
-      let clienteId;
-      if (this.traerCliente != null) {
+      let clienteId = 0;
+      if (this.traerCliente.id != 0) {
         clienteId = this.traerCliente.id;
       }
 
@@ -109,9 +124,8 @@ export default {
         console.log(err);
       });
 
-      if (this.traerCliente == null) return;
       this.$connectionHub
-        .invoke("RemoveClienteIDFromGroup", clienteId)
+        .invoke("RemoveClienteIDFromGroup", parseInt(clienteId))
         .catch((err) => {
           console.log(err);
         });
@@ -127,8 +141,13 @@ export default {
     },
 
     async logout() {
+      //volver al menú principal
+      if (this.$router.currentRoute.name != "Home") {
+      this.$router.push({ name: "Home" });
+      }
       //Reset Vuex
-      await this.resetUsuarios();
+      await this.resetUsuario();
+      await this.resetCliente();
       await this.resetCarrito();
       await this.resetNotificaciones();
 
@@ -138,11 +157,11 @@ export default {
 
     posLogin(resp) {
       let rolId;
-      if (this.traerUsuario != null) {
-        rolId = this.traerUsuario.RolId;
+      if (this.traerUsuario.rolId != 0) {
+        rolId = this.traerUsuario.rolId;
       }
       let clienteId;
-      if (this.traerCliente != null) {
+      if (this.traerCliente.id != 0) {
         clienteId = this.traerCliente.id;
       }
 

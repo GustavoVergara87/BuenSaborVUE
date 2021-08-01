@@ -20,7 +20,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <!-- --------------------------------------------------------Login -->
-          <LoginIcon :nombre="traerUsuario.nombreUsuario"></LoginIcon>
+          <LoginDropdown :nombre="traerUsuario.nombreUsuario"></LoginDropdown>
           <!-- --------------------------------------------------------FinLogin -->
 
           <!-- -------------------------------------------------------ListaPedidos -->
@@ -64,11 +64,11 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import LoginIcon from "./LoginIcon.vue";
+import LoginDropdown from "./LoginDropdown.vue";
 
 export default {
   components: {
-    LoginIcon,
+    LoginDropdown,
   },
   computed: {
     ...mapGetters(["getCarrito","traerUsuario"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo

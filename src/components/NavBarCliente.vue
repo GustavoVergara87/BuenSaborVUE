@@ -14,7 +14,7 @@
       <b-collapse id="nav-collapse" is-nav class="outlined">
         <b-navbar-nav>
           <!-- --------------------------------------------------------Login -->
-          <LoginIcon :nombre="traerCliente.nombre"></LoginIcon>
+          <LoginDropdown :nombre="traerCliente.nombre"></LoginDropdown>
           <!-- --------------------------------------------------------FinLogin -->
 
           <!-- -------------------------------------------------------Platos -->
@@ -130,12 +130,12 @@
 import { mapGetters, mapActions } from "vuex";
 
 import Notificacion from "./Notificacion.vue";
-import LoginIcon from "./LoginIcon.vue";
+import LoginDropdown from "./LoginDropdown.vue";
 
 export default {
   components: {
     Notificacion,
-    LoginIcon,
+    LoginDropdown,
   },
   computed: {
     ...mapGetters([
