@@ -33,7 +33,7 @@ const mutations = {
         Vue.set(notificacion, 'id', Date.now())
         
         state.notificaciones.push(notificacion)
-        console.log(state.notificaciones)
+        //console.log(state.notificaciones)
     },
     deleteFromNotificaciones: (state, id) => state.notificaciones.splice(state.notificaciones.findIndex(a => a.id == id), 1),
 };

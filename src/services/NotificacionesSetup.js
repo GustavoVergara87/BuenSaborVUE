@@ -7,6 +7,8 @@
 
 // connection.start() //{ withCredentials: false } necesario si AllowAnyOrigin esta en el back. Según SO, pero no anda
 // import Vue from "vue";
+import store from "../store/index"
+
 import { HubConnectionBuilder, LogLevel } from '@aspnet/signalr'
 export default {
     install(Vue) {
@@ -26,9 +28,27 @@ export default {
                 })
             return startedPromise
         }
+
         connection.onclose(() => start())
 
         start()
+            .then(() => {
+
+                //Si existe un usuario logeado, debe reconectarlo
+                const clienteId = store.getters.traerCliente.id
+                const rolId = store.getters.traerUsuario.rolId
+
+                if (rolId != 0)
+                    connection.invoke("JoinRolIDToGroup", rolId)
+
+                if (clienteId != 0)
+                    connection.invoke("JoinClienteIDToGroup", clienteId)
+
+            }
+
+            )
+
+
 
         // loggin puede acceder this.$connectionHub para unir a los usuarios a grupos de SignalR
         Vue.prototype.$connectionHub = connection
@@ -43,5 +63,9 @@ export default {
         connection.on('Notificacion', (mensaje, pedido) => {
             notificacionesHub.$emit('Notificacion', { mensaje, pedido })
         })
+
+
+
+
     }
 }

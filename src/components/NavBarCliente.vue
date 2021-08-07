@@ -83,42 +83,15 @@
           <!-- -------------------------------------------------------Notificaciones -->
           <!-- <div @mouseover="onOver" @mouseleave="onLeave"> -->
           <div>
-            <b-nav-item-dropdown
+            <button
               id="campana-notificacion"
-              ref="dropdown"
-              right
-              text=""
-              block
-              class="m-2 nav-link-mod nav-link-semiopaco"
-              no-caret
-              menu-class=""
+              @click="handleNotificaciones"
+              class="btn m-2 nav-link-mod nav-link-semiopaco"
             >
-              <template slot="button-content">
-                <i class="fas fa-bell campana"></i>
-              </template>
-
-              <b-dropdown-form class="notificacion">
-                <template v-for="notificacion in traerTodasLasNotificaciones">
-                  <div :key="notificacion.id">
-                    <div class="cerrar">
-                      <i
-                        @click="deleteNotificacion(notificacion.id)"
-                        class="fas fa-times boton-cerrar-notificacion"
-                      ></i>
-                    </div>
-                    <Notificacion
-                      :id="notificacion.id"
-                      :mensaje="notificacion.mensaje"
-                      :pedido="notificacion.pedido"
-                    ></Notificacion>
-                  </div>
-                </template>
-              </b-dropdown-form>
-
-              <b-dropdown-divider></b-dropdown-divider>
-              <b-dropdown-item> Limpiar notificaciones </b-dropdown-item>
-            </b-nav-item-dropdown>
+              <i class="fas fa-bell campana"></i>
+            </button>
           </div>
+          <Notificaciones ref="notificacion"></Notificaciones>
           <!-- -------------------------------------------------------Fin Notificaciones-->
         </b-navbar-nav>
       </b-collapse>
@@ -128,18 +101,16 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-
-import Notificacion from "./Notificacion.vue";
+import Notificaciones from "./Notificaciones.vue";
 import LoginDropdown from "./LoginDropdown.vue";
 
 export default {
   components: {
-    Notificacion,
     LoginDropdown,
+    Notificaciones,
   },
   computed: {
     ...mapGetters([
-      "traerTodasLasNotificaciones",
       "todosLosRubrosArticulos",
       "traerUsuario",
       "getCarritoCantidad",
@@ -150,61 +121,37 @@ export default {
     },
   },
   methods: {
-    showNotificacion() {
-      this.$refs.dropdown.visible = true;
+    ...mapActions(["fetchTodosLosRubrosArticulos"]),
+    handleNotificaciones() {
+      this.$refs.notificacion.toggleVisibility();
     },
-    onLeave() {
-      this.$refs.dropdown.visible = false;
-    },
-
-    ...mapActions([
-      "fetchTodosLosRubrosArticulos",
-      "addNotificacion",
-      "deleteFromNotificaciones",
-    ]),
-    deleteNotificacion(id) {
-      this.deleteFromNotificaciones(id);
-    },
-
     handleBusqueda(event) {
       event.preventDefault();
+      //volver al menú platos
+      if (this.$router.currentRoute.name != "ClientePlatos") {
+        this.$router.push({ name: "ClientePlatos" });
+      }
       this.$router
         .push({ query: { porPalabraClave: event.target[0].value } })
         .catch(() => {}); //el catch evita que salte un error
     },
     handleBusquedaPorRubro(rubro) {
+      //volver al menú platos
+      if (this.$router.currentRoute.name != "ClientePlatos") {
+        this.$router.push({ name: "ClientePlatos" });
+      }
+
       this.$router.push({ query: { porRubro: rubro } }).catch(() => {}); //el catch evita que salte un error
-    },
-    handleNotificacion(notificacion) {
-      //guarda como viene la notificacion en vuex
-      this.addNotificacion(notificacion);
-      //mostrar las notificaciones
-      this.showNotificacion();
     },
   },
   created() {
-    // const childrenRoutes = this.$router.options.routes.find(
-    //   (r) => r.name == "cliente"
-    // ).children;
-    // childrenRoutes.forEach((element) => {
-    //   this.rutas.push({
-    //     name: element.name,
-    //     path: element.path,
-    //   });
-    // });
     this.fetchTodosLosRubrosArticulos();
-    // Listen to score changes coming from SignalR events
-    this.$notificacionesHub.$on("Notificacion", this.handleNotificacion);
   },
-  beforeDestroy() {
-    this.$notificacionesHub.$off("Notificacion", this.handleNotificacion);
+  data() {
+    return {
+      showNotificaciones: false,
+    };
   },
-  // data() {
-  //   return {
-  //     rutas: [],
-
-  //   };
-  // },
 };
 </script>
 
@@ -314,13 +261,6 @@ export default {
   cursor: pointer;
   padding: 0.5em;
   padding-right: 0em;
-}
-.notificacion {
-  background-color: brown;
-  width: 100%;
-  padding: 0px;
-  margin: 0px;
-  color: white;
 }
 </style>
 
