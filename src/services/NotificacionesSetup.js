@@ -34,7 +34,7 @@ export default {
         start()
             .then(() => {
 
-                //Si existe un usuario logeado, debe reconectarlo
+                //Si existe un usuario logeado en vuex, debe reconectarlo a SignalR
                 const clienteId = store.getters.traerCliente.id
                 const rolId = store.getters.traerUsuario.rolId
 

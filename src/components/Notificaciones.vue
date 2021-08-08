@@ -1,18 +1,13 @@
 <template>
   <div>
-    <transition name="collapsable">
+    <transition name="aparecer-desaparecer">
       <div v-show="show" class="marco">
         <transition name="slide-fade">
           <div v-show="show" class="contenedor-scrolleable">
             <div class="scrolleable">
               <template v-for="notificacion in traerTodasLasNotificaciones">
                 <div :key="notificacion.id">
-                  <div class="cerrar">
-                    <i
-                      @click="deleteNotificacion(notificacion.id)"
-                      class="fas fa-times boton-cerrar-notificacion"
-                    ></i>
-                  </div>
+
                   <Notificacion
                     :id="notificacion.id"
                     :mensaje="notificacion.mensaje"
@@ -20,10 +15,10 @@
                   ></Notificacion>
                 </div>
               </template>
-              <hr />
-              <button id="boton-limpiar-notificaciones">
+              <!-- <hr /> -->
+              <!-- <button id="boton-limpiar-notificaciones">
                 Limpiar notificaciones
-              </button>
+              </button> -->
             </div>
           </div>
         </transition>
@@ -92,20 +87,19 @@ export default {
 .marco {
   position: absolute;
   top: 5em;
-  height: calc(100vh - 7em);
-  background-color: rgb(149, 101, 61);
-  padding: 1em;
   overflow: hidden;
   width: 22em;
-  right: 0px;
+  right: 0.2em;
 }
 .contenedor-scrolleable {
   /* display: flex; */
-  overflow: auto;
-  position: absolute;
-  height: 100vh;
-  background-color: rgb(149, 101, 61);
+  /* overflow: auto; */
+  /* position: absolute; */
+  /* height: 100vh; */
+  /* background-color: rgb(90, 61, 37); */
   padding: 0.5em;
+  padding-top: 1em;
+  margin-top: 0px;
   /* border-radius: 10px; */
   /* border: 1px solid white; */
 }
@@ -172,18 +166,15 @@ export default {
 /*Fin Animacion*/
 
 /*Animacion de entrada y salida*/
-/* Las animaciones de entrada y salida pueden usar */
-/* funciones de espera y duración diferentes.      */
-.collapsable-enter-active {
-  transition: all 0.3s ease;
+.aparecer-desaparecer-leave-active {
+  transition: all 0.3s;
 }
-.collapsable-leave-active {
-  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
-}
-.collapsable-enter,
+
+.aparecer-desaparecer-enter,
 .collapse-leave-to {
   /* transform: translateY(-150px); */
-  opacity: 0;
-}
+  /* opacity: 0; */
+ } 
+ 
 /*Fin Animacion*/
 </style>
