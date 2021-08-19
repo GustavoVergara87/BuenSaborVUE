@@ -6,7 +6,7 @@
            <b-card  :style="{'background-color' :plato.Ingredientes.length==0 ?'red':'green'}">
                 <b-card-title>{{plato.plato}}</b-card-title>
 
-          <b-button @click="verDetallePedidoReceta(pedido.id)">Editar receta</b-button>
+          <b-button @click="verDetallePedidoReceta(plato.id)">Editar receta</b-button>
             </b-card>
 
         
@@ -33,8 +33,16 @@ console.log(tmpPlatosFiltrados)
   },
 
   methods: {
-    ...mapActions(["fetchTodosLosPlatos"]), //los tres puntitos son para que ademas de las actions podamos poner otros metodos
+    ...mapActions(["fetchTodosLosPlatos"]),
+
+      verDetallePedidoReceta(idReceta) {
+      this.$router.push({
+        name: "CocineroEditarReceta",
+        params: { idReceta: idReceta },
+      });
+    },
   },
+  
   async created() {
     await this.fetchTodosLosPlatos();
    

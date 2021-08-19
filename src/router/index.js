@@ -14,7 +14,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       const rolesAutorizados = ["Cliente", "Cajero", "Cocinero", ""]
       const usuario = Store.getters['traerUsuario']
-      const rol=usuario.rol
+      const rol = usuario.rol
       if (rolesAutorizados.includes(rol)) next()
       else next(false)
     },
@@ -47,7 +47,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       const rolesAutorizados = ["Administrador", "Cajero"]
       const usuario = Store.getters['traerUsuario']
-      const rol=usuario.rol
+      const rol = usuario.rol
       if (rolesAutorizados.includes(rol)) next()
       else next(false)
     },
@@ -76,7 +76,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       const rolesAutorizados = ["Cocinero"]
       const usuario = Store.getters['traerUsuario']
-      const rol=usuario.rol
+      const rol = usuario.rol
       if (rolesAutorizados.includes(rol)) next()
       else next(false)
     },
@@ -97,6 +97,11 @@ const routes = [
         path: "/cocinero/recetario",
         name: "Recetario",
         component: () => import("../views/Recetario.vue"),
+      },
+      {
+        path: "/cocinero/EditarReceta/:idReceta",
+        name: "CocineroEditarReceta",
+        component: () => import("../views/CocineroEditarReceta.vue"),
       },
       {
         path: "/cocinero/Editar_Articulo/:id",
