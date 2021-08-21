@@ -31,7 +31,7 @@
                 }}</span>
               </div>
               <!-- ---------------------------------------------------------Direccion de Entrega -->
-              <b-form-group label="Retira en:">
+              <b-form-group label="Retira en:" class="grupoEncabezado">
                 <b-form-radio
                   v-model="form.retiraEn"
                   :value="TE.DOMICILIO"
@@ -59,40 +59,43 @@
               </div>
               <!-- ----------------------------------------------------------------------Fin Direccion de Entrega -->
 
-              <div class="dottedRow">
-                <label class="precio dottedLeft">Descuentos:</label>
+              <div v-show="descuento != 0" class="dottedRow">
+                <label class="precio dottedLeft">Descuento 10%:</label>
                 <span class="dottedDots"></span>
-                <span class="precio dottedRight">{{ PrecioTotal }}</span>
+                <span class="precio dottedRight">
+                  $ {{ numFormat(PrecioTotal * 0.1) }}</span
+                >
               </div>
 
               <!-- ----------------------------------------------------------------------Forma de pago-->
-              <label>Forma de pago:</label>
-              <b-form-radio
-                v-model="form.formaPago"
-                name="Efectivo"
-                value="Efectivo"
-                :disabled="noHayLoggin || form.retiraEn == TE.DOMICILIO"
-                >Efectivo</b-form-radio
-              >
-              <b-form-radio
-                v-model="form.formaPago"
-                name="MercadoPago"
-                value="MercadoPago"
-                :disabled="noHayLoggin"
-                >Mercado Pago</b-form-radio
-              >
+              <b-form-group label="Forma de pago:" class="grupoEncabezado">
+                <b-form-radio
+                  v-model="form.formaPago"
+                  name="Efectivo"
+                  value="Efectivo"
+                  :disabled="noHayLoggin || form.retiraEn == TE.DOMICILIO"
+                  >Efectivo</b-form-radio
+                >
+                <b-form-radio
+                  v-model="form.formaPago"
+                  name="MercadoPago"
+                  value="MercadoPago"
+                  :disabled="noHayLoggin"
+                  >Mercado Pago</b-form-radio
+                >
+              </b-form-group>
               <!-- ----------------------------------------------------------------------Fin Forma de pago-->
 
               <div class="dottedRow">
                 <label class="precio dottedLeft">Total:</label>
                 <span class="dottedDots"></span>
                 <span class="precio dottedRight"
-                  >$ {{ numFormat(PrecioTotal) }}</span
+                  ><b>$ {{ numFormat(PrecioTotal) }}</b></span
                 >
               </div>
 
               <b-button
-                class="btn btn-success"
+                class="btn btn-success abajoDerecha"
                 @click="confirmarCompra"
                 :disabled="noHayLoggin"
                 >Confirmar compra</b-button
@@ -148,12 +151,20 @@ export default {
 
   computed: {
     ...mapGetters(["getCarrito", "traerUsuario", "traerCliente"]),
-    PrecioTotal() {
+
+    sumaDeDetalles() {
       return this.getCarrito.reduce(
         (suma, item) =>
           suma + this.val(item.PrecioVenta) * this.val(item.cantidad),
         0
       );
+    },
+    descuento() {
+      if (this.form.retiraEn == TE.LOCAL) return 0.1;
+      return 0;
+    },
+    PrecioTotal() {
+      return this.sumaDeDetalles * (1 - this.descuento);
     },
     noHayLoggin() {
       return this.traerCliente.nombre == "";
@@ -252,6 +263,16 @@ export default {
 
 
 <style  scoped>
+
+.abajoDerecha{
+  margin-top: 1em;
+  float: right;
+}
+
+.grupoEncabezado {
+  margin-top: 1em;
+}
+
 .resumenPedidoMarco {
   margin: 2em;
 }

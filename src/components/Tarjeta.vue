@@ -1,6 +1,5 @@
 <template>
   <b-card v-show="mostrar" tag="article" class="mb-2 tarjeta">
-
     <div class="plusOneContainer">
       <transition name="slide-fade">
         <div v-show="showPlusOne" class="plusOne">+1</div>
@@ -13,7 +12,10 @@
       <b-card-img
         :src="'/image/' + plato.Imagen"
         :alt="plato.Imagen"
-        style="max-height: 500px"
+        style="min-height: 200px; max-height: 500px"
+        loading="lazy"
+        :class="imageState"
+        @load="imagenCargada"
       ></b-card-img>
     </router-link>
 
@@ -59,17 +61,23 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { numFormat } from "../services/Auxiliares.js";
+
 export default {
   name: "tarjeta",
   data() {
     return {
       mostrar: true,
       showPlusOne: false,
+      imageState: "loading",
     };
   },
   props: ["plato"],
   computed: mapGetters(["traerUsuario"]),
   methods: {
+    imagenCargada() {
+      // console.log("imagenCargada");
+      this.imageState = "loaded";
+    },
     ...mapActions(["deleteArticulo", "addCarrito"]),
     numFormat,
     async Borrarplato() {
@@ -84,6 +92,31 @@ export default {
 </script>
 
 <style  scoped>
+.loading {
+  background: transparent
+    url("https://miro.medium.com/max/882/1*9EBHIOzhE1XfMYoKz1JcsQ.gif") center
+    no-repeat;
+}
+
+.loaded {
+  animation: bounce 0.8s ease;
+}
+
+@keyframes bounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.5, 0.5);
+  }
+    20% {
+    opacity: 1;
+    transform: scale(1.1, 1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1, 1);
+  }
+}
+
 /*Animacion de entrada y salida*/
 
 .slide-fade-enter-active {
