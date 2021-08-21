@@ -9,6 +9,14 @@ export async function addDomicilio(domicilio) {
     return responseJson
 }
 
+export async function editDomicilio(domicilio) {
+     await fetch("/api/Domicilios/" + domicilio.id, {
+        method: "PUT",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(domicilio),
+    })
+}
+
 export default {
     addDomicilio,
 }

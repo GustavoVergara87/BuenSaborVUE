@@ -1,10 +1,12 @@
 <template>
-  <b-card
-    v-show="mostrar"
-    tag="article"
-    style="position: relativie; min-width: 15rem; max-width: 20rem"
-    class="mb-2 tarjeta"
-  >
+  <b-card v-show="mostrar" tag="article" class="mb-2 tarjeta">
+
+    <div class="plusOneContainer">
+      <transition name="slide-fade">
+        <div v-show="showPlusOne" class="plusOne">+1</div>
+      </transition>
+    </div>
+
     <b-card-title :title="plato.plato"></b-card-title>
 
     <router-link :to="{ name: 'DetallePlato', params: { id: plato.id } }">
@@ -18,9 +20,7 @@
     <b-card-text>
       <p class="precio">${{ numFormat(plato.PrecioVenta) }}</p>
       <p>{{ plato.Descripcion }}</p>
-      <template
-        v-if="['Cocinero'].includes(traerUsuario.rol)"
-      >
+      <template v-if="['Cocinero'].includes(traerUsuario.rol)">
         <p>Ingredientes:</p>
         <ul>
           <li v-for="ingrediente in plato.Ingredientes" :key="ingrediente.id">
@@ -32,7 +32,11 @@
     </b-card-text>
     <!-- --------------------------------------------AddToCarrito -->
 
-    <b-button @click="addCarrito(plato)" class="button" variant="success">
+    <b-button
+      @click="addCarrito(plato), (showPlusOne = !showPlusOne)"
+      class="button"
+      variant="success"
+    >
       <i class="fas fa-shopping-cart addToCarrito"></i>
     </b-button>
 
@@ -40,7 +44,7 @@
     <template v-if="['Cocinero'].includes(traerUsuario.rol)">
       <router-link
         :to="
-            traerUsuario.rol == 'Cocinero'
+          traerUsuario.rol == 'Cocinero'
             ? { name: 'CocineroEditarArticulo', params: { id: plato.id } }
             : {}
         "
@@ -48,9 +52,9 @@
         <i class="fas fa-edit edit"></i>
       </router-link>
     </template>
-    
   </b-card>
 </template>
+
 
 <script>
 import { mapGetters, mapActions } from "vuex";
@@ -60,6 +64,7 @@ export default {
   data() {
     return {
       mostrar: true,
+      showPlusOne: false,
     };
   },
   props: ["plato"],
@@ -79,11 +84,48 @@ export default {
 </script>
 
 <style  scoped>
+/*Animacion de entrada y salida*/
+
+.slide-fade-enter-active {
+  animation: rise 0.3s ease;
+}
+
+.slide-fade-leave-active {
+  animation: rise 0.3s ease;
+}
+
+@keyframes rise {
+  0% {
+    opacity: 0;
+    transform: translateY(+1.5em);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-1.5em);
+  }
+}
+
+/*Fin Animacion*/
+.plusOneContainer {
+  position: absolute;
+  right: 1em;
+  bottom: 2em;
+  /* outline: 1px black solid; */
+}
+
+.plusOne {
+  font-size: 150%;
+  margin-right: 0%;
+  opacity: 0;
+}
+
 i {
   font-size: 150%;
   position: relative;
   bottom: 0px;
-  /* right: 0px; */
   float: right;
   cursor: pointer;
   margin: 5%;
@@ -113,6 +155,9 @@ i {
 
 .tarjeta {
   filter: drop-shadow(0px 0px 8px #dfb6a6);
+  position: relative;
+  min-width: 15rem;
+  max-width: 20rem;
 }
 
 .button {

@@ -13,25 +13,38 @@
       <span>Pedido: {{ pedido.id }}</span>
       <span>fecha: {{ pedido.fecha.slice(0, 10) }}</span>
       <span>Hora estimada: {{ pedido.horaEstimadaFin.slice(11, 16) }}</span>
-      <span>Tipo de Envio: {{ pedido.tipoEnvio }}</span>
+      <span>Tipo de Envio: {{ pedido.tipoEnvio==TE.DOMICILIO ? "Domicilio" : "Local" }}</span>
       <span>Total: {{ pedido.total }}</span>
-      <span>domicilioID: {{ pedido.domicilioID }}</span>
+      <span
+        >Domicilio:
+        {{
+          pedido.domicilio.calle +
+          ", " +
+          pedido.domicilio.numero +
+          ", " +
+          pedido.domicilio.localidad
+        }}</span
+      >
     </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import TE from "../services/TipoEnvio";
 
 export default {
   props: ["id", "mensaje", "pedido"],
-
+  data() {
+    return {
+      TE: TE, //permite usar el autocompletar dentro del template para saber a que tipoenvio nos referimos
+    };
+  },
   methods: {
     ...mapActions(["deleteFromNotificaciones"]),
     deleteNotificacion() {
       this.deleteFromNotificaciones(this.id);
     },
-
   },
 };
 </script>
@@ -48,8 +61,8 @@ export default {
   text-align: center;
 }
 
-.texto-pedido{
-   padding-bottom: 1em;
+.texto-pedido {
+  padding-bottom: 1em;
 }
 
 .texto-pedido > span {

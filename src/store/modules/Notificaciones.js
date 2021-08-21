@@ -14,8 +14,6 @@ const actions = {
     },
 
     async addNotificacion({ commit },notificacion) {
-        
-        
         commit('addNotificacion',notificacion)
     },
 

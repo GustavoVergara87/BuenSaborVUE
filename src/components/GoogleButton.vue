@@ -1,44 +1,53 @@
 
 <template>
   <div>
-    <button
-      class="google-button"
-      @click="handleClickSignIn"
-      v-if="!isSignIn"
-      :disabled="!isInit"
-    >
-      <img src="../../public/images/GoogleLogo.svg" />
-      Iniciar sesión con Google
-    </button>
+    <div class="centrarContenido" v-show="!isGoogleLoginChecked">
+      <b-spinner
+        class="spinnerMediano"
+        variant="primary"
+        label="Spinning"
+      ></b-spinner>
+    </div>
+    <div v-show="isGoogleLoginChecked">
+      <button
+        class="google-button"
+        @click="handleClickSignIn"
+        v-if="!isSignIn"
+        :disabled="!isInit"
+      >
+        <img src="../../public/images/GoogleLogo.svg" />
+        Iniciar sesión con Google
+      </button>
 
-    <button
-      class="google-button"
-      @click="handleClickSignOut"
-      v-if="isSignIn"
-      :disabled="!isInit"
-    >
-      <img src="../../public/images/GoogleLogo.svg" />
-      Cerrar sesión con Google
-    </button>
+      <button
+        class="google-button"
+        @click="handleClickSignOut"
+        v-if="isSignIn"
+        :disabled="!isInit"
+      >
+        <img src="../../public/images/GoogleLogo.svg" />
+        Cerrar sesión con Google
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "test",
   data() {
     return {
+      isGoogleLoginChecked: false,
       isInit: false,
       isSignIn: false,
     };
   },
 
   methods: {
-    async googleLogin(id_token) {
-      const resp = await this.obtenerJwTokenConGoogle(id_token);
-      this.posLogin(resp);
-    },
+    ...mapActions(["obtenerJwTokenConGoogle"]),
     async handleClickSignIn() {
+      this.isGoogleLoginChecked = false;
       await this.$gAuth
         .signIn()
         .then(async (GoogleUser) => {
@@ -49,10 +58,15 @@ export default {
           //   console.log("getAuthResponse", GoogleUser.getAuthResponse());
           this.isSignIn = this.$gAuth.isAuthorized;
           const Auth = GoogleUser.getAuthResponse();
-          this.googleLogin(Auth.id_token).then(this.$emit("logeado"));
+          this.obtenerJwTokenConGoogle(Auth.id_token).then(() => {
+            this.isGoogleLoginChecked = true;
+            this.$emit("logeado");
+          });
         })
         .catch((error) => {
-          console.log("error", error);
+          if (error.error == "popup_closed_by_user")
+            this.isGoogleLoginChecked = true;
+          // console.log("error", error);
         });
     },
 
@@ -71,13 +85,21 @@ export default {
     let checkGauthLoad = setInterval(function () {
       that.isInit = that.$gAuth.isInit;
       that.isSignIn = that.$gAuth.isAuthorized;
+      that.isGoogleLoginChecked = true;
       if (that.isInit) clearInterval(checkGauthLoad);
-    }, 1000);
+    }, 500);
   },
 };
 </script>
 
 <style>
+.centrarContenido {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  height: 86px;
+}
+
 .google-button {
   background-color: #ffffff;
   color: rgb(0, 0, 0);

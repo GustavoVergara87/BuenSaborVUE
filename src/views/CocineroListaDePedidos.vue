@@ -155,11 +155,6 @@ export default {
 </script>
 
 <style scoped>
-.spinnerChico {
-  --size: 1rem;
-  width: var(--size);
-  height: var(--size);
-}
 
 .estado {
   display: inline-block;

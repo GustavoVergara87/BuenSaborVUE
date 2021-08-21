@@ -30,82 +30,34 @@
                   traerCliente.telefono
                 }}</span>
               </div>
-              <!-- --------------------------------------------------------------------------------Direccion de Entrega -->
+              <!-- ---------------------------------------------------------Direccion de Entrega -->
               <b-form-group label="Retira en:">
                 <b-form-radio
                   v-model="form.retiraEn"
-                  name="Domicilio"
-                  value="0"
+                  :value="TE.DOMICILIO"
                   :disabled="noHayLoggin"
                   @change="soloHabilitarMercadoPago"
                   >Domicilio</b-form-radio
                 >
                 <b-form-radio
                   v-model="form.retiraEn"
-                  name="Local"
-                  value="1"
+                  :value="TE.LOCAL"
                   :disabled="noHayLoggin"
                   >Local</b-form-radio
                 >
               </b-form-group>
 
-              <div v-show="form.retiraEn == '0'">
+              <div v-show="form.retiraEn == TE.DOMICILIO">
                 <b-form-group label="Direccion de entrega:">
-                  <b-form-radio
-                    v-model="domicilio"
-                    name="DomicilioGuardado"
-                    value="DomicilioGuardado"
+                  <DomiciliosLista
                     :disabled="noHayLoggin"
-                    >Guardado</b-form-radio
-                  >
-                  <b-form-radio
-                    v-model="domicilio"
-                    name="DomicilioNuevo"
-                    value="DomicilioNuevo"
-                    :disabled="noHayLoggin"
-                    >Nuevo</b-form-radio
-                  >
-                </b-form-group>
-
-                <b-form-group
-                  label=""
-                  v-show="domicilio == 'DomicilioGuardado'"
-                >
-                  <b-form-select
                     v-model="form.direccionEntrega"
-                    required
-                    :disabled="noHayLoggin"
-                  >
-                    <option
-                      v-for="domicilio in domicilios"
-                      v-bind:value="domicilio.value"
-                      v-bind:key="domicilio.value"
-                    >
-                      {{ domicilio.text }}
-                    </option>
-                  </b-form-select>
+                    :modoEditar="false"
+                    ref="DomiciliosListaCarrito"
+                  ></DomiciliosLista>
                 </b-form-group>
-
-                <div v-show="domicilio == 'DomicilioNuevo'">
-                  <b-form-input
-                    v-model="domicilioNuevo.calle"
-                    placeholder="calle"
-                    :disabled="noHayLoggin"
-                  ></b-form-input>
-                  <b-form-input
-                    v-model="domicilioNuevo.numero"
-                    type="number"
-                    placeholder="numero"
-                    :disabled="noHayLoggin"
-                  ></b-form-input>
-                  <b-form-input
-                    v-model="domicilioNuevo.localidad"
-                    placeholder="localidad"
-                    :disabled="noHayLoggin"
-                  ></b-form-input>
-                </div>
               </div>
-              <!-- --------------------------------------------------------------------------------Fin Direccion de Entrega -->
+              <!-- ----------------------------------------------------------------------Fin Direccion de Entrega -->
 
               <div class="dottedRow">
                 <label class="precio dottedLeft">Descuentos:</label>
@@ -113,12 +65,13 @@
                 <span class="precio dottedRight">{{ PrecioTotal }}</span>
               </div>
 
+              <!-- ----------------------------------------------------------------------Forma de pago-->
               <label>Forma de pago:</label>
               <b-form-radio
                 v-model="form.formaPago"
                 name="Efectivo"
                 value="Efectivo"
-                :disabled="noHayLoggin || form.retiraEn == '0'"
+                :disabled="noHayLoggin || form.retiraEn == TE.DOMICILIO"
                 >Efectivo</b-form-radio
               >
               <b-form-radio
@@ -128,6 +81,7 @@
                 :disabled="noHayLoggin"
                 >Mercado Pago</b-form-radio
               >
+              <!-- ----------------------------------------------------------------------Fin Forma de pago-->
 
               <div class="dottedRow">
                 <label class="precio dottedLeft">Total:</label>
@@ -139,7 +93,7 @@
 
               <b-button
                 class="btn btn-success"
-                @click="confirmarCarrito"
+                @click="confirmarCompra"
                 :disabled="noHayLoggin"
                 >Confirmar compra</b-button
               >
@@ -172,26 +126,21 @@
 import { mapGetters } from "vuex";
 import PlatosCarrito from "../components/PlatosCarrito.vue";
 import { numFormat, val } from "../services/Auxiliares";
-import { enviarCarrito } from "../services/Carrito";
 import { GenerarTicketMercadoPagoPreference } from "../services/MercadoPago";
-import { addDomicilio } from "../services/DomiciliosController";
-
+import { addPedido, finalizarPedido } from "../services/PedidosController";
+import { addDetallePedido } from "../services/DetallesPedidosController";
+import DomiciliosLista from "../components/DomiciliosLista.vue";
+import TE from "../services/TipoEnvio";
 export default {
-  components: { PlatosCarrito },
+  components: { PlatosCarrito, DomiciliosLista },
   data() {
     return {
+      TE: TE, //permite usar el autocompletar dentro del template para saber a que tipoenvio nos referimos
       form: {
-        retiraEn: "0",
+        retiraEn: TE.DOMICILIO,
         direccionEntrega: "",
         formaPago: "MercadoPago",
       },
-
-      domicilioNuevo: {
-        calle: "",
-        numero: "",
-        localidad: "",
-      },
-      domicilio: "DomicilioGuardado",
       mercadoPagoModalShow: false,
       show: true,
     };
@@ -209,18 +158,12 @@ export default {
     noHayLoggin() {
       return this.traerCliente.nombre == "";
     },
-    domicilios() {
-      return this.traerCliente.domicilios.map((d) => {
-        return {
-          text: d.calle + " " + d.numero + ", " + d.localidad,
-          value: d.id,
-        };
-      });
-    },
   },
 
   methods: {
-    enviarCarrito,
+    mostrarPorConsola(obj) {
+      console.log(obj);
+    },
     numFormat,
     val,
 
@@ -228,7 +171,7 @@ export default {
       this.form.formaPago = "MercadoPago";
     },
 
-    async confirmarCarrito() {
+    async confirmarCompra() {
       if (this.form.formaPago == "Efectivo") {
         console.log("paga efectivo");
       } else {
@@ -237,20 +180,42 @@ export default {
         this.MPcheckout(preferenceId);
       }
 
-      let domicilioID = undefined;
+      //Pide el Id del domicilio. Si es un domicilio nuevo, lo creará y traerá el Id
+      const domicilioID = await this.$refs.DomiciliosListaCarrito.getId();
+      this.enviarCarrito(domicilioID, this.form.retiraEn);
+    },
 
-      if (this.domicilio == "DomicilioGuardado") {
-        domicilioID = this.form.direccionEntrega;
-      } else {
-        //Creo un domicilio si es necesario
-        const domicilio = JSON.parse(JSON.stringify(this.domicilioNuevo));
-        domicilio.clienteID = this.traerCliente.id;
-        const domicilioNuevo = await addDomicilio(domicilio);
-        domicilioID = domicilioNuevo.id;
-        //DEBERIA RECARGAR EL CLIENTE O LOS DOMICILIOS PARA QUE ESTÉ INCLUIDO EL NUEVO
+    async enviarCarrito(domicilioID, tipoEnvio) {
+      //Creo un pedido
+      const pedido = {
+        tipoEnvio: tipoEnvio,
+        ClienteID: this.traerCliente.id,
+        domicilioID: domicilioID,
+      };
+
+      //envio pedido y lo recibo completo con el id nuevo
+      const nuevoPedido = await addPedido(pedido);
+
+      console.log("nuevoPedido", nuevoPedido);
+
+      //Recorro el carrito y creo pedidos
+      for (let index = 0; index < this.getCarrito.length; index++) {
+        const dPedido = this.getCarrito[index];
+
+        //creo detalles de pedido y los vinculo al pedido recien creado
+        const detallePedido = {
+          pedidoID: nuevoPedido.id,
+          cantidad: dPedido.cantidad,
+          articuloID: dPedido.id,
+        };
+        //Envio DetallePedido
+        const nuevoDetallePedido = await addDetallePedido(detallePedido);
+        console.log("nuevoDetallePedido", nuevoDetallePedido);
       }
 
-      this.enviarCarrito(domicilioID, this.form.retiraEn);
+      //Finalizo el pedido (aviso que no se van a agregar mas detallePedido)
+      const pedidoTerminado = await finalizarPedido(nuevoPedido.id);
+      console.log("pedidoTerminado", pedidoTerminado);
     },
 
     MPcheckout(preferenceId) {

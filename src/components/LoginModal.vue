@@ -36,11 +36,11 @@
       <div>
         <GoogleButton
           @logout="logout"
-          @logeado="$emit('logeado')"
+          @logeado="handleGoogleLogin"
         ></GoogleButton>
       </div>
-      <hr />
-      <button @click="handleRegistrarse">Registrarse</button>
+      <!-- <hr /> -->
+      <!-- <button @click="handleRegistrarse">Registrarse</button> -->
     </b-modal>
   </div>
 </template>
@@ -81,19 +81,19 @@ export default {
     ...mapActions([
       "setUsuario",
       "obtenerJwToken",
-      "obtenerJwTokenConGoogle",
       "resetUsuario",
       "resetCarrito",
       "resetCliente",
       "resetNotificaciones",
     ]),
-    async handleLogin() {
-      await this.login(this.AuthRequest).then(
-        this.$bvModal.hide("modal-login")
-      ); //.then(this.$emit("logeado"));
+    handleGoogleLogin() {
+      this.$bvModal.hide("modal-login");
+      this.posLogin();
     },
-    handleRegistrarse() {
-      this.$emit("registrarse");
+    async handleLogin() {
+      await this.login(this.AuthRequest).then(() => {
+        this.$bvModal.hide("modal-login");
+      });
     },
 
     //---------------SignalR------------------------------
@@ -136,14 +136,14 @@ export default {
     async login(AuthRequest) {
       const resp = await this.obtenerJwToken(AuthRequest);
       if (resp == null) return null;
-      this.posLogin(resp);
+      this.posLogin();
       return true;
     },
 
     async logout() {
       //volver al menú principal
       if (this.$router.currentRoute.name != "Home") {
-      this.$router.push({ name: "Home" });
+        this.$router.push({ name: "Home" });
       }
       //Reset Vuex
       await this.resetUsuario();
@@ -155,7 +155,7 @@ export default {
       await this.$gAuth.signOut();
     },
 
-    posLogin(resp) {
+    posLogin() {
       let rolId;
       if (this.traerUsuario.rolId != 0) {
         rolId = this.traerUsuario.rolId;
@@ -187,7 +187,7 @@ export default {
         },
       };
 
-      enroute[resp.usuario.rol]();
+      enroute[this.traerUsuario.rol]();
     },
   }, //fin methods
 };

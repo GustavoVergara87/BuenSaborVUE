@@ -5,6 +5,11 @@
         <transition name="slide-fade">
           <div v-show="show" class="contenedor-scrolleable">
             <div class="scrolleable">
+              <template v-if="traerTodasLasNotificaciones.length==0">
+                <div class="texto-centrado">
+                No hay notificaciones
+                </div>
+              </template>
               <template v-for="notificacion in traerTodasLasNotificaciones">
                 <div :key="notificacion.id">
 
@@ -84,6 +89,16 @@ export default {
 </style>
 
 <style scoped>
+
+.texto-centrado {
+  display: flex;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  height: 3em;
+}
+
 .marco {
   position: absolute;
   top: 5em;
@@ -150,16 +165,13 @@ export default {
 }
 
 /*Animacion de entrada y salida*/
-/* Las animaciones de entrada y salida pueden usar */
-/* funciones de espera y duración diferentes.      */
 .slide-fade-enter-active {
   transition: all 0.3s ease;
 }
 .slide-fade-leave-active {
   transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
+.slide-fade-enter, .slide-fade-leave-to{
   transform: translateY(-150px);
   opacity: 0;
 }
@@ -168,13 +180,9 @@ export default {
 /*Animacion de entrada y salida*/
 .aparecer-desaparecer-leave-active {
   transition: all 0.3s;
+  /*espera que el contenido termine su animacion y luego desaparece*/
 }
 
-.aparecer-desaparecer-enter,
-.collapse-leave-to {
-  /* transform: translateY(-150px); */
-  /* opacity: 0; */
- } 
  
 /*Fin Animacion*/
 </style>

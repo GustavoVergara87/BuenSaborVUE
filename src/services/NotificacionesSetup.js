@@ -20,11 +20,27 @@ export default {
         //If the connection is closed, we simply try to connect again. In the event we couldn’t establish the connection, it retries after 5 seconds.
         let startedPromise = null
         function start() {
-            startedPromise = connection.start()
+            startedPromise = connection.start().then(() => {
+
+                //Si existe un usuario logeado en vuex, debe reconectarlo a SignalR
+                const clienteId = store.getters.traerCliente.id
+                const rolId = store.getters.traerUsuario.rolId
+
+                if (clienteId != 0) {
+                    connection.invoke("JoinClienteIDToGroup", clienteId)
+                    console.log("cliente reconectado a SignalR")
+                } else if (rolId != 0) {
+                    connection.invoke("JoinRolIDToGroup", rolId)
+                    console.log("usuario reconectado a SignalR")
+                }
+
+            }
+
+            )
                 .catch(err => {
                     console.error('Failed to connect with hub', err)
                     return new Promise((resolve, reject) =>
-                        setTimeout(() => start().then(resolve).catch(reject), 5000))
+                        setTimeout(() => start().catch(reject), 5000))
                 })
             return startedPromise
         }
@@ -32,21 +48,7 @@ export default {
         connection.onclose(() => start())
 
         start()
-            .then(() => {
 
-                //Si existe un usuario logeado en vuex, debe reconectarlo a SignalR
-                const clienteId = store.getters.traerCliente.id
-                const rolId = store.getters.traerUsuario.rolId
-
-                if (rolId != 0)
-                    connection.invoke("JoinRolIDToGroup", rolId)
-
-                if (clienteId != 0)
-                    connection.invoke("JoinClienteIDToGroup", clienteId)
-
-            }
-
-            )
 
 
 
@@ -61,6 +63,7 @@ export default {
 
         // Forward server side SignalR events through $notificacionesHub, where components will listen to them
         connection.on('Notificacion', (mensaje, pedido) => {
+            console.log("Notificacion", { mensaje, pedido })
             notificacionesHub.$emit('Notificacion', { mensaje, pedido })
         })
 

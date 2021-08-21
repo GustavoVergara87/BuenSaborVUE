@@ -74,17 +74,17 @@ export default {
     };
   },
   methods: {
-
     registrarNuevoCliente,
     async handleRegistro() {
       this.AuthRequest.NombreUsuario = this.form.Email;
       this.AuthRequest.Clave = this.form.Clave;
 
-      await this.registrarNuevoCliente(this.form).then(
-        this.$root.$emit("nuevoClienteRegistrado", this.AuthRequest), //this.$root.$emit() emite un evento que puede ser escuchado globalmente
-        this.$bvModal.hide("modal-registro"),
-        this.$bvModal.show("modal-login"),
-      );
+      await this.registrarNuevoCliente(this.form).then(() => {
+        //this.$root.$emit() emite un evento que puede ser escuchado globalmente
+        this.$root.$emit("nuevoClienteRegistrado", this.AuthRequest);
+        this.$bvModal.hide("modal-registro");
+        this.$bvModal.show("modal-login");
+      });
     },
   },
 };

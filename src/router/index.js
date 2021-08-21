@@ -37,6 +37,12 @@ const routes = [
         name: "DetallePlato",
         component: () => import("../views/PlatoDetalle.vue"),
       },
+      {
+        path: "/cliente/Cuenta",
+        name: "ClienteCuenta",
+        component: () => import("../views/ClienteCuenta.vue"),
+      },
+
     ]
   },
 

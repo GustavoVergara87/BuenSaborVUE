@@ -50,7 +50,6 @@ const actions = {
         commit('setUsuario', responseJson.usuario);
         commit('setCliente', responseJson.cliente);
         commit('setToken', responseJson.token);
-
         return responseJson
     },
 
@@ -59,10 +58,19 @@ const actions = {
         commit('setUsuario', responseJson.usuario);
         commit('setCliente', responseJson.cliente);
         commit('setToken', responseJson.token);
-        // console.log(responseJson)
         return responseJson
     },
 
+    async addDomicilio({ commit }, domicilio) {
+        commit('addDomicilio', domicilio);
+    },
+
+    async editDomicilio({ commit }, domicilioEditado) {
+        //Si NO hago una copia del domicilioEditado, queda vinculado el domicilio en Vuex...cuando modifico 
+        //el domicilio en el formulario, automaticamente se modifica en vuex, y causa key duplicados, etc
+        const domicilioEditadoCopy = JSON.parse(JSON.stringify(domicilioEditado))
+        commit('editDomicilio', domicilioEditadoCopy);
+    }
 
 };
 
@@ -87,6 +95,15 @@ const mutations = {
     setUsuario: (state, usuario) => state.usuario = usuario,
     setCliente: (state, cliente) => state.cliente = cliente,
     setToken: (state, token) => state.token = token,
+    addDomicilio: (state, domicilio) => state.cliente.domicilios.unshift(domicilio),
+    editDomicilio: (state, domicilioEditado) => {
+        // console.log("domicilios pre mutacion",state.cliente.domicilios)
+        const index = state.cliente.domicilios.findIndex(domicilio => domicilio.id == domicilioEditado.id)
+        if (index != -1) {
+            state.cliente.domicilios.splice(index, 1, domicilioEditado)
+        }
+        // console.log("domicilios pos mutacion",state.cliente.domicilios)
+    }
 };
 
 export default {

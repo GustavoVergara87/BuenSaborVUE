@@ -17,6 +17,8 @@
       <b-dropdown-item v-b-modal.modal-login> Login </b-dropdown-item>
 
       <b-dropdown-item v-b-modal.modal-registro>Registrarse</b-dropdown-item>
+      
+      <b-dropdown-item @click="irAMiCuenta()">Mi cuenta</b-dropdown-item>
 
       <b-dropdown-divider></b-dropdown-divider>
       <b-dropdown-item @click="logout()"> Salir </b-dropdown-item>
@@ -31,6 +33,9 @@ export default {
     logout() {
       this.$root.$emit("logout"); //this.$root.$emit() emite un evento que puede ser escuchado globalmente
     },
+    irAMiCuenta(){
+      this.$router.push({name:"ClienteCuenta"})
+    }
   },
 };
 </script>
