@@ -77,7 +77,6 @@ export default {
   },
   computed: {
     ...mapGetters(["plato", "todosLosArticulos"]),
-    
   },
 
   methods: {
@@ -95,7 +94,6 @@ export default {
       let filtradosFinal = tmpArticulosFiltrados.filter(
         (articulo) => !arrayElementos.includes(articulo.denominacion)
       );
-     
 
       return filtradosFinal;
     },
@@ -136,8 +134,8 @@ export default {
       addDetalleReceta(detalleReceta);
       platoActual.ingredientes.push(detalleRecetaFront);
       this.setPlato(platoActual);
-      this.cantidadIngrediente="";
-      this.ingredienteSeleccionado="";
+      this.cantidadIngrediente = "";
+      this.ingredienteSeleccionado = "";
       this.articulosFiltrados();
     },
 
@@ -146,17 +144,16 @@ export default {
       platoActual.ingredientes = platoActual.ingredientes.filter(
         (ingrediente) => ingrediente.detalleRecetasId != detalleRecetaId
       );
-      
+
       this.setPlato(platoActual);
       deleteDetalleReceta(detalleRecetaId);
       this.articulosFiltrados();
-
     },
   },
   async created() {
     await this.getPlato(this.$route.params.idReceta);
     await this.fetchTodosLosArticulos();
-console.log(this.plato)
+    console.log(this.plato);
     this.ingredientes = this.articulosFiltrados();
   },
 };
