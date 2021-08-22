@@ -45,6 +45,7 @@ console.log(tmpPlatosFiltrados)
   
   async created() {
     await this.getPlato(this.$route.params.idReceta);
+  console.log(this.plato)
    
   },
 };

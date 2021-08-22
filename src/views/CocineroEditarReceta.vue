@@ -35,7 +35,7 @@
                 text="Elija el ingrediente"
                 @change="cambiarUnidadMedida()"
               >
-                <template v-for="ingrediente in ingredientes">
+                <template v-for="ingrediente in articulosFiltrados()">
                   <option
                     :key="ingrediente.id"
                     :value="ingrediente.denominacion"
@@ -47,6 +47,7 @@
             </td>
             <td>
               <input
+                type="number"
                 v-model="cantidadIngrediente"
                 placeholder="ingrese la cantidad"
               />
@@ -71,11 +72,12 @@ export default {
     return {
       ingredientes: [],
       ingredienteSeleccionado: String,
-      cantidadIngrediente: 0,
+      cantidadIngrediente: "",
     };
   },
   computed: {
     ...mapGetters(["plato", "todosLosArticulos"]),
+    
   },
 
   methods: {
@@ -93,6 +95,7 @@ export default {
       let filtradosFinal = tmpArticulosFiltrados.filter(
         (articulo) => !arrayElementos.includes(articulo.denominacion)
       );
+     
 
       return filtradosFinal;
     },
@@ -113,31 +116,47 @@ export default {
           ingrediente.denominacion == this.ingredienteSeleccionado
       );
 
-      // let platoActual = JSON.parse(JSON.stringify(this.plato));
+      let platoActual = JSON.parse(JSON.stringify(this.plato));
 
       let detalleReceta = {
         ArticuloID: ingrediente[0].id,
         Cantidad: this.cantidadIngrediente,
-        // denominacion: ingrediente[0].denominacion,
         RecetaID: this.plato.RecetaId,
-        // unidadmedida: ingrediente[0].unidadMedida,
       };
-      console.log(this.plato);
-      // platoActual.ingredientes.push(detalleReceta);
-      addDetalleReceta(detalleReceta);
-      // this.setPlato(platoActual);
 
-      // console.log(this.plato.ingredientes[0]);
+      let detalleRecetaFront = {
+        articuloID: this.plato.id,
+        cantidad: this.cantidadIngrediente,
+        denominacion: ingrediente[0].denominacion,
+        detalleRecetasId: this.plato.RecetaId,
+        insumoID: ingrediente[0].id,
+        unidadMedida: ingrediente[0].unidadMedida,
+      };
+
+      addDetalleReceta(detalleReceta);
+      platoActual.ingredientes.push(detalleRecetaFront);
+      this.setPlato(platoActual);
+      this.cantidadIngrediente="";
+      this.ingredienteSeleccionado="";
+      this.articulosFiltrados();
     },
+
     quitarIngrediente(detalleRecetaId) {
-      console.log(detalleRecetaId);
+      let platoActual = JSON.parse(JSON.stringify(this.plato));
+      platoActual.ingredientes = platoActual.ingredientes.filter(
+        (ingrediente) => ingrediente.detalleRecetasId != detalleRecetaId
+      );
+      
+      this.setPlato(platoActual);
       deleteDetalleReceta(detalleRecetaId);
+      this.articulosFiltrados();
+
     },
   },
   async created() {
     await this.getPlato(this.$route.params.idReceta);
     await this.fetchTodosLosArticulos();
-
+console.log(this.plato)
     this.ingredientes = this.articulosFiltrados();
   },
 };
