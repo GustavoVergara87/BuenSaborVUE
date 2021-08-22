@@ -12,7 +12,7 @@
       <b-card-img
         :src="'/image/' + plato.Imagen"
         :alt="plato.Imagen"
-        style="min-height: 200px; max-height: 500px"
+        style="min-height: 100px; max-height: 500px"
         loading="lazy"
         :class="imageState"
         @load="imagenCargada"
@@ -107,7 +107,7 @@ export default {
     opacity: 0;
     transform: scale(0.5, 0.5);
   }
-    20% {
+  20% {
     opacity: 1;
     transform: scale(1.1, 1.1);
   }
