@@ -41,8 +41,8 @@
                 v-for="ingrediente in plato.ingredientes"
                 :key="ingrediente.id"
               >
-                {{ ingrediente.Denominacion }}, {{ ingrediente.Cantidad }}
-                {{ ingrediente.UnidadMedida }}
+                {{ ingrediente.denominacion }}, {{ ingrediente.cantidad }}
+                {{ ingrediente.unidadMedida }}
               </li>
             </ul>
           </b-col>
