@@ -58,6 +58,7 @@
         </tbody>
       </table>
     </div>
+    <button @click="volver()">Volver</button>
   </div>
 </template>
 
@@ -149,11 +150,13 @@ export default {
       deleteDetalleReceta(detalleRecetaId);
       this.articulosFiltrados();
     },
+    volver() {
+      this.$router.push({ name: "Recetario" });
+    },
   },
   async created() {
     await this.getPlato(this.$route.params.idReceta);
     await this.fetchTodosLosArticulos();
-    console.log(this.plato);
     this.ingredientes = this.articulosFiltrados();
   },
 };
@@ -165,6 +168,10 @@ table {
 }
 input {
   border: solid 1px black;
+}
+button {
+  float: right;
+  margin-right: 10%;
 }
 .fa-times {
   color: red;
