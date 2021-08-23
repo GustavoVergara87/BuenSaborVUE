@@ -1,4 +1,6 @@
-export function numFormat(nStr) {
+export function numFormat(nStr, decimales = 2) {
+    nStr = Math.round(nStr * Math.pow(10, decimales)) / Math.pow(10, decimales)
+
     nStr += "";
     var x = nStr.split(".");
     var x1 = x[0];

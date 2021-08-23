@@ -63,7 +63,7 @@
                 <label class="precio dottedLeft">Descuento 10%:</label>
                 <span class="dottedDots"></span>
                 <span class="precio dottedRight">
-                  $ {{ numFormat(PrecioTotal * 0.1) }}</span
+                  $ {{ numFormat(sumaDeDetalles*descuento,0) }}</span
                 >
               </div>
 
