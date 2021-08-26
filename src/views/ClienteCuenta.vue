@@ -56,19 +56,21 @@
 
     <h4>Mis Facturas</h4>
     <h5>Lista de facturas</h5>
-    <p>Numero</p>
-    <p>Fecha</p>
-    <p>MontoDescuento</p>
-    <p>FormaPago</p>
-    <p>PedidoId</p>
-    <h4>Pedido</h4>
-    <p>Pedido</p>
+    <b-table striped hover :items="facturas"></b-table>
+    <!-- <div v-for="factura in facturas" :key="factura.id">
+    <p>{{factura.numero}}</p>
+    <p>{{factura.fecha}}</p>
+    <p>{{factura.montoDescuento}}</p>
+    <p>{{factura.total}}</p>
+    <p>{{factura.PedidoId}}</p>
+    </div> -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import DomiciliosLista from "../components/DomiciliosLista.vue";
+import { getFacturas } from "../services/FacturasController";
 export default {
   components: {
     DomiciliosLista,
@@ -88,6 +90,7 @@ export default {
         numero: "",
         localidad: "",
       },
+      facturas:null,
     };
   },
   computed: {
@@ -95,6 +98,10 @@ export default {
     noHayLoggin() {
       return this.traerCliente.nombre == "";
     },
+  },
+  async mounted() {
+    this.facturas = await getFacturas();
+
   },
 };
 </script>

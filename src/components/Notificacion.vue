@@ -13,18 +13,24 @@
       <span>Pedido: {{ pedido.id }}</span>
       <span>fecha: {{ pedido.fecha.slice(0, 10) }}</span>
       <span>Hora estimada: {{ pedido.horaEstimadaFin.slice(11, 16) }}</span>
-      <span>Tipo de Envio: {{ pedido.tipoEnvio==TE.DOMICILIO ? "Domicilio" : "Local" }}</span>
-      <span>Total: {{ pedido.total }}</span>
       <span
-        >Domicilio:
-        {{
-          pedido.domicilio.calle +
-          ", " +
-          pedido.domicilio.numero +
-          ", " +
-          pedido.domicilio.localidad
-        }}</span
+        >Tipo de Envio:
+        {{ pedido.tipoEnvio == TE.DOMICILIO ? "Domicilio" : "Local" }}</span
       >
+      <span>Total: {{ pedido.total }}</span>
+      <!-- PARCHE, REVISAR -->
+      <div v-if="pedido.domicilio != null">
+        <span
+          >Domicilio:
+          {{
+            pedido.domicilio.calle +
+            ", " +
+            pedido.domicilio.numero +
+            ", " +
+            pedido.domicilio.localidad
+          }}</span
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -39,6 +45,9 @@ export default {
     return {
       TE: TE, //permite usar el autocompletar dentro del template para saber a que tipoenvio nos referimos
     };
+  },
+  mounted() {
+    console.log("pedido",this.pedido)
   },
   methods: {
     ...mapActions(["deleteFromNotificaciones"]),

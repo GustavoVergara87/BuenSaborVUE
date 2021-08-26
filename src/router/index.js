@@ -33,6 +33,11 @@ const routes = [
         component: () => import("../views/Carrito.vue"),
       },
       {
+        path: "/cliente/Carrito/aprobado",
+        name: "pagoAprobado",
+        component: () => import("../views/MercadoPagoResultado.vue"),
+      },
+      {
         path: "/cliente/DetallePlato/:id",
         name: "DetallePlato",
         component: () => import("../views/PlatoDetalle.vue"),

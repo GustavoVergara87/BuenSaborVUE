@@ -1,5 +1,24 @@
 <template>
   <div>
+    <div v-if="generandoPedidoYDetallesPedido" style="z-index: 2000">
+      <div
+        style="
+          margin: 0px;
+          padding: 0px;
+          top: 0px;
+          z-index: 1000;
+          opacity: 70%;
+          background-color: #ffff;
+          width: 100%;
+          height: 100vh;
+          outline: 10px red solid;
+          position: fixed;
+        "
+      ></div>
+
+      <b-spinner class="spinner" variant="primary" label="Spinning"></b-spinner>
+      <span class="spinnerText"><h1>Generando Pedido</h1></span>
+    </div>
     <div class="resumenPedidoMarco">
       <h5>Resumen de pedido</h5>
       <b-container fluid>
@@ -63,7 +82,7 @@
                 <label class="precio dottedLeft">Descuento 10%:</label>
                 <span class="dottedDots"></span>
                 <span class="precio dottedRight">
-                  $ {{ numFormat(sumaDeDetalles*descuento,0) }}</span
+                  $ {{ numFormat(sumaDeDetalles * descuento, 0) }}</span
                 >
               </div>
 
@@ -106,6 +125,8 @@
                 ok-only
                 ok-variant="secondary"
                 ok-title="Cancelar"
+                @hide="cancelarPedido"
+                @show="generandoPedidoYDetallesPedidoFin"
                 :hide-header="true"
               >
                 <div class="cho-container centerDiv">
@@ -130,15 +151,22 @@ import { mapGetters } from "vuex";
 import PlatosCarrito from "../components/PlatosCarrito.vue";
 import { numFormat, val } from "../services/Auxiliares";
 import { GenerarTicketMercadoPagoPreference } from "../services/MercadoPago";
-import { addPedido, finalizarPedido } from "../services/PedidosController";
+import {
+  addPedido,
+  finalizarPedido,
+  deletePedido,
+} from "../services/PedidosController";
 import { addDetallePedido } from "../services/DetallesPedidosController";
 import DomiciliosLista from "../components/DomiciliosLista.vue";
 import TE from "../services/TipoEnvio";
+import PE from "../services/PedidoEstados";
 export default {
   components: { PlatosCarrito, DomiciliosLista },
   data() {
     return {
       TE: TE, //permite usar el autocompletar dentro del template para saber a que tipoenvio nos referimos
+      PE: PE,
+      generandoPedidoYDetallesPedido: false,
       form: {
         retiraEn: TE.DOMICILIO,
         direccionEntrega: "",
@@ -146,6 +174,10 @@ export default {
       },
       mercadoPagoModalShow: false,
       show: true,
+      preferencia: {
+        pedidoId: 0,
+        total: 0,
+      },
     };
   },
 
@@ -172,9 +204,19 @@ export default {
   },
 
   methods: {
-    mostrarPorConsola(obj) {
-      console.log(obj);
+    generandoPedidoYDetallesPedidoFin() {
+      this.generandoPedidoYDetallesPedido = false;
     },
+    async cancelarPedido() {
+
+      //si el pedido no fue pagado y se apretó cancelar o se hizo click fuera del b-modal de MP, cancelarlo
+      
+      console.log("cancelarPedido", this.preferencia.pedidoId);
+      await deletePedido(this.preferencia.pedidoId);
+      this.preferencia.pedidoId = 0;
+      this.preferencia.total = 0;
+    },
+
     numFormat,
     val,
 
@@ -183,25 +225,35 @@ export default {
     },
 
     async confirmarCompra() {
+      this.generandoPedidoYDetallesPedido = true;
+      //Pide el Id del domicilio. Si es un domicilio nuevo, lo creará y traerá el Id
+      const domicilioID = await this.$refs.DomiciliosListaCarrito.getId();
+      const nuevoPedidoId = await this.enviarCarrito(
+        domicilioID,
+        this.form.retiraEn
+      );
+
       if (this.form.formaPago == "Efectivo") {
         console.log("paga efectivo");
       } else {
-        const res = await GenerarTicketMercadoPagoPreference(this.PrecioTotal);
+        this.preferencia.pedidoId = nuevoPedidoId;
+        this.preferencia.total = this.PrecioTotal;
+        const res = await GenerarTicketMercadoPagoPreference(this.preferencia);
         const preferenceId = String(res.id);
         this.MPcheckout(preferenceId);
       }
-
-      //Pide el Id del domicilio. Si es un domicilio nuevo, lo creará y traerá el Id
-      const domicilioID = await this.$refs.DomiciliosListaCarrito.getId();
-      this.enviarCarrito(domicilioID, this.form.retiraEn);
     },
 
     async enviarCarrito(domicilioID, tipoEnvio) {
       //Creo un pedido
       const pedido = {
-        tipoEnvio: tipoEnvio,
+        TipoEnvio: tipoEnvio,
         ClienteID: this.traerCliente.id,
-        domicilioID: domicilioID,
+        DomicilioID: domicilioID,
+        Estado:
+          this.form.formaPago == "Efectivo"
+            ? PE.PENDIENTE
+            : PE.PAGO_PENDIENTE_MP,
       };
 
       //envio pedido y lo recibo completo con el id nuevo
@@ -227,11 +279,12 @@ export default {
       //Finalizo el pedido (aviso que no se van a agregar mas detallePedido)
       const pedidoTerminado = await finalizarPedido(nuevoPedido.id);
       console.log("pedidoTerminado", pedidoTerminado);
+
+      return nuevoPedido.id;
     },
 
     MPcheckout(preferenceId) {
       this.mercadoPagoModalShow = true;
-
       this.$loadScript("https://sdk.mercadopago.com/js/v2")
         .then(() => {
           // Agrega credenciales de SDK
@@ -248,12 +301,13 @@ export default {
               id: preferenceId,
             },
             render: {
-              container: ".cho-container", // Indica dónde se mostrará el botón de pago
+              container: ".cho-container", // Indica dónde se mostrará el botón de pago, el "check out container"
               label: "Pagar", // Cambia el texto del botón de pago (opcional)
             },
           });
         })
-        .catch(() => {
+        .catch((error) => {
+          console.log(error);
           // Failed to fetch script
         });
     },
@@ -263,8 +317,7 @@ export default {
 
 
 <style  scoped>
-
-.abajoDerecha{
+.abajoDerecha {
   margin-top: 1em;
   float: right;
 }

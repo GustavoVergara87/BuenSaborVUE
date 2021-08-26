@@ -1,4 +1,5 @@
 export default {
+    PAGO_PENDIENTE_MP: -1,
     PENDIENTE: 0,
     APROBADO: 1,
     LISTO_ENTREGA_LOCAL: 2,

@@ -55,6 +55,8 @@ export default {
       this.deleteFromNotificaciones(id);
     },
     handleNotificacion(notificacion) {
+      console.log("notificacion",notificacion)
+      console.log("pedido",notificacion.pedido)
       //guarda como viene la notificacion en vuex
       this.addNotificacion(notificacion);
       //mostrar las notificaciones
