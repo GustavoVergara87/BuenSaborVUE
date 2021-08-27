@@ -47,6 +47,10 @@ export default {
       });
     },
   },
+  async created() {
+    await this.fetchTodosLosPlatos();
+    console.log(this.todosLosPlatos);
+  },
 };
 </script>
 

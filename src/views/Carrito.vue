@@ -62,6 +62,7 @@
                   v-model="form.retiraEn"
                   :value="TE.LOCAL"
                   :disabled="noHayLoggin"
+                  @change="cargarDireccionCajero"
                   >Local</b-form-radio
                 >
               </b-form-group>
@@ -208,9 +209,8 @@ export default {
       this.generandoPedidoYDetallesPedido = false;
     },
     async cancelarPedido() {
-
       //si el pedido no fue pagado y se apretó cancelar o se hizo click fuera del b-modal de MP, cancelarlo
-      
+
       console.log("cancelarPedido", this.preferencia.pedidoId);
       await deletePedido(this.preferencia.pedidoId);
       this.preferencia.pedidoId = 0;
@@ -222,25 +222,41 @@ export default {
 
     soloHabilitarMercadoPago() {
       this.form.formaPago = "MercadoPago";
+      this.form.direccionEntrega == "";
+    },
+    cargarDireccionCajero() {
+      this.form.direccionEntrega = "Cajero";
     },
 
     async confirmarCompra() {
-      this.generandoPedidoYDetallesPedido = true;
-      //Pide el Id del domicilio. Si es un domicilio nuevo, lo creará y traerá el Id
-      const domicilioID = await this.$refs.DomiciliosListaCarrito.getId();
-      const nuevoPedidoId = await this.enviarCarrito(
-        domicilioID,
-        this.form.retiraEn
-      );
-
-      if (this.form.formaPago == "Efectivo") {
-        console.log("paga efectivo");
+      if (this.form.direccionEntrega == "") {
+        alert("debe ingresar la dirección");
       } else {
-        this.preferencia.pedidoId = nuevoPedidoId;
-        this.preferencia.total = this.PrecioTotal;
-        const res = await GenerarTicketMercadoPagoPreference(this.preferencia);
-        const preferenceId = String(res.id);
-        this.MPcheckout(preferenceId);
+        this.generandoPedidoYDetallesPedido = true;
+        //Pide el Id del domicilio. Si es un domicilio nuevo, lo creará y traerá el Id
+        let domicilioID;
+
+        if (this.form.direccionEntrega == "Cajero") {
+          domicilioID = 120;
+        } else {
+          domicilioID = await this.$refs.DomiciliosListaCarrito.getId();
+        }
+        const nuevoPedidoId = await this.enviarCarrito(
+          domicilioID,
+          this.form.retiraEn
+        );
+
+        if (this.form.formaPago == "Efectivo") {
+          console.log("paga efectivo");
+        } else {
+          this.preferencia.pedidoId = nuevoPedidoId;
+          this.preferencia.total = this.PrecioTotal;
+          const res = await GenerarTicketMercadoPagoPreference(
+            this.preferencia
+          );
+          const preferenceId = String(res.id);
+          this.MPcheckout(preferenceId);
+        }
       }
     },
 
