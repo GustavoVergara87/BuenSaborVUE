@@ -16,3 +16,5 @@ export function val(a) {
     if (a != null && a != undefined) return parseInt(a);
     if (a == null || a == undefined) return 0;
 }
+
+export function delay(ms) { return new Promise(res => setTimeout(res, ms)) }
