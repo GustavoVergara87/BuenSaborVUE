@@ -96,6 +96,8 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+
+
   </div>
 </template>
 
@@ -103,11 +105,17 @@
 import { mapGetters, mapActions } from "vuex";
 import Notificaciones from "./Notificaciones.vue";
 import LoginDropdown from "./LoginDropdown.vue";
-
 export default {
   components: {
     LoginDropdown,
     Notificaciones,
+  },
+  data() {
+    return {
+      now:Date.now,
+      showNotificaciones: false,
+
+    }
   },
   computed: {
     ...mapGetters([
@@ -119,6 +127,7 @@ export default {
     cantidadCarrito() {
       return this.getCarritoCantidad;
     },
+
   },
   methods: {
     ...mapActions(["fetchTodosLosRubrosArticulos"]),
@@ -147,11 +156,7 @@ export default {
   created() {
     this.fetchTodosLosRubrosArticulos();
   },
-  data() {
-    return {
-      showNotificaciones: false,
-    };
-  },
+
 };
 </script>
 
@@ -164,6 +169,8 @@ export default {
 </style>
 
 <style scoped>
+
+
 .campana {
   transform: translateY(0.25em);
   font-size: 1.2em;

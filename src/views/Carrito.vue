@@ -161,6 +161,9 @@ import { addDetallePedido } from "../services/DetallesPedidosController";
 import DomiciliosLista from "../components/DomiciliosLista.vue";
 import TE from "../services/TipoEnvio";
 import PE from "../services/PedidoEstados";
+import { estaAbierto, proximoHdA, DiaDeLaSemana } from "../services/Auxiliares";
+import { stockTotalParaArticulosManufacturados } from "../services/ArticulosController";
+
 export default {
   components: { PlatosCarrito, DomiciliosLista },
   data() {
@@ -208,6 +211,7 @@ export default {
     generandoPedidoYDetallesPedidoFin() {
       this.generandoPedidoYDetallesPedido = false;
     },
+
     async cancelarPedido() {
       //si el pedido no fue pagado y se apretó cancelar o se hizo click fuera del b-modal de MP, cancelarlo
 
@@ -228,7 +232,55 @@ export default {
       this.form.direccionEntrega = "Cajero";
     },
 
+    async CheckearStock() {
+      for (const element of this.getCarrito) {
+        const stockParaArt = await stockTotalParaArticulosManufacturados(
+          element.id
+        );
+
+        let ingredienteLimitante={
+              hayIngredientePara : Number.MAX_SAFE_INTEGER,
+        }
+  
+        stockParaArt.forEach((ingrediente) => {
+          if (ingrediente.hayIngredientePara < ingredienteLimitante.hayIngredientePara) {
+            ingredienteLimitante = ingrediente;
+            // hayIngredientesPara = ingrediente.HayParaHacer;
+          }
+        });
+        ingredienteLimitante.hayIngredientePara = Math.floor(ingredienteLimitante.hayIngredientePara);
+  
+  console.log(ingredienteLimitante)
+        console.log(
+          "Cantidad Pedida",
+          element.cantidad,
+          "CantidadDisponible",
+          ingredienteLimitante.hayIngredientePara
+        );
+
+        if (ingredienteLimitante.hayIngredientePara < element.cantidad) {
+          alert(
+            "lo sentimos, no contamos con la cantidad de " + ingredienteLimitante.Denominacion1  +  " para satisfaser su gula"
+          );
+        }
+      }
+    },
+
     async confirmarCompra() {
+      this.CheckearStock();
+
+      if (!(await estaAbierto())) {
+        let rta = "Esta fuera del horario de atencion. ";
+        const pHdA = await proximoHdA();
+        rta +=
+          "Los esperamos a partir del dia " +
+          DiaDeLaSemana[pHdA.dia1] +
+          " a las " +
+          pHdA.hora1 +
+          " horas.";
+        alert(rta);
+      }
+
       if (this.form.direccionEntrega == "") {
         alert("debe ingresar la dirección");
       } else {

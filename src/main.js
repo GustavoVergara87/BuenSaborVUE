@@ -20,6 +20,7 @@ Vue.use(GAuth, gauthOption)
 Vue.config.productionTip = false;
 Vue.use(LoadScript);
 Vue.use(Notificaciones) //Para poder usar SignalR
+Vue.use(require('vue-moment'));
 
 new Vue({
   router,

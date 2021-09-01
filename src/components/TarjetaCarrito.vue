@@ -126,10 +126,11 @@ export default {
 }
 
 .eliminar {
+  position: absolute;
   font-size: 150%;
   transform: scaleY(0.75);
   font-weight: 100;
-  float: right;
+  right:1em;
   line-height: 0%;
   margin-top: -0.5em;
   margin-right: -0.5em;
