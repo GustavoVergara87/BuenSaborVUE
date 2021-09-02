@@ -162,7 +162,10 @@ import DomiciliosLista from "../components/DomiciliosLista.vue";
 import TE from "../services/TipoEnvio";
 import PE from "../services/PedidoEstados";
 import { estaAbierto, proximoHdA, DiaDeLaSemana } from "../services/Auxiliares";
-import { stockTotalParaArticulosManufacturados } from "../services/ArticulosController";
+import {
+  stockTotalParaArticulosManufacturados,
+  stockTotalParaArticulosNoManufacturados,
+} from "../services/ArticulosController";
 
 export default {
   components: { PlatosCarrito, DomiciliosLista },
@@ -233,34 +236,61 @@ export default {
     },
 
     async CheckearStock() {
-      for (const element of this.getCarrito) {
+      for (const carritoElement of this.getCarrito) {
+        if (!carritoElement.EsManufacturado) {
+          const stockParaArt = await stockTotalParaArticulosNoManufacturados(
+            carritoElement.id
+          );
+
+          if (stockParaArt.StockTotal < carritoElement.cantidad) {
+            console.log(carritoElement);
+            alert(
+              "lo sentimos, no contamos con esa cantidad de " +
+                stockParaArt.Denominacion +
+                ". Hay " +
+                stockParaArt.StockTotal
+            );
+          }
+        }
+
         const stockParaArt = await stockTotalParaArticulosManufacturados(
-          element.id
+          carritoElement.id
         );
 
-        let ingredienteLimitante={
-              hayIngredientePara : Number.MAX_SAFE_INTEGER,
-        }
-  
+        let ingredienteLimitante = {
+          hayIngredientePara: Number.MAX_SAFE_INTEGER,
+        };
+
         stockParaArt.forEach((ingrediente) => {
-          if (ingrediente.hayIngredientePara < ingredienteLimitante.hayIngredientePara) {
+          if (
+            ingrediente.hayIngredientePara <
+            ingredienteLimitante.hayIngredientePara
+          ) {
             ingredienteLimitante = ingrediente;
-            // hayIngredientesPara = ingrediente.HayParaHacer;
           }
         });
-        ingredienteLimitante.hayIngredientePara = Math.floor(ingredienteLimitante.hayIngredientePara);
-  
-  console.log(ingredienteLimitante)
+
+        ingredienteLimitante.hayIngredientePara = Math.floor(
+          ingredienteLimitante.hayIngredientePara
+        );
+
+        console.log(ingredienteLimitante);
         console.log(
           "Cantidad Pedida",
-          element.cantidad,
+          carritoElement.cantidad,
           "CantidadDisponible",
           ingredienteLimitante.hayIngredientePara
         );
 
-        if (ingredienteLimitante.hayIngredientePara < element.cantidad) {
+        if (ingredienteLimitante.hayIngredientePara < carritoElement.cantidad) {
+          // console.log(carritoElement);
           alert(
-            "lo sentimos, no contamos con la cantidad de " + ingredienteLimitante.Denominacion1  +  " para satisfaser su gula"
+            "lo sentimos, no contamos con " +
+              ingredienteLimitante.Denominacion1 +
+              " para esa cantidad de " +
+              carritoElement.plato +
+              ". Hay para " +
+              ingredienteLimitante.hayIngredientePara
           );
         }
       }

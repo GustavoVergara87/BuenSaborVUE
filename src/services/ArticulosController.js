@@ -4,6 +4,12 @@ export async function stockTotalParaArticulosManufacturados(id){
     return responseJson
 }
 
+export async function stockTotalParaArticulosNoManufacturados(id){
+    const response = await fetch("/api/articulos/stockTotalParaArticulosNoManufacturados/" + id);
+    const responseJson = await response.json();
+    return responseJson
+}
+
 export async function fetchTodosLosArticulos() {
     const response = await fetch("/api/Articulos");
     const responseJson = await response.json();
