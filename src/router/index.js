@@ -47,6 +47,11 @@ const routes = [
         name: "ClienteCuenta",
         component: () => import("../views/ClienteCuenta.vue"),
       },
+      {
+        path: "/cliente/Factura/:id",
+        name: "ClienteFactura",
+        component: () => import("../views/ClienteFactura.vue"),
+      },
 
     ]
   },

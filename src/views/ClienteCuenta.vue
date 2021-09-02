@@ -56,7 +56,7 @@
 
     <h4>Mis Facturas</h4>
     <h5>Lista de facturas</h5>
-    <b-table striped hover :items="facturas"></b-table>
+    <!-- <b-table striped hover :items="facturas"></b-table> -->
     <!-- <div v-for="factura in facturas" :key="factura.id">
     <p>{{factura.numero}}</p>
     <p>{{factura.fecha}}</p>
@@ -64,6 +64,12 @@
     <p>{{factura.total}}</p>
     <p>{{factura.PedidoId}}</p>
     </div> -->
+    <b-table striped hover :items="pedidos">
+       <template #cell(verFactura)="data">
+        <!-- `data.value` is the value after formatted by the Formatter -->
+        <a :href="data.value">ver factura</a>
+      </template>
+    </b-table>
   </div>
 </template>
 
@@ -71,6 +77,7 @@
 import { mapGetters } from "vuex";
 import DomiciliosLista from "../components/DomiciliosLista.vue";
 import { getFacturas } from "../services/FacturasController";
+import { fetchTodosLosPedidos } from "../services/PedidosController";
 export default {
   components: {
     DomiciliosLista,
@@ -90,8 +97,29 @@ export default {
         numero: "",
         localidad: "",
       },
-      facturas:null,
+      facturas: null,
+      pedidos: null,
     };
+  },
+  methods: {
+    async filtrarPedidos(clienteId) {
+      const pedidos = await fetchTodosLosPedidos();
+      const pedidosFiltrados = await pedidos.filter(
+        (pedido) => pedido.clienteID == clienteId
+      );
+      console.log(pedidosFiltrados);
+      const pedidosFiltradosCampos = pedidosFiltrados.map((pedido) => {
+        return {
+          id: pedido.id,
+          formaPago: pedido.formaPago,
+          tipoEnvio: pedido.tipoEnvio? "domicilio" : "local" ,
+          fecha: pedido.fecha,
+          total: pedido.total,
+          verFactura:   "/cliente/Factura/"+pedido.id
+        };
+      });
+      return pedidosFiltradosCampos;
+    },
   },
   computed: {
     ...mapGetters(["getCarrito", "traerUsuario", "traerCliente"]),
@@ -100,8 +128,8 @@ export default {
     },
   },
   async mounted() {
+    this.pedidos = await this.filtrarPedidos(this.traerCliente.id);
     this.facturas = await getFacturas();
-
   },
 };
 </script>

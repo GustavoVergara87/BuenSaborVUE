@@ -135,8 +135,10 @@ export default {
 
       if (pedido.tipoEnvio == 0) {
         pedido.estado = PE.PENDIENTE_ENTREGA;
+        console.log("enviar factura al mail")
       } else {
         pedido.estado = PE.LISTO_ENTREGA_LOCAL;
+           console.log("imprimir factura en local")
       }
 
       this.editPedido(pedido);
