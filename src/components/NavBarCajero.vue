@@ -3,7 +3,7 @@
     <!-- toggleable="sm" puede ser tambien lg md, varia en cuando se toggle -->
     <b-navbar toggleable="sm" type="dark" variant="primary">
       <!-- ------------------------------------------------------Titulo y Rol -->
-      <router-link :to="{ name: 'Home' }">
+      <router-link :to="'/cajero/ListaDePedidos'">
         <b-navbar-brand>
           El Buen Sabor
           <br />

@@ -4,7 +4,8 @@
       <b-spinner class="spinner" variant="primary" label="Spinning"></b-spinner>
     </div>
     <div v-if="plato">
-      <h1>Ingredientes</h1>
+      <h1>{{plato.plato}}</h1>
+      <h3>Ingredientes</h3>
       <table>
         <thead>
           <tr>
@@ -50,6 +51,7 @@
                 type="number"
                 v-model="cantidadIngrediente"
                 placeholder="ingrese la cantidad"
+                min="1"
               />
             </td>
             <td>{{ cambiarUnidadMedida() }}</td>
