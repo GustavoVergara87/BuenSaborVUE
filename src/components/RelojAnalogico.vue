@@ -8,16 +8,17 @@
     <div class="minutes" :style="{ transform: minComputedRotation }"></div>
     <div class="segundos" :style="{ transform: segComputedRotation }"></div>
     <div class="marco"></div>
+   
   </div>
 </template>
 
 <script>
 // import Vue from 'vue';
-import { now, proximoHdA } from "../services/Auxiliares";
+import { CorrectNow, proximoHdA } from "../services/Tiempo";
 export default {
   data() {
     return {
-      now: 0,
+      CorrectNow: Date.now(),
       cargandoHora: true,
       abierto: {
         hora1: 0,
@@ -53,15 +54,15 @@ export default {
     },
 
     segundos() {
-      var segundos = new Date(this.now).getSeconds();
+      var segundos = new Date(this.CorrectNow).getSeconds();
       return (segundos * 360) / 60;
     },
     minutos() {
-      var minutos = new Date(this.now).getMinutes();
+      var minutos = new Date(this.CorrectNow).getMinutes();
       return (minutos * 360) / 60;
     },
     hora() {
-      var hora = new Date(this.now).getHours();
+      var hora = new Date(this.CorrectNow).getHours();
       return (hora * 360) / 12;
     },
     segComputedRotation() {
@@ -89,22 +90,22 @@ export default {
   },
   mounted() {
     var self = this;
-    now()
-      .then((a) => a.datetime)
-      .then((ahora) => (self.now = Date.parse(ahora)))
-      .then(() => {
-        self.cargandoHora = false;
-        setInterval(function () {
-          self.now += 1000;
-        }, 1000);
-        setInterval(() => {
-          proximoHdA().then((pHdA) => {
-            // console.log(pHdA);
-            this.abierto.hora1 = pHdA.hora1;
-            this.abierto.hora2 = pHdA.hora2;
-          });
-        }, 10000);
+    self.cargandoHora = false;
+
+    proximoHdA().then((pHdA) => {
+      this.abierto.hora1 = pHdA.hora1;
+      this.abierto.hora2 = pHdA.hora2;
+    });
+
+    setInterval(async function () {
+      self.CorrectNow = await CorrectNow();
+    }, 1000);
+    setInterval(() => {
+      proximoHdA().then((pHdA) => {
+        this.abierto.hora1 = pHdA.hora1;
+        this.abierto.hora2 = pHdA.hora2;
       });
+    }, 10000);
   },
 };
 </script>
@@ -149,6 +150,8 @@ export default {
   filter: blur(5px) brightness(1.2) contrast(1.1);
   clip-path: circle(5em at center);
 }
+
+
 
 .sombra {
   position: absolute;

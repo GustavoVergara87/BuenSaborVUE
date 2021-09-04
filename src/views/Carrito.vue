@@ -161,7 +161,7 @@ import { addDetallePedido } from "../services/DetallesPedidosController";
 import DomiciliosLista from "../components/DomiciliosLista.vue";
 import TE from "../services/TipoEnvio";
 import PE from "../services/PedidoEstados";
-import { estaAbierto, proximoHdA, DiaDeLaSemana } from "../services/Auxiliares";
+import { estaAbierto, proximoHdA, DiaDeLaSemana } from "../services/Tiempo";
 import {
   stockTotalParaArticulosManufacturados,
   stockTotalParaArticulosNoManufacturados,
