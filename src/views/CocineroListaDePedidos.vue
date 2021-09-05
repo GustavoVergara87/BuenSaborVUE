@@ -67,7 +67,9 @@
         <li
           :key="pedido.id"
           v-for="pedido in todosLosPedidos.filter(
-            (pedido) => pedido.estado == PE.LISTO_ENTREGA_LOCAL || pedido.estado == PE.PENDIENTE_ENTREGA
+            (pedido) =>
+              pedido.estado == PE.LISTO_ENTREGA_LOCAL ||
+              pedido.estado == PE.PENDIENTE_ENTREGA
           )"
         >
           <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
@@ -126,19 +128,25 @@ export default {
     },
 
     async retornarPedidoPendiente(idPedido) {
-       const pedido = await this.getPedido(idPedido);
+      const pedido = await this.getPedido(idPedido);
       pedido.estado = PE.APROBADO;
       this.editPedido(pedido);
     },
     async pedidoCocinado(idPedido) {
       const pedido = await this.getPedido(idPedido);
-
+     
+      pedido.detallesPedido.map((detalle) => {
+        detalle.estado = 1;
+        fetch("/api/DetallesPedidos/" + detalle.id, {
+          method: "PUT",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(detalle),
+        });
+      });
       if (pedido.tipoEnvio == 0) {
         pedido.estado = PE.PENDIENTE_ENTREGA;
-        console.log("enviar factura al mail")
       } else {
         pedido.estado = PE.LISTO_ENTREGA_LOCAL;
-           console.log("imprimir factura en local")
       }
 
       this.editPedido(pedido);
@@ -157,7 +165,6 @@ export default {
 </script>
 
 <style scoped>
-
 .estado {
   display: inline-block;
   width: 6em;

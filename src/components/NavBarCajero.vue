@@ -20,7 +20,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <!-- --------------------------------------------------------Login -->
-          <LoginDropdown :nombre="traerUsuario.nombreUsuario"></LoginDropdown>
+          <LoginDropdown :nombre="traerUsuario.nombreUsuario" rol="cajero"></LoginDropdown>
           <!-- --------------------------------------------------------FinLogin -->
 
           <!-- -------------------------------------------------------ListaPedidos -->

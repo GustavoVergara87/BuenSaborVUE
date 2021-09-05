@@ -17,7 +17,14 @@
       </b-row>
       <b-row>
         <b-col sm="2"> Detalles del Pedido: </b-col>
-        <b-col>{{ elPedido.detallesPedido }}</b-col>
+
+        <b-col>
+          <ul>
+            <li :key="detalle.index" v-for="detalle in elPedido.detallesPedido">
+              {{ detalle.cantidad + " " + detalle.articulo.denominacion }}
+            </li>
+          </ul>
+        </b-col>
       </b-row>
       <b-row>
         <b-col sm="2"> Domicilio: </b-col>
@@ -25,7 +32,7 @@
       </b-row>
       <b-row>
         <b-col sm="2"> Estado: </b-col>
-        <b-col>{{estados(elPedido.estado) }}</b-col>
+        <b-col>{{ estados(elPedido.estado) }}</b-col>
       </b-row>
       <b-row>
         <b-col sm="2"> Fecha: </b-col>
@@ -37,11 +44,11 @@
       </b-row>
       <b-row>
         <b-col sm="2"> Tipo Envio: </b-col>
-        <b-col>{{ elPedido.tipoEnvio }}</b-col>
+        <b-col>{{ elPedido.tipoEnvio ? "envio a domicilio" : "retiro en local" }}</b-col>
       </b-row>
       <b-row>
         <b-col sm="2"> Total </b-col>
-        <b-col>{{ elPedido.total }}</b-col>
+        <b-col>${{ elPedido.total }}</b-col>
       </b-row>
       <div v-if="elPedido.estado == 0">
         <b-button variant="success" @click="aprobarPedido(elPedido.id)"
@@ -82,14 +89,12 @@ export default {
     ]),
     estados(estado) {
       const enEstado = {
-        0: "Pendiente" ,
+        0: "Pendiente",
         1: "Aprobado",
-        4: "Cancelado"
-
-      }
+        4: "Cancelado",
+      };
 
       return enEstado[estado];
-
     },
 
     async aprobarPedido(idPedido) {
@@ -99,6 +104,7 @@ export default {
 
       this.editPedido(pedido);
     },
+    
 
     async cancelarPedido(idPedido) {
       const pedido = await this.getPedido(idPedido);
@@ -114,14 +120,6 @@ export default {
 
       this.editPedido(pedido);
     },
-    // aprobarPedido() {
-    //   //aprobar el pedido y volver a la lista de pedidos
-    //   this.$router.push({ name: "CajeroListaDePedidos" });
-    // },
-    // anularPedido() {
-    //   //anular el pedido y volver a la lista de pedidos
-    //   this.$router.push({ name: "CajeroListaDePedidos" });
-    // },
   },
 
   async created() {

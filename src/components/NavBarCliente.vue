@@ -14,7 +14,7 @@
       <b-collapse id="nav-collapse" is-nav class="outlined">
         <b-navbar-nav>
           <!-- --------------------------------------------------------Login -->
-          <LoginDropdown :nombre="traerCliente.nombre"></LoginDropdown>
+          <LoginDropdown :nombre="traerCliente.nombre" rol="cliente"></LoginDropdown>
           <!-- --------------------------------------------------------FinLogin -->
 
           <!-- -------------------------------------------------------Platos -->

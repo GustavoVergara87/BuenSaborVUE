@@ -13,29 +13,30 @@
           {{ nombre }}
         </div>
       </template>
+      <div v-if="nombre==''">
+        <b-dropdown-item v-b-modal.modal-login> Login </b-dropdown-item>
 
-      <b-dropdown-item v-b-modal.modal-login> Login </b-dropdown-item>
+        <b-dropdown-item v-b-modal.modal-registro>Registrarse</b-dropdown-item>
+      </div>
+      <div v-else>
+        <b-dropdown-item v-if="rol == 'cliente'" @click="irAMiCuenta()">Mi cuenta</b-dropdown-item>
 
-      <b-dropdown-item v-b-modal.modal-registro>Registrarse</b-dropdown-item>
-      
-      <b-dropdown-item @click="irAMiCuenta()">Mi cuenta</b-dropdown-item>
-
-      <b-dropdown-divider></b-dropdown-divider>
-      <b-dropdown-item @click="logout()"> Salir </b-dropdown-item>
+        <b-dropdown-item @click="logout()"> Salir </b-dropdown-item>
+      </div>
     </b-nav-item-dropdown>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["nombre"],
+  props: ["nombre", "rol"],
   methods: {
     logout() {
       this.$root.$emit("logout"); //this.$root.$emit() emite un evento que puede ser escuchado globalmente
     },
-    irAMiCuenta(){
-      this.$router.push({name:"ClienteCuenta"})
-    }
+    irAMiCuenta() {
+      this.$router.push({ name: "ClienteCuenta" });
+    },
   },
 };
 </script>

@@ -20,7 +20,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <!-- --------------------------------------------------------Login -->
-          <LoginDropdown :nombre="traerUsuario.nombreUsuario"></LoginDropdown>
+          <LoginDropdown :nombre="traerUsuario.nombreUsuario" rol="cocinero"></LoginDropdown>
           <!-- --------------------------------------------------------FinLogin -->
 
           <!-- -------------------------------------------------------ListaPedidos -->
@@ -71,7 +71,7 @@ export default {
     LoginDropdown,
   },
   computed: {
-    ...mapGetters(["getCarrito","traerUsuario"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
+    ...mapGetters(["getCarrito","traerUsuario", "traerCliente"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
     cantidadCarrito() {
       return this.getCarrito.length;
     },
@@ -94,6 +94,8 @@ export default {
     },
   },
   created() {
+    console.log(this.traerUsuario);
+    console.log(this.traerCliente)
     const childrenRoutes = this.$router.options.routes.find(
       (r) => r.name == "cliente"
     ).children;
