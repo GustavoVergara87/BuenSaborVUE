@@ -2,11 +2,11 @@
   <div class="zocalo">
     <span class="DireccionLocal">Av. El Buen Sabor, GodoyCruz, Mendoza</span>
     <span class="hora">{{ now | moment("h:mm a") }}</span>
-
-    <span class="abierto" v-if="abierto">
+    <span class="abierto" v-show="abierto">
       Abierto
     </span>
-    <span class="cerrado" v-if="!abierto">
+    <span class="cerrado" v-show="!abierto">
+        
       Cerrado
     </span>
   </div>
@@ -20,13 +20,13 @@ export default {
     var self = this;
     setInterval(async function () {
       self.now = Date.now() + Vue.prototype.$horaDiff;
-      this.abierto = estaAbierto();
+      self.abierto = await estaAbierto();
     }, 1000);
   },
   data() {
     return {
       now: Date.now(),
-      abierto: estaAbierto(),
+      abierto: true,
     };
   },
 };
@@ -64,13 +64,13 @@ export default {
   font-size: 80%;
   opacity: 80%;
   
-  animation: anim 1s infinite ease-in-out;
+  animation: anim 3s infinite ease-in-out;
 }
 
 @keyframes anim {
-    0% {filter: drop-shadow(0px 0px 5px white) drop-shadow(0px 0px 5px white);}
+    0% {filter: drop-shadow(0px 0px 5px rgb(127,0,0)) drop-shadow(0px 0px 5px rgb(127,0,0));}
     50% {filter: drop-shadow(0px 0px 5px red) drop-shadow(0px 0px 5px red);}
-    100% {filter: drop-shadow(0px 0px 5px white) drop-shadow(0px 0px 5px white);}
+    100% {filter: drop-shadow(0px 0px 5px rgb(127,0,0)) drop-shadow(0px 0px 5px rgb(127,0,0));}
 }
 .abierto {
   color: white;

@@ -24,13 +24,13 @@ export default {
 
                 //Si existe un usuario logeado en vuex, debe reconectarlo a SignalR
                 const clienteId = store.getters.traerCliente.id
-                const rolId = store.getters.traerUsuario.rolId
+                const rolID = store.getters.traerUsuario.rolID
 
                 if (clienteId != 0) {
                     connection.invoke("JoinClienteIDToGroup", clienteId)
                     console.log("cliente reconectado a SignalR")
-                } else if (rolId != 0) {
-                    connection.invoke("JoinRolIDToGroup", rolId)
+                } else if (rolID != 0) {
+                    connection.invoke("JoinRolIDToGroup", rolID)
                     console.log("usuario reconectado a SignalR")
                 }
 

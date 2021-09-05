@@ -111,16 +111,16 @@ export default {
       });
     },
     removeStoredFromAllGroups() {
-      let rolId = 0;
-      if (this.traerUsuario.rolId != 0) {
-        rolId = this.traerUsuario.rolId;
+      let rolID = 0;
+      if (this.traerUsuario.rolID != 0) {
+        rolID = this.traerUsuario.rolID;
       }
       let clienteId = 0;
       if (this.traerCliente.id != 0) {
         clienteId = this.traerCliente.id;
       }
 
-      this.$connectionHub.invoke("RemoveRolIDFromGroup", rolId).catch((err) => {
+      this.$connectionHub.invoke("RemoveRolIDFromGroup", rolID).catch((err) => {
         console.log(err);
       });
 
@@ -156,9 +156,9 @@ export default {
     },
 
     posLogin() {
-      let rolId;
-      if (this.traerUsuario.rolId != 0) {
-        rolId = this.traerUsuario.rolId;
+      let rolID;
+      if (this.traerUsuario.rolID != 0) {
+        rolID = this.traerUsuario.rolID;
       }
       let clienteId;
       if (this.traerCliente.id != 0) {
@@ -174,13 +174,13 @@ export default {
           }
         },
         Cajero: () => {
-          this.joinRolIdToGroup(rolId);
+          this.joinRolIdToGroup(rolID);
           if (this.$router.currentRoute.name != "CajeroListaDePedidos") {
             this.$router.push({ name: "CajeroListaDePedidos" });
           }
         },
         Cocinero: () => {
-          this.joinRolIdToGroup(rolId);
+          this.joinRolIdToGroup(rolID);
           if (this.$router.currentRoute.name != "CocineroListaDePedidos") {
             this.$router.push({ name: "CocineroListaDePedidos" });
           }
