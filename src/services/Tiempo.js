@@ -11,7 +11,7 @@ export async function CorrectNow() {
 }
 
 async function ahora() {
-    const _now = CorrectNow()
+    const _now = await CorrectNow()
     return {
         dia: new Date(_now).getDay(),
         hora: (new Date(_now).getHours()) + (new Date(_now).getMinutes() / 60),
@@ -40,7 +40,6 @@ export async function estaAbierto() {
         const hda = horariosDeAtencion[i];
         if (perteneceAlIntervaloModular(hda.dia1, hda.dia2, _ahora.dia, 7)) {
             if (perteneceAlIntervaloModular(hda.hora1, hda.hora2, _ahora.hora, 24)) {
-                // console.log("pertenece al intevalo")
                 return true
             }
         }
