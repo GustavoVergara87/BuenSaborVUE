@@ -54,11 +54,7 @@
             ></b-spinner>
           </span>
 
-          <b-button
-            variant="success"
-            @click="retornarPedidoPendiente(pedido.id)"
-            >Retornar a Pendientes
-          </b-button>
+       
         </li>
       </ul>
     </div>
@@ -85,11 +81,7 @@
             ></b-spinner>
           </span>
 
-          <b-button
-            variant="success"
-            @click="retornarPedidoPendiente(pedido.id)"
-            >Retornar a Pendientes
-          </b-button>
+         
         </li>
       </ul>
     </div>
@@ -182,7 +174,7 @@
 
           <b-button
             variant="success"
-            @click="retornarPedidoPendiente(pedido.id)"
+            @click="retornarPedidoPendienteEntrega(pedido.id)"
             >Retornar a pendiente de entrega
           </b-button>
         </li>
@@ -261,6 +253,17 @@ export default {
     async retornarPedidoPendiente(idPedido) {
       const pedido = await this.getPedido(idPedido);
       pedido.estado = PE.PENDIENTE;
+      this.editPedido(pedido);
+    },
+       async retornarPedidoPendienteEntrega(idPedido) {
+      const pedido = await this.getPedido(idPedido);
+
+      if (pedido.tipoEnvio == 0) {
+        pedido.estado = PE.PENDIENTE_ENTREGA;
+      } else {
+        pedido.estado = PE.LISTO_ENTREGA_LOCAL;
+      }
+
       this.editPedido(pedido);
     },
     async pedidoEntregado(idPedido){

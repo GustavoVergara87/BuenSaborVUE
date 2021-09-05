@@ -2,7 +2,24 @@
   <div>
     <div>
       <h1>Detalle Pedido</h1>
-
+      <div>
+        <b-row>
+          <b-col class="informacionPrincipal" sm="2">
+            <p>Id:</p>
+          </b-col>
+          <b-col>
+            <p>{{ elPedido.id }}</p>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col sm="2">
+            <p>Nombre del Cliente:</p>
+          </b-col>
+          <b-col>
+            <p>{{ elPedido.cliente.nombre + " " + elPedido.cliente.apellido }}</p>
+          </b-col>
+        </b-row>
+      </div>
       <ul>
         <li :key="detalle.index" v-for="detalle in elPedido.detallesPedido">
           <div
@@ -14,7 +31,7 @@
             </p>
             <p>{{ detalle.articulo.denominacion }}</p>
             <b-button @click="setPlatoCocinado(detalle.id)">{{
-              detalle.estado ? "Pendiente" : "Cocinado"
+              detalle.estado ? "Pendiente" : "Listo"
             }}</b-button>
           </div>
         </li>
@@ -46,7 +63,6 @@ export default {
     ]),
 
     async setPlatoCocinado(id) {
-  
       let detalle = this.elPedido.detallesPedido.filter(
         (detalle) => detalle.id == id
       );
@@ -69,6 +85,15 @@ export default {
     },
 
     async setPedidoCocinado() {
+      this.elPedido.detallesPedido.map((detalle) => {
+        detalle.estado = 1;
+         fetch("/api/DetallesPedidos/" + detalle.id, {
+          method: "PUT",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(detalle),
+        });
+      });
+
       if (this.elPedido.tipoEnvio == 0) {
         this.elPedido.estado = PE.PENDIENTE_ENTREGA;
       } else {
@@ -84,6 +109,7 @@ export default {
   },
   async created() {
     await this.getPedido(this.$route.params.idPedido);
+    
   },
 };
 </script>

@@ -16,7 +16,7 @@
           {{ domicilio.text }}
         </option>
 
-        <option v-bind:value="'nuevo'">...</option>
+        <option v-bind:value="'nuevo'">Agregar Nueva Dirección</option>
       </b-form-select>
     </div>
 
