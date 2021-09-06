@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="contenedor">
     <div class="lista">
       <h2>Pedidos Pendientes</h2>
       <ul>
@@ -53,8 +53,6 @@
               label="Spinning"
             ></b-spinner>
           </span>
-
-       
         </li>
       </ul>
     </div>
@@ -80,8 +78,6 @@
               label="Spinning"
             ></b-spinner>
           </span>
-
-         
         </li>
       </ul>
     </div>
@@ -108,16 +104,12 @@
             ></b-spinner>
           </span>
 
-          <b-button
-            variant="success"
-            @click="pedidoEntregado(pedido.id)"
+          <b-button variant="success" @click="pedidoEntregado(pedido.id)"
             >Pedido entregado
           </b-button>
         </li>
       </ul>
     </div>
-
-  
 
     <div class="lista">
       <h2>Pedidos en Reparto</h2>
@@ -141,16 +133,14 @@
             ></b-spinner>
           </span>
 
-        <b-button
-            variant="success"
-            @click="pedidoEntregado(pedido.id)"
+          <b-button variant="success" @click="pedidoEntregado(pedido.id)"
             >Pedido entregado
           </b-button>
         </li>
       </ul>
     </div>
 
-     <div class="lista">
+    <div class="lista">
       <h2>Pedidos Entregados</h2>
       <ul>
         <li
@@ -181,7 +171,7 @@
       </ul>
     </div>
 
-     <div class="lista">
+    <div class="lista">
       <h2>Pedidos Cancelados</h2>
       <ul>
         <li
@@ -255,7 +245,7 @@ export default {
       pedido.estado = PE.PENDIENTE;
       this.editPedido(pedido);
     },
-       async retornarPedidoPendienteEntrega(idPedido) {
+    async retornarPedidoPendienteEntrega(idPedido) {
       const pedido = await this.getPedido(idPedido);
 
       if (pedido.tipoEnvio == 0) {
@@ -266,11 +256,11 @@ export default {
 
       this.editPedido(pedido);
     },
-    async pedidoEntregado(idPedido){
-        const pedido = await this.getPedido(idPedido);
+    async pedidoEntregado(idPedido) {
+      const pedido = await this.getPedido(idPedido);
       pedido.estado = PE.ENTREGADO;
       this.editPedido(pedido);
-    }
+    },
   },
   async created() {
     await this.fetchTodosLosPedidos();
@@ -279,7 +269,25 @@ export default {
 </script>
 
 <style scoped>
-
+@media screen and (max-width: 801px) {
+  h2{
+    font-size: 1rem;
+  }
+  li {
+    display: flex;
+    width: 75%;
+  }
+  .contenedor {
+    display: grid;
+  }
+  button,
+  .estado {
+    font-size: 0.8rem !important;
+  }
+  .lista {
+    width: 100%!important;
+  }
+}
 
 .estado {
   display: inline-block;
@@ -293,7 +301,5 @@ export default {
   border: 1px solid black;
   height: 300px;
   overflow: auto;
-
-
 }
 </style>

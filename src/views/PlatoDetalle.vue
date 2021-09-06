@@ -88,7 +88,7 @@ export default {
 
 <style scoped>
 .imagen {
-  height: 400px;
+  width: 100%;
 }
 
 
