@@ -4,7 +4,7 @@ const state = {
     usuario: {
         nombreUsuario: "",
         rol: "",
-        rolId: 0,
+        rolID: 0,
     },
     cliente: {
         id: 0,
@@ -79,7 +79,7 @@ const mutations = {
     resetUsuario: (state) => {
         state.usuario.nombreUsuario = "";
         state.usuario.rol = "";
-        state.usuario.rolId = 0;
+        state.usuario.rolID = 0;
     },
     resetCliente: (state) => {
         state.cliente.id = 0;
