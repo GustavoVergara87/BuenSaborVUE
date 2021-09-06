@@ -76,7 +76,7 @@ export default {
         this.isSignIn = this.$gAuth.isAuthorized;
         this.$emit("logout");
       } catch (error) {
-        // On fail do something
+        console.log("No se pudo desloguear de Google")
       }
     },
   },

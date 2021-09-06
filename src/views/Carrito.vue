@@ -333,6 +333,13 @@ export default {
         } else {
           this.preferencia.pedidoId = nuevoPedidoId;
           this.preferencia.total = this.PrecioTotal;
+
+          //El total no puede ser cero pesos porque MP explota
+          if (this.PrecioTotal==0) {
+            alert("nada es gratis. El carrito no puede salir 0 pesos. ESTO DEBE VERIFICARSE ANTES");
+            return;
+          }
+
           const res = await GenerarTicketMercadoPagoPreference(
             this.preferencia
           );

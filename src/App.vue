@@ -22,7 +22,7 @@ export default {
     const _ServerNow = Date.parse(resp.datetime)
     const ClientNow = Date.now()
     Vue.prototype.$horaDiff = _ServerNow - ClientNow 
-    console.log(this.$horaDiff) 
+    console.log("milisegundos de diferencia cliente servidor",this.$horaDiff) 
   },
 };
 </script>

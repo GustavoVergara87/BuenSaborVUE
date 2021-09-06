@@ -3,7 +3,7 @@
     <!-- toggleable="sm" puede ser tambien lg md, varia en cuando se toggle -->
     <b-navbar toggleable="sm" type="dark" variant="primary">
       <!-- ------------------------------------------------------Titulo y Rol -->
-      <router-link :to=" '/cocinero/ListaDePedidos' ">
+      <router-link :to="'/cocinero/ListaDePedidos'">
         <b-navbar-brand>
           El Buen Sabor
           <br />
@@ -20,7 +20,10 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <!-- --------------------------------------------------------Login -->
-          <LoginDropdown :nombre="traerUsuario.nombreUsuario" rol="cocinero"></LoginDropdown>
+          <LoginDropdown
+            :nombre="traerUsuario.nombreUsuario"
+            rol="cocinero"
+          ></LoginDropdown>
           <!-- --------------------------------------------------------FinLogin -->
 
           <!-- -------------------------------------------------------ListaPedidos -->
@@ -43,7 +46,40 @@
           <!-- -------------------------------------------------------FinPlatos -->
         </b-navbar-nav>
 
+<<<<<<< Updated upstream
      
+=======
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <!-- -------------------------------------------------------Buscar -->
+          <b-nav-form @submit="handleBusqueda">
+            <b-form-input
+              size="sm"
+              class="mr-sm-2"
+              placeholder="Buscar"
+            ></b-form-input>
+            <b-button size="sm" class="my-2 my-sm-0" type="submit">
+              <i class="fas fa-search"></i>
+            </b-button>
+          </b-nav-form>
+        </b-navbar-nav>
+        <!-- ----------------------------------------------------------Fin Buscar -->
+
+        <!-- -------------------------------------------------------Notificaciones -->
+        <!-- <div @mouseover="onOver" @mouseleave="onLeave"> -->
+        <div>
+          <button
+            id="campana-notificacion"
+            @click="handleToogleNotificaciones"
+            class="btn m-2 nav-link-mod nav-link-semiopaco"
+          >
+            <i class="fas fa-bell campana"></i>
+          </button>
+        </div>
+        <Notificaciones ref="notificacion"></Notificaciones>
+        <!-- -------------------------------------------------------Fin Notificaciones-->
+        
+>>>>>>> Stashed changes
       </b-collapse>
     </b-navbar>
   </div>
@@ -52,19 +88,24 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import LoginDropdown from "./LoginDropdown.vue";
+import Notificaciones from "./Notificaciones.vue";
 
 export default {
   components: {
     LoginDropdown,
+     Notificaciones,
   },
   computed: {
-    ...mapGetters(["getCarrito","traerUsuario", "traerCliente"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
+    ...mapGetters(["getCarrito", "traerUsuario", "traerCliente"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
     cantidadCarrito() {
       return this.getCarrito.length;
     },
   },
   methods: {
     ...mapActions(["fetchTodosLosPedidos"]),
+        handleToogleNotificaciones() {
+      this.$refs.notificacion.toggleVisibility();
+    },
     handleBusqueda(event) {
       event.preventDefault();
       this.$router
@@ -82,7 +123,7 @@ export default {
   },
   created() {
     console.log(this.traerUsuario);
-    console.log(this.traerCliente)
+    console.log(this.traerCliente);
     const childrenRoutes = this.$router.options.routes.find(
       (r) => r.name == "cliente"
     ).children;

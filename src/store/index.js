@@ -21,7 +21,7 @@ const store = new Vuex.Store({
   modules: { Login, Platos, Articulos, Pedidos, RubrosArticulos, Carrito, Clientes, Notificaciones },
   plugins: [
     new VuexPersistence({
-      storage: window.localStorage  //.sessionStorage .localStorage guarda los vuex "Para siempre" Sesion storage hasta que se cierre la ventana
+      storage: window.sessionStorage  //.sessionStorage .localStorage guarda los vuex "Para siempre" Sesion storage hasta que se cierre la ventana
     }).plugin
   ]
 });

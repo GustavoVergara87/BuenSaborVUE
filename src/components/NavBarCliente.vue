@@ -85,7 +85,7 @@
           <div>
             <button
               id="campana-notificacion"
-              @click="handleNotificaciones"
+              @click="handleToogleNotificaciones"
               class="btn m-2 nav-link-mod nav-link-semiopaco"
             >
               <i class="fas fa-bell campana"></i>
@@ -131,7 +131,7 @@ export default {
   },
   methods: {
     ...mapActions(["fetchTodosLosRubrosArticulos"]),
-    handleNotificaciones() {
+    handleToogleNotificaciones() {
       this.$refs.notificacion.toggleVisibility();
     },
     handleBusqueda(event) {

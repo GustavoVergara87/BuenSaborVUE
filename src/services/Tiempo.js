@@ -40,7 +40,7 @@ export async function estaAbierto() {
         const hda = horariosDeAtencion[i];
         if (perteneceAlIntervaloModular(hda.dia1, hda.dia2, _ahora.dia, 7)) {
             if (perteneceAlIntervaloModular(hda.hora1, hda.hora2, _ahora.hora, 24)) {
-                console.log("hda",hda, "pertenece")
+                // console.log("hda",hda, "pertenece")
                 return true
             }
         }

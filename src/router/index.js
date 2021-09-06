@@ -119,12 +119,6 @@ const routes = [
         name: "CocineroEditarReceta",
         component: () => import("../views/CocineroEditarReceta.vue"),
       },
-      {
-        path: "/cocinero/Editar_Articulo/:id",
-        name: "CocineroEditarArticulo",
-        component: () => import("../views/AgregarEditar/AE_Articulo.vue"),
-        props: { comportamiento: 'Editar', }
-      },
     ]
   },
   //--------------------------------------------------------------------------------------

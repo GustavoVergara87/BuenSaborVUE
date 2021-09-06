@@ -16,7 +16,7 @@
           {{ domicilio.text }}
         </option>
 
-        <option v-bind:value="'nuevo'">Agregar Nueva Dirección</option>
+        <option v-bind:value="'nuevo'">...agregar Nueva Dirección</option>
       </b-form-select>
     </div>
 
@@ -70,7 +70,9 @@ export default {
   computed: {
     ...mapGetters(["getCarrito", "traerUsuario", "traerCliente"]),
     domicilios() {
-      return this.traerCliente.domicilios.map((d) => {
+      const cliente = this.traerCliente
+      console.log(cliente.domicilios)
+      return cliente.domicilios.map((d) => {
         return {
           text: d.calle + " " + d.numero + ", " + d.localidad,
           value: d.id,
