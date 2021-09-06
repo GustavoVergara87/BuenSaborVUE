@@ -1,7 +1,7 @@
 <template>
   <div class="fixed">
     <!-- toggleable="sm" puede ser tambien lg md, varia en cuando se toggle -->
-    <b-navbar toggleable="sm" type="dark" variant="primary" class="test">
+    <b-navbar toggleable="md" type="dark" variant="primary" class="test">
       <!-- ------------------------------------------------------Titulo y Rol -->
       <router-link :to="{ name: 'Home' }">
         <b-navbar-brand>
@@ -11,7 +11,7 @@
       <!-- ------------------------------------------------------FinTitulo y Rol -->
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse id="nav-collapse" is-nav class="outlined">
+      <b-collapse id="nav-collapse" is-nav class="m-1">
         <b-navbar-nav>
           <!-- --------------------------------------------------------Login -->
           <LoginDropdown :nombre="traerCliente.nombre" rol="cliente"></LoginDropdown>
@@ -166,10 +166,20 @@ export default {
   width: 19em;
   height: 1vh;
 }
+
+
+
+
+
 </style>
 
 <style scoped>
 
+
+@media (max-width: 768px){
+div#nav-collapse {
+    background-image: url("../../public/images/hamb.jpg");
+}}
 
 .campana {
   transform: translateY(0.25em);
