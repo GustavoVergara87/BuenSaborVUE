@@ -36,20 +36,7 @@
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
-             <b-navbar-nav class="ml-auto">
-          <!-- -------------------------------------------------------Buscar -->
-          <b-nav-form @submit="handleBusqueda">
-            <b-form-input
-              size="sm"
-              class="mr-sm-2"
-              placeholder="Buscar"
-            ></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">
-              <i class="fas fa-search"></i>
-            </b-button>
-          </b-nav-form>
-          <!-- -------------------------------------------------------FinBuscar -->
-        </b-navbar-nav>
+      
       </b-collapse>
     </b-navbar>
   </div>
