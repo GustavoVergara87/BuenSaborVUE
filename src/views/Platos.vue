@@ -38,7 +38,7 @@ export default {
       }
 
       if (this.$route.query.porRubro !== undefined) {
-         console.log(this.todosLosPlatos);
+        //  console.log(this.todosLosPlatos);
         tmpPlatosFiltrados = this.todosLosPlatos
           .filter((plato) => plato.grupo !== null && plato.grupo !== undefined)
           .filter((plato) =>

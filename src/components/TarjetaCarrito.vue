@@ -98,6 +98,7 @@ export default {
   order: 2;
   margin: auto;
   margin-right: 1em;
+  white-space: nowrap;
 }
 
 .botonQuitarCarrito {
