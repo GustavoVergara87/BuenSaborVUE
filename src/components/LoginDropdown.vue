@@ -35,7 +35,9 @@ export default {
       this.$root.$emit("logout"); //this.$root.$emit() emite un evento que puede ser escuchado globalmente
     },
     irAMiCuenta() {
-      this.$router.push({ name: "ClienteCuenta" });
+      if (this.$router.currentRoute.name != "ClienteCuenta") {
+        this.$router.push({ name: "ClienteCuenta" });
+      }
     },
   },
 };

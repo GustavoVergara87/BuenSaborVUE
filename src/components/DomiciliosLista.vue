@@ -71,7 +71,7 @@ export default {
     ...mapGetters(["getCarrito", "traerUsuario", "traerCliente"]),
     domicilios() {
       const cliente = this.traerCliente
-      console.log(cliente.domicilios)
+      // console.log(cliente.domicilios)
       return cliente.domicilios.map((d) => {
         return {
           text: d.calle + " " + d.numero + ", " + d.localidad,

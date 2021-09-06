@@ -107,7 +107,7 @@ export default {
       const pedidosFiltrados = await pedidos.filter(
         (pedido) => pedido.clienteID == clienteId
       );
-      console.log(pedidosFiltrados);
+      // console.log(pedidosFiltrados);
       const pedidosFiltradosCampos = pedidosFiltrados.map((pedido) => {
         return {
           id: pedido.id,
