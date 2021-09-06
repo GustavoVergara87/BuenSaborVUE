@@ -1,5 +1,5 @@
 <template>
-  <div class="contenedor">
+  <div>
     <div class="lista">
       <h2>Pedidos Pendientes</h2>
       <ul>
@@ -134,7 +134,7 @@ export default {
     },
     async pedidoCocinado(idPedido) {
       const pedido = await this.getPedido(idPedido);
-
+     
       pedido.detallesPedido.map((detalle) => {
         detalle.estado = 1;
         fetch("/api/DetallesPedidos/" + detalle.id, {
@@ -165,20 +165,6 @@ export default {
 </script>
 
 <style scoped>
-@media screen and (max-width: 801px) {
-  li {
-    display: flex;
-    width: 75%;
-  }
-  .contenedor {
-    display: grid;
-  }
- button, .estado{
-    font-size: 0.8rem!important;
-  }
-  
-}
-
 .estado {
   display: inline-block;
   width: 6em;

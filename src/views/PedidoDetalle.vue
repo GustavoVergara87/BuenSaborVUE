@@ -4,19 +4,19 @@
     <div v-else>
       <h3>Detalle Pedido</h3>
       <b-row>
-        <b-col sm="2"><label>  Id:</label> </b-col>
+        <b-col sm="2"> Id: </b-col>
         <b-col>{{ elPedido.id }}</b-col>
       </b-row>
       <b-row>
-        <b-col sm="2"><label> Cliente:</label> </b-col>
+        <b-col sm="2"> Cliente: </b-col>
         <b-col>{{ elCliente.nombre }} {{ elCliente.apellido }}</b-col>
       </b-row>
       <b-row>
-        <b-col sm="2"><label>usuario: </label>  </b-col>
+        <b-col sm="2"> usuario: </b-col>
         <b-col>{{ elCliente.usuario.nombreUsuario }} </b-col>
       </b-row>
       <b-row>
-        <b-col sm="2"><label>Detalles del Pedido: </label>  </b-col>
+        <b-col sm="2"> Detalles del Pedido: </b-col>
 
         <b-col>
           <ul>
@@ -27,27 +27,27 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col sm="2"><label> Domicilio: </label></b-col>
+        <b-col sm="2"> Domicilio: </b-col>
         <b-col>{{ elPedido.domicilio }}</b-col>
       </b-row>
       <b-row>
-        <b-col sm="2"><label> Estado:</label> </b-col>
+        <b-col sm="2"> Estado: </b-col>
         <b-col>{{ estados(elPedido.estado) }}</b-col>
       </b-row>
       <b-row>
-        <b-col sm="2"><label> Fecha: </label></b-col>
+        <b-col sm="2"> Fecha: </b-col>
         <b-col>{{ elPedido.fecha }}</b-col>
       </b-row>
       <b-row>
-        <b-col sm="2"><label> Hora Estimada: </label></b-col>
+        <b-col sm="2"> Hora Estimada: </b-col>
         <b-col>{{ elPedido.horaEstimadaFin }}</b-col>
       </b-row>
       <b-row>
-        <b-col sm="2"><label> Tipo Envio:</label> </b-col>
+        <b-col sm="2"> Tipo Envio: </b-col>
         <b-col>{{ elPedido.tipoEnvio ? "envio a domicilio" : "retiro en local" }}</b-col>
       </b-row>
       <b-row>
-        <b-col sm="2"><label> Total</label> </b-col>
+        <b-col sm="2"> Total </b-col>
         <b-col>${{ elPedido.total }}</b-col>
       </b-row>
       <div v-if="elPedido.estado == 0">
@@ -130,8 +130,5 @@ export default {
 };
 </script>
 
-<style scoped>
-label{
-  font-weight: 500;
-}
+<style>
 </style>

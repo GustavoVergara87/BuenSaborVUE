@@ -16,9 +16,7 @@
             <p>Nombre del Cliente:</p>
           </b-col>
           <b-col>
-            <p>
-              {{ elPedido.cliente.nombre + " " + elPedido.cliente.apellido }}
-            </p>
+            <p>{{ elPedido.cliente.nombre + " " + elPedido.cliente.apellido }}</p>
           </b-col>
         </b-row>
       </div>
@@ -89,7 +87,7 @@ export default {
     async setPedidoCocinado() {
       this.elPedido.detallesPedido.map((detalle) => {
         detalle.estado = 1;
-        fetch("/api/DetallesPedidos/" + detalle.id, {
+         fetch("/api/DetallesPedidos/" + detalle.id, {
           method: "PUT",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify(detalle),
@@ -111,16 +109,12 @@ export default {
   },
   async created() {
     await this.getPedido(this.$route.params.idPedido);
+    
   },
 };
 </script>
 
 <style scoped>
-@media screen and (max-width: 801px) {
-  .elemento {
-    width: 80%!important;
-  }
-}
 p {
   font-size: 30px;
   font-weight: 500;

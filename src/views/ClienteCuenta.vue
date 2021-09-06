@@ -115,7 +115,7 @@ export default {
           tipoEnvio: pedido.tipoEnvio? "domicilio" : "local" ,
           fecha: pedido.fecha,
           total: pedido.total,
-          verFactura:   "https://localhost:44350/api/Facturas/PDF/"+pedido.id
+          verFactura:   "/cliente/Factura/"+pedido.id
         };
       });
       return pedidosFiltradosCampos;
