@@ -309,11 +309,15 @@ export default {
           pHdA.hora1 +
           " horas.";
         alert(rta);
+
+        // return
       }
 
       if (this.form.direccionEntrega == "") {
         alert("debe ingresar la dirección");
-      } else {
+        return
+      } 
+
         this.generandoPedidoYDetallesPedido = true;
         //Pide el Id del domicilio. Si es un domicilio nuevo, lo creará y traerá el Id
         let domicilioID;
@@ -346,7 +350,7 @@ export default {
           const preferenceId = String(res.id);
           this.MPcheckout(preferenceId);
         }
-      }
+      
     },
 
     async enviarCarrito(domicilioID, tipoEnvio) {
