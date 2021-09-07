@@ -14,6 +14,7 @@
           name="email"
           v-model="form.Email"
           placeholder="Email"
+          required
         />
 
         <label for="Clave">Clave</label>
@@ -22,6 +23,7 @@
           name="password"
           v-model="form.Clave"
           placeholder="Clave"
+          required
         />
 
         <label for="Nombre">Nombre</label>
@@ -30,6 +32,7 @@
           name="nombre"
           v-model="form.Nombre"
           placeholder="Nombre"
+          required
         />
 
         <label for="Apellido">Apellido</label>
@@ -38,14 +41,16 @@
           name="apellido"
           v-model="form.Apellido"
           placeholder="Apellido"
+          required
         />
 
         <label for="Telefono">Telefono</label>
         <input
-          type="number"
+          type="phone"
           name="telefono"
           v-model="form.Telefono"
           placeholder="Telefono"
+          required
         />
 
         <button type="submit">Registrarse</button>
