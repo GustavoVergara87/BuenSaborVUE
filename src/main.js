@@ -9,6 +9,8 @@ import "../src/assets/css/styles.css"
 import LoadScript from 'vue-plugin-load-script';
 import Notificaciones from '../src/services/NotificacionesSetup'
 import GAuth from 'vue-google-oauth2'
+import VuePageTitle from 'vue-page-title'
+
 
 const gauthOption = {
   clientId: '225689514544-qccdbtr164tekpjkgq0fn1f7630g2266.apps.googleusercontent.com',
@@ -16,6 +18,10 @@ const gauthOption = {
   prompt: 'select_account'
 }
 
+Vue.use(VuePageTitle, {
+  // prefix: 'My App - ',
+  suffix: '- ElBuenSabor '
+})
 Vue.use(GAuth, gauthOption)
 Vue.config.productionTip = false;
 Vue.use(LoadScript);

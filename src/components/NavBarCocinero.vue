@@ -45,9 +45,22 @@
           </b-nav-item>
           <!-- -------------------------------------------------------FinPlatos -->
         </b-navbar-nav>
-
-     
       </b-collapse>
+
+               <!-- -------------------------------------------------------Notificaciones -->
+          <!-- <div @mouseover="onOver" @mouseleave="onLeave"> -->
+          <div>
+            <button
+              id="campana-notificacion"
+              @click="handleToogleNotificaciones"
+              class="btn m-2 nav-link-mod nav-link-semiopaco"
+            >
+              <i class="fas fa-bell campana"></i>
+            </button>
+          </div>
+          <Notificaciones ref="notificacion"></Notificaciones>
+          <!-- -------------------------------------------------------Fin Notificaciones-->
+          
     </b-navbar>
   </div>
 </template>
@@ -112,6 +125,9 @@ export default {
       loginShow: false,
       registroShow: false,
     };
+  },
+    mounted() {
+     this.$title="Cliente"
   },
 };
 </script>

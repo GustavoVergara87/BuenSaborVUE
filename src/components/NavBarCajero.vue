@@ -20,7 +20,10 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <!-- --------------------------------------------------------Login -->
-          <LoginDropdown :nombre="traerUsuario.nombreUsuario" rol="cajero"></LoginDropdown>
+          <LoginDropdown
+            :nombre="traerUsuario.nombreUsuario"
+            rol="cajero"
+          ></LoginDropdown>
           <!-- --------------------------------------------------------FinLogin -->
 
           <!-- -------------------------------------------------------ListaPedidos -->
@@ -48,27 +51,24 @@
             </b-button>
           </b-nav-form>
           <!-- -------------------------------------------------------FinBuscar -->
-
-
-          <!-- -------------------------------------------------------Notificaciones -->
-          <!-- <div @mouseover="onOver" @mouseleave="onLeave"> -->
-          <div>
-            <button
-              id="campana-notificacion"
-              @click="handleToogleNotificaciones"
-              class="btn m-2 nav-link-mod nav-link-semiopaco"
-            >
-              <i class="fas fa-bell campana"></i>
-            </button>
-          </div>
-          <Notificaciones ref="notificacion"></Notificaciones>
-          <!-- -------------------------------------------------------Fin Notificaciones-->
-
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
-      
       </b-collapse>
+
+      <!-- -------------------------------------------------------Notificaciones -->
+      <!-- <div @mouseover="onOver" @mouseleave="onLeave"> -->
+      <div>
+        <button
+          id="campana-notificacion"
+          @click="handleToogleNotificaciones"
+          class="btn m-2 nav-link-mod nav-link-semiopaco"
+        >
+          <i class="fas fa-bell campana"></i>
+        </button>
+      </div>
+      <Notificaciones ref="notificacion"></Notificaciones>
+      <!-- -------------------------------------------------------Fin Notificaciones-->
     </b-navbar>
   </div>
 </template>
@@ -81,7 +81,7 @@ import Notificaciones from "./Notificaciones.vue";
 export default {
   components: {
     LoginDropdown,
-     Notificaciones,
+    Notificaciones,
   },
   computed: {
     ...mapGetters(["todosLosRubrosArticulos", "traerUsuario", "getCarrito"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     ...mapActions(["fetchTodosLosPedidos"]),
-            handleToogleNotificaciones() {
+    handleToogleNotificaciones() {
       this.$refs.notificacion.toggleVisibility();
     },
     handleBusqueda(event) {
@@ -131,6 +131,9 @@ export default {
       loginShow: false,
       registroShow: false,
     };
+  },
+  mounted() {
+    this.$title = "Cajero";
   },
 };
 </script>

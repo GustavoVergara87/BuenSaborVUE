@@ -80,8 +80,13 @@
           </b-nav-form>
           <!-- -------------------------------------------------------Fin Buscar -->
 
-          <!-- -------------------------------------------------------Notificaciones -->
-          <!-- <div @mouseover="onOver" @mouseleave="onLeave"> -->
+
+        </b-navbar-nav>
+
+
+
+      </b-collapse>
+                <!-- -------------------------------------------------------Notificaciones -->
           <div>
             <button
               id="campana-notificacion"
@@ -93,8 +98,6 @@
           </div>
           <Notificaciones ref="notificacion"></Notificaciones>
           <!-- -------------------------------------------------------Fin Notificaciones-->
-        </b-navbar-nav>
-      </b-collapse>
     </b-navbar>
 
 
@@ -155,6 +158,9 @@ export default {
   },
   created() {
     this.fetchTodosLosRubrosArticulos();
+  },
+  mounted() {
+     this.$title="Cliente"
   },
 
 };

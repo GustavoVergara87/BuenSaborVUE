@@ -33,7 +33,7 @@
                 Debe loggearse para poder pagar
               </p>
             </div>
-            <form class="columnaDerecha" :class="{ formDisabled: noHayLoggin }">
+            <form v-show="traerCliente.nombre != ''" class="columnaDerecha" :class="{ formDisabled: noHayLoggin }">
               <div class="dottedRow">
                 <label class="precio dottedLeft">Cliente:</label>
                 <span class="dottedDots"></span>

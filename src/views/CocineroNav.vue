@@ -9,6 +9,7 @@
 import NavBarCocinero from "../components/NavBarCocinero.vue";
 export default {
   components: { NavBarCocinero },
+
 };
 </script>
 

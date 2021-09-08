@@ -103,10 +103,10 @@
 //todo lo de vuex pedidos lo podes ver en src/store/modules/pedidos
 import { mapGetters, mapActions } from "vuex";
 import PE from "../services/PedidoEstados";
-
+import TE from "../services/TipoEnvio";
 export default {
   data() {
-    return { PE: PE };
+    return { PE: PE, TE: TE };
   },
   computed: {
     ...mapGetters(["todosLosPedidos", "cargando", "todosLosClientes"]),
@@ -143,7 +143,7 @@ export default {
           body: JSON.stringify(detalle),
         });
       });
-      if (pedido.tipoEnvio == 0) {
+      if (pedido.tipoEnvio == TE.DOMICILIO) {
         pedido.estado = PE.PENDIENTE_ENTREGA;
       } else {
         pedido.estado = PE.LISTO_ENTREGA_LOCAL;
@@ -173,10 +173,10 @@ export default {
   .contenedor {
     display: grid;
   }
- button, .estado{
-    font-size: 0.8rem!important;
+  button,
+  .estado {
+    font-size: 0.8rem !important;
   }
-  
 }
 
 .estado {
