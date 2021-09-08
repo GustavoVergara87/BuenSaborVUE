@@ -33,7 +33,11 @@
                 Debe loggearse para poder pagar
               </p>
             </div>
-            <form v-show="traerCliente.nombre != ''" class="columnaDerecha" :class="{ formDisabled: noHayLoggin }">
+            <form
+              v-show="traerCliente.nombre != ''"
+              class="columnaDerecha"
+              :class="{ formDisabled: noHayLoggin }"
+            >
               <div class="dottedRow">
                 <label class="precio dottedLeft">Cliente:</label>
                 <span class="dottedDots"></span>
@@ -181,10 +185,6 @@ export default {
       },
       mercadoPagoModalShow: false,
       show: true,
-      preferencia: {
-        pedidoId: 0,
-        total: 0,
-      },
     };
   },
 
@@ -198,13 +198,16 @@ export default {
         0
       );
     },
+
     descuento() {
       if (this.form.retiraEn == TE.LOCAL) return 0.1;
       return 0;
     },
+
     PrecioTotal() {
       return this.sumaDeDetalles * (1 - this.descuento);
     },
+
     noHayLoggin() {
       return this.traerCliente.nombre == "";
     },
@@ -231,6 +234,7 @@ export default {
       this.form.formaPago = "MercadoPago";
       this.form.direccionEntrega == "";
     },
+
     cargarDireccionCajero() {
       this.form.direccionEntrega = "Cajero";
     },
@@ -250,55 +254,60 @@ export default {
                 ". Hay " +
                 stockParaArt.StockTotal
             );
+            return false;
           }
         }
 
-        const stockParaArt = await stockTotalParaArticulosManufacturados(
-          carritoElement.id
-        );
-
-        let ingredienteLimitante = {
-          hayIngredientePara: Number.MAX_SAFE_INTEGER,
-        };
-
-        stockParaArt.forEach((ingrediente) => {
-          if (
-            ingrediente.hayIngredientePara <
-            ingredienteLimitante.hayIngredientePara
-          ) {
-            ingredienteLimitante = ingrediente;
-          }
-        });
-
-        ingredienteLimitante.hayIngredientePara = Math.floor(
-          ingredienteLimitante.hayIngredientePara
-        );
-
-        console.log(ingredienteLimitante);
-        console.log(
-          "Cantidad Pedida",
-          carritoElement.cantidad,
-          "CantidadDisponible",
-          ingredienteLimitante.hayIngredientePara
-        );
-
-        if (ingredienteLimitante.hayIngredientePara < carritoElement.cantidad) {
-          // console.log(carritoElement);
-          alert(
-            "lo sentimos, no contamos con " +
-              ingredienteLimitante.Denominacion1 +
-              " para esa cantidad de " +
-              carritoElement.plato +
-              ". Hay para " +
-              ingredienteLimitante.hayIngredientePara
+        if (carritoElement.EsManufacturado) {
+          const stockParaArt = await stockTotalParaArticulosManufacturados(
+            carritoElement.id
           );
+
+          let ingredienteLimitante = {
+            hayIngredientePara: Number.MAX_SAFE_INTEGER,
+          };
+
+          stockParaArt.forEach((ingrediente) => {
+            if (
+              ingrediente.hayIngredientePara <
+              ingredienteLimitante.hayIngredientePara
+            ) {
+              ingredienteLimitante = ingrediente;
+            }
+          });
+
+          ingredienteLimitante.hayIngredientePara = Math.floor(
+            ingredienteLimitante.hayIngredientePara
+          );
+
+          console.log(ingredienteLimitante);
+          console.log(
+            "Cantidad Pedida",
+            carritoElement.cantidad,
+            "CantidadDisponible",
+            ingredienteLimitante.hayIngredientePara
+          );
+
+          if (
+            ingredienteLimitante.hayIngredientePara < carritoElement.cantidad
+          ) {
+            // console.log(carritoElement);
+            alert(
+              "lo sentimos, no contamos con " +
+                ingredienteLimitante.Denominacion1 +
+                " para esa cantidad de " +
+                carritoElement.plato +
+                ". Hay para " +
+                ingredienteLimitante.hayIngredientePara
+            );
+            return false;
+          }
         }
       }
+      return true;
     },
 
-    async confirmarCompra() {
-      this.CheckearStock();
-
+    async CheckearSiEstaAbierto() {
       if (!(await estaAbierto())) {
         let rta = "Esta fuera del horario de atencion. ";
         const pHdA = await proximoHdA();
@@ -309,50 +318,69 @@ export default {
           pHdA.hora1 +
           " horas.";
         alert(rta);
-
-        // return
+        return false;
       }
-
-      if (this.form.direccionEntrega == "") {
-        alert("debe ingresar la dirección");
-        return
-      } 
-
-        this.generandoPedidoYDetallesPedido = true;
-        //Pide el Id del domicilio. Si es un domicilio nuevo, lo creará y traerá el Id
-        let domicilioID;
-
-        if (this.form.direccionEntrega == "Cajero") {
-          domicilioID = 120;
-        } else {
-          domicilioID = await this.$refs.DomiciliosListaCarrito.getId();
-        }
-        const nuevoPedidoId = await this.enviarCarrito(
-          domicilioID,
-          this.form.retiraEn
-        );
-
-        if (this.form.formaPago == "Efectivo") {
-          console.log("paga efectivo");
-        } else {
-          this.preferencia.pedidoId = nuevoPedidoId;
-          this.preferencia.total = this.PrecioTotal;
-
-          //El total no puede ser cero pesos porque MP explota
-          if (this.PrecioTotal==0) {
-            alert("nada es gratis. El carrito no puede salir 0 pesos. ESTO DEBE VERIFICARSE ANTES");
-            return;
-          }
-
-          const res = await GenerarTicketMercadoPagoPreference(
-            this.preferencia
-          );
-          const preferenceId = String(res.id);
-          this.MPcheckout(preferenceId);
-        }
-      
+      return false;
     },
 
+    async confirmarCompra() {
+      //Validar si hay Stock para armar el carrito
+      if (!(await this.CheckearStock())) return;
+
+      //Validar si esta abierto
+      // if (!(await this.CheckearSiEstaAbierto())) return;
+
+      //Validar un direccion de entrega no nula
+      if (this.form.direccionEntrega == "") {
+        alert("debe ingresar la dirección");
+        return;
+      }
+
+      //Validar PrecioTotal no puede ser cero pesos porque MP explota
+      if (this.PrecioTotal == 0) {
+        alert(
+          "nada es gratis. El carrito no puede salir 0 pesos. ESTO DEBE VERIFICARSE ANTES"
+        );
+        return;
+      }
+
+      //con todas las Validaciones OK, comienza a generar los pedidos
+      this.generandoPedidoYDetallesPedido = true;
+
+      //Pide el Id del domicilio. Si es un domicilio nuevo, lo creará y traerá el Id
+      let domicilioID;
+
+      if (this.form.direccionEntrega == "Cajero") {
+        domicilioID = 120; //Aqui debe ir la direccion reservada para el local. xq' todo pedido lleva dir
+      } else {
+        domicilioID = await this.$refs.DomiciliosListaCarrito.getId();
+      }
+
+      //enviarCarrito genera pedidos, detallePedidos y finaliza el pedido
+      const nuevoPedidoId = await this.enviarCarrito(
+        domicilioID,
+        this.form.retiraEn
+      );
+
+      //Si el pago es en efectivo, aquí termina el envío del carrito
+      if (this.form.formaPago == "Efectivo") {
+        console.log("paga efectivo");
+        return;
+      }
+
+      //Si pago es por MercadoPago, enviamos pedidoId y precioTotal al back para que genere
+      //un "ticket de pago" (preferencia) y pueda mostrar la ventana de Checkout
+      let preferencia = {
+        pedidoId: nuevoPedidoId,
+        total: this.PrecioTotal,
+      };
+
+      const res = await GenerarTicketMercadoPagoPreference(preferencia);
+      const preferenceId = String(res.id);
+      this.MPcheckout(preferenceId);
+    },
+
+    //genera Pedidos y detallePedidos
     async enviarCarrito(domicilioID, tipoEnvio) {
       //Creo un pedido
       const pedido = {
@@ -363,6 +391,8 @@ export default {
           this.form.formaPago == "Efectivo"
             ? PE.PENDIENTE
             : PE.PAGO_PENDIENTE_MP,
+        FormaPago: this.form.formaPago,
+        Disabled: true, //cuando se finaliza el pedido, pasa a ser valido por FinalizarPedido en el back
       };
 
       //envio pedido y lo recibo completo con el id nuevo
@@ -370,7 +400,7 @@ export default {
 
       console.log("nuevoPedido", nuevoPedido);
 
-      //Recorro el carrito y creo pedidos
+      //Recorro el carrito y creo detallesPedidos
       for (let index = 0; index < this.getCarrito.length; index++) {
         const dPedido = this.getCarrito[index];
 
@@ -379,13 +409,15 @@ export default {
           pedidoID: nuevoPedido.id,
           cantidad: dPedido.cantidad,
           articuloID: dPedido.id,
+          Disabled: true, //cuando se finaliza el pedido, pasa a ser valido por FinalizarPedido en el back
         };
+
         //Envio DetallePedido
         const nuevoDetallePedido = await addDetallePedido(detallePedido);
         console.log("nuevoDetallePedido", nuevoDetallePedido);
       }
 
-      //Finalizo el pedido (aviso que no se van a agregar mas detallePedido)
+      //Finalizo el pedido, aviso que no se van a agregar mas detallePedido
       const pedidoTerminado = await finalizarPedido(nuevoPedido.id);
       console.log("pedidoTerminado", pedidoTerminado);
 
