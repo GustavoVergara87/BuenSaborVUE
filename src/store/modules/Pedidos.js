@@ -54,14 +54,14 @@ const actions = {
 
 //Las mutaciones(mutations) cambian los estados (states)
 const mutations = {
-    resetPedidos: (state) =>{
+    resetPedidos: (state) => {
         state.pedidos.splice(0);
         state.pedido = {};
         state.cargando = {};
     },
     setPedido: (state, pedido) => state.pedido = pedido,
-    setCargando: (state, idEstado) =>{
-        Vue.set(state.cargando, idEstado.id,idEstado.estado) 
+    setCargando: (state, idEstado) => {
+        Vue.set(state.cargando, idEstado.id, idEstado.estado)
         // state.cargando[idEstado.id] = idEstado.estado no funciona porque estamos agregando dinamicamente propiedades a un objeto. Para poder hacer eso y que sea reactivo, necesitamos usar la sentencia Vue.set()
     },
     // setCargando: (state, estado) => state.cargando = estado,

@@ -33,11 +33,16 @@ export async function deletePedido(id) {
 }
 
 export async function editPedido(pedidoEditado) {
-    await fetch("/api/Pedidos/" + pedidoEditado.id, {
+    const responseJson = await fetch("/api/Pedidos/" + pedidoEditado.id, {
         method: "PUT",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(pedidoEditado),
     });
+
+    if (responseJson.status == 409) {
+        const error = await responseJson.text();
+        throw error;
+    }
 }
 
 export async function finalizarPedido(id) {

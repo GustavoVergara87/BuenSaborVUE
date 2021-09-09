@@ -152,7 +152,7 @@
 
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import PlatosCarrito from "../components/PlatosCarrito.vue";
 import { numFormat, val } from "../services/Auxiliares";
 import { GenerarTicketMercadoPagoPreference } from "../services/MercadoPago";
@@ -214,6 +214,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(["resetCarrito"]),
     generandoPedidoYDetallesPedidoFin() {
       this.generandoPedidoYDetallesPedido = false;
     },
@@ -364,7 +365,9 @@ export default {
 
       //Si el pago es en efectivo, aquí termina el envío del carrito
       if (this.form.formaPago == "Efectivo") {
-         this.generandoPedidoYDetallesPedido = false;
+        this.generandoPedidoYDetallesPedido = false;
+        this.resetCarrito();
+        this.$router.push({ name: "ClientePlatos" });
         console.log("paga efectivo");
         return;
       }
@@ -421,7 +424,8 @@ export default {
       //Finalizo el pedido, aviso que no se van a agregar mas detallePedido
       const pedidoTerminado = await finalizarPedido(nuevoPedido.id);
       console.log("pedidoTerminado", pedidoTerminado);
-
+      this.resetCarrito();
+      this.$router.push({ name: "ClientePlatos" });
       return nuevoPedido.id;
     },
 

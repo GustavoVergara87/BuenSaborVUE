@@ -247,8 +247,12 @@ export default {
 
     async aprobarPedido(idPedido) {
       const pedido = await this.getPedido(idPedido);
+
       pedido.estado = PE.APROBADO;
-      this.editPedido(pedido);
+      this.editPedido(pedido).catch((a) => {
+        alert(a);
+        pedido.estado = PE.PENDIENTE;
+      });
     },
 
     async cancelarPedido(idPedido) {
