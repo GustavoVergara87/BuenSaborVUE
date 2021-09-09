@@ -36,6 +36,11 @@ export async function registrarNuevoCliente(RegistroRequest) {
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(RegistroRequest),
     });
+
+    if (response.status == 409) {
+        const respTxt = await response.text()
+        throw respTxt
+    }
     const responseJson = await response.json();
     return responseJson
 }

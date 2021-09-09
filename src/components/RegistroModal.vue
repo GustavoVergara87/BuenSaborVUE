@@ -89,7 +89,7 @@ export default {
         this.$root.$emit("nuevoClienteRegistrado", this.AuthRequest);
         this.$bvModal.hide("modal-registro");
         this.$bvModal.show("modal-login");
-      });
+      }).catch((a)=>alert(a))  ;
     },
   },
 };

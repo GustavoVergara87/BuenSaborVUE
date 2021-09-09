@@ -207,11 +207,11 @@
               ></b-spinner>
 
               <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
-            <b-button
-              variant="success"
-              @click="retornarPedidoPendiente(pedido.id)"
-              >Retornar a Pendientes
-            </b-button>
+              <b-button
+                variant="success"
+                @click="retornarPedidoPendiente(pedido.id)"
+                >Retornar a Pendientes
+              </b-button>
             </div>
           </li>
         </ul>
