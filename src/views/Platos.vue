@@ -16,18 +16,14 @@ export default {
   computed: {
     ...mapGetters(["todosLosPlatos"]),
     platosFiltrados() {
-
       var tmpPlatosFiltrados = [];
       //console.log(this.$route.query.porPalabraClave)
       if (this.$route.query.porPalabraClave !== undefined) {
         //console.log(this.todosLosPlatos)
         tmpPlatosFiltrados = this.todosLosPlatos
           .filter(
-            (plato) =>
-              plato.Descripcion !== null &&
-              plato.plato !== null &&
-              plato.plato !== undefined 
-              // && plato.disabled == false
+            (plato) => plato.plato !== null && plato.plato !== undefined
+            // && plato.disabled == false
           )
           .filter((plato) =>
             plato.plato
@@ -46,7 +42,7 @@ export default {
               .toLowerCase()
               .includes(this.$route.query.porRubro.toLowerCase())
           );
-         
+
         return tmpPlatosFiltrados;
       }
 
