@@ -137,6 +137,8 @@ export default {
       const resp = await this.obtenerJwToken(AuthRequest);
       if (resp == null) return null;
       this.posLogin();
+        AuthRequest.NombreUsuario = "";
+      AuthRequest.Clave =""
       return true;
     },
 

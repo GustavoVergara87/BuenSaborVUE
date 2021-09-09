@@ -20,6 +20,7 @@ export async function obtenerJwToken(AuthRequest) {
         body: JSON.stringify(AuthRequest),
     })
     if (response.status == 400) {
+        alert("Usuario y Contraseña incorrectos")
         console.log(await response.text())
         return null
     }

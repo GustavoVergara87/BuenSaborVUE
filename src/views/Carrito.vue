@@ -351,7 +351,7 @@ export default {
       let domicilioID;
 
       if (this.form.direccionEntrega == "Cajero") {
-        domicilioID = 120; //Aqui debe ir la direccion reservada para el local. xq' todo pedido lleva dir
+        domicilioID = 1; //Aqui debe ir la direccion reservada para el local. xq' todo pedido lleva dir
       } else {
         domicilioID = await this.$refs.DomiciliosListaCarrito.getId();
       }
@@ -364,6 +364,7 @@ export default {
 
       //Si el pago es en efectivo, aquí termina el envío del carrito
       if (this.form.formaPago == "Efectivo") {
+         this.generandoPedidoYDetallesPedido = false;
         console.log("paga efectivo");
         return;
       }
