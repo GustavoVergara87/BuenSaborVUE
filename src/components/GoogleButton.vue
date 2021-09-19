@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "test",
   data() {
@@ -43,9 +43,12 @@ export default {
       isSignIn: false,
     };
   },
+  computed: {
+    ...mapGetters(["traerCliente"]),
+  },
 
   methods: {
-    ...mapActions(["obtenerJwTokenConGoogle"]),
+    ...mapActions(["obtenerJwTokenConGoogle","setGoogleLogin"]),
     async handleClickSignIn() {
       this.isGoogleLoginChecked = false;
       await this.$gAuth
@@ -60,6 +63,7 @@ export default {
           const Auth = GoogleUser.getAuthResponse();
           this.obtenerJwTokenConGoogle(Auth.id_token).then(() => {
             this.isGoogleLoginChecked = true;
+            this.setGoogleLogin(true)
             this.$emit("logeado");
           });
         })
@@ -74,18 +78,23 @@ export default {
       try {
         await this.$gAuth.signOut();
         this.isSignIn = this.$gAuth.isAuthorized;
+        this.setGoogleLogin(false)
         this.$emit("logout");
       } catch (error) {
-        console.log("No se pudo desloguear de Google")
+        console.log("No se pudo desloguear de Google");
       }
     },
   },
   mounted() {
     let that = this;
-    let checkGauthLoad = setInterval(function () {
+    let checkGauthLoad = setInterval ( async function () {
       that.isInit = that.$gAuth.isInit;
       that.isSignIn = that.$gAuth.isAuthorized;
       that.isGoogleLoginChecked = true;
+      //Si por alguna razón figura como logueado en google pero no hay cliente en vuex, desloguearlo de goole
+      if (that.traerCliente.id == 0 && that.isInit) {
+        await that.handleClickSignOut();
+      }
       if (that.isInit) clearInterval(checkGauthLoad);
     }, 500);
   },

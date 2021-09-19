@@ -66,7 +66,7 @@
 import { mapActions, mapGetters } from "vuex";
 import { addDomicilio, editDomicilio } from "../services/DomiciliosController";
 export default {
-  props: ["lecturaId", "modoEditar", "noHayLoggin"],
+  props: ["lecturaId", "modoEditar", "noHayLoggin", "noButton"],
   computed: {
     ...mapGetters(["getCarrito", "traerUsuario", "traerCliente"]),
     domicilios() {

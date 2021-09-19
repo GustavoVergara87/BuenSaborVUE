@@ -14,12 +14,14 @@ const state = {
         domicilios: []
     },
     token: "",
+    googleLogin:false,
 };
 
 const getters = {
     traerUsuario: (state) => state.usuario,
     traerToken: (state) => state.token,
     traerCliente: (state) => state.cliente,
+    traerGoogleLogin: (state) => state.googleLogin,
 };
 
 
@@ -33,8 +35,14 @@ const actions = {
     resetToken({ commit }) {
         commit('resetToken')
     },
+    setGoogleLogin({ commit }, GoogleLogin) {
+        commit('setGoogleLogin', GoogleLogin)
+    },
     setCliente({ commit }, cliente) {
-        commit('setRol', cliente)
+        commit('setCliente', cliente)
+    },
+    setClienteManteniendoDomicilio({ commit }, cliente) {
+        commit('setClienteManteniendoDomicilio', cliente)
     },
     setUsuario({ commit }, usuario) {
         commit('setUsuario', usuario)
@@ -94,6 +102,13 @@ const mutations = {
     },
     setUsuario: (state, usuario) => state.usuario = usuario,
     setCliente: (state, cliente) => state.cliente = cliente,
+    setGoogleLogin: (state, googleLogin) => state.googleLogin = googleLogin,
+    setClienteManteniendoDomicilio: (state, cliente) => {
+        state.cliente.id = cliente.id
+        state.cliente.nombre = cliente.nombre
+        state.cliente.apellido = cliente.apellido
+        state.cliente.telefono = cliente.telefono
+    },
     setToken: (state, token) => state.token = token,
     addDomicilio: (state, domicilio) => state.cliente.domicilios.unshift(domicilio),
     editDomicilio: (state, domicilioEditado) => {
