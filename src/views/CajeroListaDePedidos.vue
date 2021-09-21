@@ -1,7 +1,7 @@
 <template>
   <div class="contenedor">
     <div class="tipoPedidos">
-      <h2>Pedidos Pendientes</h2>
+      <h2>Pendientes</h2>
       <div class="lista">
         <ul>
           <li
@@ -35,7 +35,7 @@
     </div>
 
     <div class="tipoPedidos">
-      <h2>Pedidos Mandados a Cocina</h2>
+      <h2>Mandados a Cocina</h2>
       <div class="lista">
         <ul>
           <li
@@ -63,7 +63,7 @@
     </div>
 
     <div class="tipoPedidos">
-      <h2>Pedidos Cocinando</h2>
+      <h2>Cocinando</h2>
       <div class="lista">
         <ul>
           <li
@@ -91,7 +91,7 @@
     </div>
 
     <div class="tipoPedidos">
-      <h2>Pedidos para Retirar en Salón</h2>
+      <h2>Para Retirar en Salón</h2>
       <div class="lista">
         <ul>
           <li
@@ -122,7 +122,7 @@
     </div>
 
     <div class="tipoPedidos">
-      <h2>Pedidos en Reparto</h2>
+      <h2>En Reparto</h2>
       <div class="lista">
         <ul>
           <li
@@ -153,7 +153,7 @@
     </div>
 
     <div class="tipoPedidos">
-      <h2>Pedidos Entregados</h2>
+      <h2>Entregados</h2>
       <div class="lista">
         <ul>
           <li
@@ -186,7 +186,7 @@
     </div>
 
     <div class="tipoPedidos">
-      <h2>Pedidos Cancelados</h2>
+      <h2>Cancelados</h2>
       <div class="lista">
         <ul>
           <li
@@ -310,6 +310,10 @@ export default {
   }
 }
 
+  h2 {
+    font-size: 150%;
+  }
+
 .estado {
   display: inline-block;
   width: 100%;
@@ -322,8 +326,9 @@ export default {
 .tipoPedidos {
   float: left;
   width: 33.3%;
-  border: 1px solid black;
+  border: 1px solid gray;
   height: 300px;
+  padding: 0.5em;
   overflow: hidden;
 }
 

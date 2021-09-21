@@ -102,8 +102,8 @@ export default {
     },
   },
   created() {
-    console.log(this.traerUsuario);
-    console.log(this.traerCliente);
+    // console.log(this.traerUsuario);
+    // console.log(this.traerCliente);
     const childrenRoutes = this.$router.options.routes.find(
       (r) => r.name == "cliente"
     ).children;

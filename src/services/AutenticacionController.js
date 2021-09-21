@@ -26,7 +26,7 @@ export async function obtenerJwToken(AuthRequest) {
     }
     if (response.ok) {
         const responseJson = await response.json();
-        console.log(responseJson)
+        // console.log(responseJson)
         return responseJson
     }
 }

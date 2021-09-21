@@ -1,7 +1,7 @@
 // import { HubConnectionBuilder, LogLevel } from '@aspnet/signalr'
 
 // const connection = new HubConnectionBuilder()
-//   .withUrl('https://localhost:44350/notificacionesHub')
+//   .withUrl('https://localhost:44350notificacionesHub')
 //   .configureLogging(LogLevel.Information)
 //   .build()
 
@@ -13,6 +13,7 @@ import { HubConnectionBuilder, LogLevel } from '@aspnet/signalr'
 export default {
     install(Vue) {
         const connection = new HubConnectionBuilder()
+            // .withUrl('https://localhost:44350notificacionesHub')
             .withUrl('https://localhost:44350/notificacionesHub')
             .configureLogging(LogLevel.Information)
             .build()

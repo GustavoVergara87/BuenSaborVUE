@@ -192,12 +192,21 @@ export default {
     ...mapGetters(["getCarrito", "traerUsuario", "traerCliente"]),
 
     sumaDeDetalles() {
+
       return this.getCarrito.reduce(
         (suma, item) =>
+          // suma + this.val(('' + item.PrecioVenta).replace('.',',')) * this.val(item.cantidad),
           suma + this.val(item.PrecioVenta) * this.val(item.cantidad),
         0
       );
+
     },
+
+    // let suma=0
+    // for (let i = 0; i < this.getCarrito.length; i++) {
+    //   const element = array[i];
+    //   suma element.PrecioVenta
+    // }
 
     descuento() {
       if (this.form.retiraEn == TE.LOCAL) return 0.1;
@@ -205,7 +214,7 @@ export default {
     },
 
     PrecioTotal() {
-      return this.sumaDeDetalles * (1 - this.descuento);
+        return this.sumaDeDetalles * (1.00 - this.descuento);
     },
 
     noHayLoggin() {
@@ -363,6 +372,7 @@ export default {
         this.form.retiraEn
       );
 
+
       //Si el pago es en efectivo, aquí termina el envío del carrito
       if (this.form.formaPago == "Efectivo") {
         this.generandoPedidoYDetallesPedido = false;
@@ -379,9 +389,13 @@ export default {
         total: this.PrecioTotal,
       };
 
+      console.log(preferencia);
+
       const res = await GenerarTicketMercadoPagoPreference(preferencia);
       const preferenceId = String(res.id);
       this.MPcheckout(preferenceId);
+      // this.resetCarrito();
+      //this.$router.push({ name: "ClientePlatos" });
     },
 
     //genera Pedidos y detallePedidos
@@ -424,8 +438,8 @@ export default {
       //Finalizo el pedido, aviso que no se van a agregar mas detallePedido
       const pedidoTerminado = await finalizarPedido(nuevoPedido.id);
       console.log("pedidoTerminado", pedidoTerminado);
-      this.resetCarrito();
-      this.$router.push({ name: "ClientePlatos" });
+
+
       return nuevoPedido.id;
     },
 

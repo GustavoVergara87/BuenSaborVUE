@@ -13,7 +13,7 @@ export function numFormat(nStr, decimales = 2) {
 }
 
 export function val(a) {
-    if (a != null && a != undefined) return parseInt(a);
+    if (a != null && a != undefined) return parseFloat(a);
     if (a == null || a == undefined) return 0;
 }
 

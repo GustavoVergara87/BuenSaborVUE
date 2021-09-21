@@ -22,9 +22,11 @@ const store = new Vuex.Store({
   plugins: [
     new VuexPersistence({
       storage: window.sessionStorage  //.sessionStorage .localStorage guarda los vuex "Para siempre" Sesion storage hasta que se cierre la ventana
+
     }).plugin
   ]
 });
+
 
 
 

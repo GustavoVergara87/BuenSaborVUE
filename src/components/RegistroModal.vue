@@ -84,6 +84,7 @@ export default {
       this.AuthRequest.NombreUsuario = this.form.Email;
       this.AuthRequest.Clave = this.form.Clave;
 
+
       await this.registrarNuevoCliente(this.form).then(() => {
         //this.$root.$emit() emite un evento que puede ser escuchado globalmente
         this.$root.$emit("nuevoClienteRegistrado", this.AuthRequest);
