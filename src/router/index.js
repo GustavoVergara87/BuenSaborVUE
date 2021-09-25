@@ -78,7 +78,7 @@ const routes = [
       {
         path: "/cajero/PedidosDetalle/:idPedido",
         name: "CajeroPedidoDetalle",
-        component: () => import("../views/PedidoDetalle.vue"),
+        component: () => import("../views/CajeroPedidoDetalle.vue"),
       },
     ]
   },

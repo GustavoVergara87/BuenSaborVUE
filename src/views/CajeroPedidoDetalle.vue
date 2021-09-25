@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="elCliente == null">Loading....</div>
+    <div v-if="elCliente.usuario == undefined">Loading....</div>
     <div v-else>
       <h3>Detalle Pedido</h3>
       <b-row>
@@ -28,7 +28,13 @@
       </b-row>
       <b-row>
         <b-col sm="2"><label> Domicilio: </label></b-col>
-        <b-col>{{ elPedido.domicilio }}</b-col>
+        <b-col>{{
+          elPedido.domicilio.calle +
+          " " +
+          elPedido.domicilio.numero +
+          ", " +
+          elPedido.domicilio.localidad
+        }}</b-col>
       </b-row>
       <b-row>
         <b-col sm="2"><label> Estado:</label> </b-col>
@@ -36,11 +42,19 @@
       </b-row>
       <b-row>
         <b-col sm="2"><label> Fecha: </label></b-col>
-        <b-col>{{ elPedido.fecha }}</b-col>
+        <b-col>{{
+          elPedido.fecha.substring(0, 10) +
+          " " +
+          elPedido.fecha.substring(11, 19)
+        }}</b-col>
       </b-row>
       <b-row>
         <b-col sm="2"><label> Hora Estimada: </label></b-col>
-        <b-col>{{ elPedido.horaEstimadaFin }}</b-col>
+        <b-col>{{
+          elPedido.horaEstimadaFin.substring(0, 10) +
+          " " +
+          elPedido.fecha.substring(11, 19)
+        }}</b-col>
       </b-row>
       <b-row>
         <b-col sm="2"><label> Tipo Envio:</label> </b-col>
@@ -50,7 +64,7 @@
       </b-row>
       <b-row>
         <b-col sm="2"><label> Total</label> </b-col>
-        <b-col>${{ elPedido.total }}</b-col>
+        <b-col>$ {{numFormat(elPedido.total) }}</b-col>
       </b-row>
 
       <b-button router-link :to="{ name: 'CajeroListaDePedidos' }"
@@ -62,12 +76,15 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { numFormat } from "../services/Auxiliares";
 export default {
+  
   computed: {
     ...mapGetters(["elPedido", "elCliente"]),
   },
 
   methods: {
+    numFormat,
     ...mapActions([
       "fetchTodosLosPedidos",
       "editPedido",
@@ -93,6 +110,7 @@ export default {
     await this.getPedido(this.$route.params.idPedido);
 
     await this.getCliente(this.elPedido.clienteID);
+
   },
 };
 </script>
