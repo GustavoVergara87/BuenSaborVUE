@@ -11,7 +11,7 @@
             )"
           >
             <div class="estado">
-              <div>Cliente: {{ pedido.clienteID }}</div>
+              <div>Cliente: {{ pedido.cliente.nombre }}</div>
               <div>Pedido: {{ pedido.id }}</div>
               <div>Forma de Pago: {{ pedido.formaPago }}</div>
               <b-spinner
@@ -45,7 +45,7 @@
             )"
           >
             <div class="estado">
-              <div>Cliente: {{ pedido.clienteID }}</div>
+              <div>Cliente: {{ pedido.cliente.nombre }}</div>
               <div>Pedido: {{ pedido.id }}</div>
               <div>Forma de Pago: {{ pedido.formaPago }}</div>
               <b-spinner
@@ -73,7 +73,7 @@
             )"
           >
             <div class="estado">
-              <div>Cliente: {{ pedido.clienteID }}</div>
+              <div>Cliente: {{ pedido.cliente.nombre }}</div>
               <div>Pedido: {{ pedido.id }}</div>
               <div>Forma de Pago: {{ pedido.formaPago }}</div>
               <b-spinner
@@ -101,7 +101,7 @@
             )"
           >
             <div class="estado">
-              <div>Cliente: {{ pedido.clienteID }}</div>
+              <div>Cliente: {{ pedido.cliente.nombre }}</div>
               <div>Pedido: {{ pedido.id }}</div>
               <div>Forma de Pago: {{ pedido.formaPago }}</div>
               <b-spinner
@@ -132,7 +132,7 @@
             )"
           >
             <div class="estado">
-              <div>Cliente: {{ pedido.clienteID }}</div>
+              <div>Cliente: {{ pedido.cliente.nombre }}</div>
               <div>Pedido: {{ pedido.id }}</div>
               <div>Forma de Pago: {{ pedido.formaPago }}</div>
               <b-spinner
@@ -163,7 +163,7 @@
             )"
           >
             <div class="estado">
-              <div>Cliente: {{ pedido.clienteID }}</div>
+              <div>Cliente: {{ pedido.cliente.nombre }}</div>
               <div>Pedido: {{ pedido.id }}</div>
               <div>Forma de Pago: {{ pedido.formaPago }}</div>
               <b-spinner
@@ -196,7 +196,7 @@
             )"
           >
             <div class="estado">
-              <div>Cliente: {{ pedido.clienteID }}</div>
+             <div>Cliente: {{ pedido.cliente.nombre }}</div>
               <div>Pedido: {{ pedido.id }}</div>
               <div>Forma de Pago: {{ pedido.formaPago }}</div>
               <b-spinner
@@ -310,9 +310,9 @@ export default {
   }
 }
 
-  h2 {
-    font-size: 150%;
-  }
+h2 {
+  font-size: 150%;
+}
 
 .estado {
   display: inline-block;

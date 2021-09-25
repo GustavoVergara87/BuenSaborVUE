@@ -13,7 +13,8 @@
 
           <span class="estado">
             Cliente:
-            <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
+            <span v-show="!cargando[pedido.id]">{{ pedido.cliente.nombre }}</span>
+             <div>Pedido: {{ pedido.id }}</div>
             <b-spinner
               class="spinnerChico"
               v-show="cargando[pedido.id]"
@@ -42,7 +43,8 @@
 
           <span class="estado">
             Cliente:
-            <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
+            <span v-show="!cargando[pedido.id]">{{ pedido.cliente.nombre }}</span>
+             <div>Pedido: {{ pedido.id }}</div>
             <b-spinner
               class="spinnerChico"
               v-show="cargando[pedido.id]"
@@ -76,7 +78,8 @@
 
           <span class="estado">
             Cliente:
-            <span v-show="!cargando[pedido.id]">{{ pedido.clienteID }}</span>
+            <span v-show="!cargando[pedido.id]">{{ pedido.cliente.nombre }}</span>
+             <div>Pedido: {{ pedido.id }}</div>
             <b-spinner
               class="spinnerChico"
               v-show="cargando[pedido.id]"

@@ -127,7 +127,7 @@ export default {
     };
   },
     mounted() {
-     this.$title="Cliente"
+     this.$title="Cocinero"
   },
 };
 </script>
