@@ -48,7 +48,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["obtenerJwTokenConGoogle","setGoogleLogin"]),
+    ...mapActions(["obtenerJwTokenConGoogle", "setGoogleLogin"]),
     async handleClickSignIn() {
       this.isGoogleLoginChecked = false;
       await this.$gAuth
@@ -63,7 +63,7 @@ export default {
           const Auth = GoogleUser.getAuthResponse();
           this.obtenerJwTokenConGoogle(Auth.id_token).then(() => {
             this.isGoogleLoginChecked = true;
-            this.setGoogleLogin(true)
+            this.setGoogleLogin(true);
             this.$emit("logeado");
           });
         })
@@ -75,11 +75,14 @@ export default {
     },
 
     async handleClickSignOut() {
+      await this.GoogleSignOut();
+      this.$emit("logout");
+    },
+    async GoogleSignOut() {
       try {
         await this.$gAuth.signOut();
         this.isSignIn = this.$gAuth.isAuthorized;
-        this.setGoogleLogin(false)
-        this.$emit("logout");
+        this.setGoogleLogin(false);
       } catch (error) {
         console.log("No se pudo desloguear de Google");
       }
@@ -87,13 +90,13 @@ export default {
   },
   mounted() {
     let that = this;
-    let checkGauthLoad = setInterval ( async function () {
+    let checkGauthLoad = setInterval(async function () {
       that.isInit = that.$gAuth.isInit;
       that.isSignIn = that.$gAuth.isAuthorized;
       that.isGoogleLoginChecked = true;
       //Si por alguna razón figura como logueado en google pero no hay cliente en vuex, desloguearlo de goole
       if (that.traerCliente.id == 0 && that.isInit) {
-        await that.handleClickSignOut();
+        await that.GoogleSignOut();
       }
       if (that.isInit) clearInterval(checkGauthLoad);
     }, 500);

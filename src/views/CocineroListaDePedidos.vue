@@ -1,7 +1,7 @@
 <template>
   <div class="contenedor">
     <div class="lista">
-      <h2>Pedidos Pendientes</h2>
+      <h2>Esperando Preparación</h2>
       <ul>
         <li
           :key="pedido.id"

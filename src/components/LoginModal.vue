@@ -91,8 +91,11 @@ export default {
       this.posLogin();
     },
     async handleLogin() {
-      await this.login(this.AuthRequest).then(() => {
-        this.$bvModal.hide("modal-login");
+      await this.login(this.AuthRequest).then((resp) => {
+        if (resp == true) {
+          this.$bvModal.hide("modal-login");
+          this.posLogin();
+        }
       });
     },
 
@@ -136,9 +139,8 @@ export default {
     async login(AuthRequest) {
       const resp = await this.obtenerJwToken(AuthRequest);
       if (resp == null) return null;
-      this.posLogin();
-        AuthRequest.NombreUsuario = "";
-      AuthRequest.Clave =""
+      AuthRequest.NombreUsuario = "";
+      AuthRequest.Clave = "";
       return true;
     },
 

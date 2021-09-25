@@ -1,20 +1,10 @@
-// import { HubConnectionBuilder, LogLevel } from '@aspnet/signalr'
-
-// const connection = new HubConnectionBuilder()
-//   .withUrl('https://localhost:44350notificacionesHub')
-//   .configureLogging(LogLevel.Information)
-//   .build()
-
-// connection.start() //{ withCredentials: false } necesario si AllowAnyOrigin esta en el back. Según SO, pero no anda
-// import Vue from "vue";
 import store from "../store/index"
 
 import { HubConnectionBuilder, LogLevel } from '@aspnet/signalr'
 export default {
     install(Vue) {
         const connection = new HubConnectionBuilder()
-            // .withUrl('https://localhost:44350notificacionesHub')
-            .withUrl('https://localhost:44350/notificacionesHub')
+            .withUrl('/notificacionesHub')
             .configureLogging(LogLevel.Information)
             .build()
         //   connection.start() //el bloque de abajo es para que reintente la conexion en caso de que se pierda
@@ -50,9 +40,6 @@ export default {
 
         start()
 
-
-
-
         // loggin puede acceder this.$connectionHub para unir a los usuarios a grupos de SignalR
         Vue.prototype.$connectionHub = connection
 
@@ -67,9 +54,6 @@ export default {
             console.log("Notificacion", { mensaje, pedido })
             notificacionesHub.$emit('Notificacion', { mensaje, pedido })
         })
-
-
-
 
     }
 }
