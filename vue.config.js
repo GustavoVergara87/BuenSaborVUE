@@ -1,7 +1,11 @@
 // http://elbuensabor.ddns.net:82
 // https://localhost:44350
 const path = require('path');
+
 module.exports = {
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/BuenSaborVUE/'
+    : '/',
   devServer: {
     proxy: {
       '/api': {
