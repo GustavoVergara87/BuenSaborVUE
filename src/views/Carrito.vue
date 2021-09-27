@@ -165,7 +165,12 @@ import { addDetallePedido } from "../services/DetallesPedidosController";
 import DomiciliosLista from "../components/DomiciliosLista.vue";
 import TE from "../services/TipoEnvio";
 import PE from "../services/PedidoEstados";
-import { estaAbierto, proximoHdA, DiaDeLaSemana } from "../services/Tiempo";
+import {
+  estaAbierto,
+  proximoHdA,
+  DiaDeLaSemana,
+  ahora,
+} from "../services/Tiempo";
 import {
   stockTotalParaArticulosManufacturados,
   stockTotalParaArticulosNoManufacturados,
@@ -192,14 +197,12 @@ export default {
     ...mapGetters(["getCarrito", "traerUsuario", "traerCliente"]),
 
     sumaDeDetalles() {
-
       return this.getCarrito.reduce(
         (suma, item) =>
           // suma + this.val(('' + item.PrecioVenta).replace('.',',')) * this.val(item.cantidad),
           suma + this.val(item.PrecioVenta) * this.val(item.cantidad),
         0
       );
-
     },
 
     // let suma=0
@@ -214,7 +217,7 @@ export default {
     },
 
     PrecioTotal() {
-        return this.sumaDeDetalles * (1.00 - this.descuento);
+      return this.sumaDeDetalles * (1.0 - this.descuento);
     },
 
     noHayLoggin() {
@@ -322,11 +325,14 @@ export default {
         let rta = "Esta fuera del horario de atencion. ";
         const pHdA = await proximoHdA();
         rta +=
-          "Los esperamos a partir del dia " +
-          DiaDeLaSemana[pHdA.dia1] +
+          "Los esperamos a partir " +
+          (ahora().dia == pHdA.dia1 && ahora().hora < pHdA.hora1
+            ? "de hoy"
+            : "del día " + DiaDeLaSemana[pHdA.dia1]) +
           " a las " +
           pHdA.hora1 +
           " horas.";
+
         alert(rta);
         return false;
       }
@@ -338,7 +344,7 @@ export default {
       if (!(await this.CheckearStock())) return;
 
       //Validar si esta abierto
-      // if (!(await this.CheckearSiEstaAbierto())) return;
+      if (!(await this.CheckearSiEstaAbierto())) return;
 
       //Validar un direccion de entrega no nula
       if (this.form.direccionEntrega == "") {
@@ -371,7 +377,6 @@ export default {
         domicilioID,
         this.form.retiraEn
       );
-
 
       //Si el pago es en efectivo, aquí termina el envío del carrito
       if (this.form.formaPago == "Efectivo") {
@@ -438,7 +443,6 @@ export default {
       //Finalizo el pedido, aviso que no se van a agregar mas detallePedido
       const pedidoTerminado = await finalizarPedido(nuevoPedido.id);
       console.log("pedidoTerminado", pedidoTerminado);
-
 
       return nuevoPedido.id;
     },

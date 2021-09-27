@@ -5,13 +5,13 @@ export async function ServerNow() {
     return await resp.json()
 }
 
-export async function CorrectNow() {
+export function CorrectNow() {
     const _now = Date.now() + Vue.prototype.$horaDiff
     return _now
 }
 
-async function ahora() {
-    const _now = await CorrectNow()
+export function ahora() {
+    const _now = CorrectNow()
     return {
         dia: new Date(_now).getDay(),
         hora: (new Date(_now).getHours()) + (new Date(_now).getMinutes() / 60),
