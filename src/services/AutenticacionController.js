@@ -46,8 +46,6 @@ export async function registrarNuevoCliente(RegistroRequest) {
     return responseJson
 }
 
-
-
 export default {
     obtenerGoogleIdToken,
     obtenerJwToken,

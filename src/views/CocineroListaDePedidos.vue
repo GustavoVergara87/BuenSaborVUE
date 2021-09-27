@@ -13,8 +13,10 @@
 
           <span class="estado">
             Cliente:
-            <span v-show="!cargando[pedido.id]">{{ pedido.cliente.nombre }}</span>
-             <div>Pedido: {{ pedido.id }}</div>
+            <span v-show="!cargando[pedido.id]">{{
+              pedido.cliente.nombre
+            }}</span>
+            <div>Pedido: {{ pedido.id }}</div>
             <b-spinner
               class="spinnerChico"
               v-show="cargando[pedido.id]"
@@ -43,8 +45,10 @@
 
           <span class="estado">
             Cliente:
-            <span v-show="!cargando[pedido.id]">{{ pedido.cliente.nombre }}</span>
-             <div>Pedido: {{ pedido.id }}</div>
+            <span v-show="!cargando[pedido.id]">{{
+              pedido.cliente.nombre
+            }}</span>
+            <div>Pedido: {{ pedido.id }}</div>
             <b-spinner
               class="spinnerChico"
               v-show="cargando[pedido.id]"
@@ -78,8 +82,10 @@
 
           <span class="estado">
             Cliente:
-            <span v-show="!cargando[pedido.id]">{{ pedido.cliente.nombre }}</span>
-             <div>Pedido: {{ pedido.id }}</div>
+            <span v-show="!cargando[pedido.id]">{{
+              pedido.cliente.nombre
+            }}</span>
+            <div>Pedido: {{ pedido.id }}</div>
             <b-spinner
               class="spinnerChico"
               v-show="cargando[pedido.id]"
@@ -107,6 +113,8 @@
 import { mapGetters, mapActions } from "vuex";
 import PE from "../services/PedidoEstados";
 import TE from "../services/TipoEnvio";
+import { editDetallePedido } from "../services/DetallesPedidosController";
+
 export default {
   data() {
     return { PE: PE, TE: TE };
@@ -135,24 +143,21 @@ export default {
       pedido.estado = PE.APROBADO;
       this.editPedido(pedido);
     },
+
     async pedidoCocinado(idPedido) {
       const pedido = await this.getPedido(idPedido);
-
-      pedido.detallesPedido.map((detalle) => {
+      await pedido.detallesPedido.map((detalle) => {
         detalle.estado = 1;
-        fetch("/api/DetallesPedidos/" + detalle.id, {
-          method: "PUT",
-          headers: { "Content-type": "application/json" },
-          body: JSON.stringify(detalle),
-        });
+        editDetallePedido(detalle);
       });
+
       if (pedido.tipoEnvio == TE.DOMICILIO) {
         pedido.estado = PE.PENDIENTE_ENTREGA;
       } else {
         pedido.estado = PE.LISTO_ENTREGA_LOCAL;
       }
 
-      this.editPedido(pedido);
+      await this.editPedido(pedido);
     },
 
     async pedidoNoCocinado(idPedido) {

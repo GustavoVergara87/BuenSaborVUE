@@ -8,7 +8,7 @@ module.exports = {
         target: 'https://localhost:44350',
       },
       '/image': {
-        target: 'https://localhost:44350/api/Articulos/Image',
+        target: 'https://localhost:44350/api/Images',
         pathRewrite: { '^/image': '' }
       },
       '/notificacionesHub': {

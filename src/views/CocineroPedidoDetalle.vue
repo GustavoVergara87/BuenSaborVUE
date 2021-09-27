@@ -47,6 +47,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import PE from "../services/PedidoEstados";
+import { editDetallePedido } from "../services/DetallesPedidosController";
 
 export default {
   data() {
@@ -70,12 +71,7 @@ export default {
       );
 
       detalle[0].estado = +!detalle[0].estado;
-
-      await fetch("/api/DetallesPedidos/" + id, {
-        method: "PUT",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(detalle[0]),
-      });
+      await editDetallePedido(detalle[0]);
     },
 
     platoListo(detalle) {
@@ -87,13 +83,9 @@ export default {
     },
 
     async setPedidoCocinado() {
-      this.elPedido.detallesPedido.map((detalle) => {
+      await this.elPedido.detallesPedido.map((detalle) => {
         detalle.estado = 1;
-        fetch("/api/DetallesPedidos/" + detalle.id, {
-          method: "PUT",
-          headers: { "Content-type": "application/json" },
-          body: JSON.stringify(detalle),
-        });
+        editDetallePedido(detalle);
       });
 
       if (this.elPedido.tipoEnvio == 0) {
@@ -118,7 +110,7 @@ export default {
 <style scoped>
 @media screen and (max-width: 801px) {
   .elemento {
-    width: 80%!important;
+    width: 80% !important;
   }
 }
 p {

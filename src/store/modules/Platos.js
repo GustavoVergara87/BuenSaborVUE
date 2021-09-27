@@ -1,3 +1,5 @@
+import servicio from "../../services/ArticulosController";
+
 const state = {
     platos: [], //catalogo de todos los platos, accesibles desde toda la aplicacion mediante el getter todoslosplatos
     plato: null
@@ -14,14 +16,12 @@ const actions = {
         commit('resetPlatos')
     },
     async fetchTodosLosPlatos({ commit }) {
-        const response = await fetch("/api/Articulos/ParaFront");
-        const responseJson = await response.json();
+        const responseJson = await servicio.fetchTodosLosPlatos()
         commit('setTodosLosPlatos', responseJson); //sintaxis commit("mutacion",variable)
     },
 
     async getPlato({ commit }, id) {
-        const response = await fetch("/api/Articulos/ParaFront/" + id);
-        const responseJson = await response.json();
+        const responseJson = await servicio.getPlato(id)
         commit('setPlato', responseJson); //sintaxis commit("mutacion",variable)
     },
 
@@ -32,7 +32,7 @@ const actions = {
 
 //Las mutaciones(mutations) cambian los estados (states)
 const mutations = {
-    resetPlatos: (state) =>{
+    resetPlatos: (state) => {
         state.platos.splice(0);
         state.plato = null;
     },

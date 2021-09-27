@@ -1,6 +1,12 @@
+import store from "../store/index"
+
 //Que se pueda pedir un Usuario es totalmente inseguro
 export async function getUsuario(id) {
-    const response = await fetch("/api/Usuarios/" + id);
+    const response = await fetch("/api/Usuarios/" + id, {
+        headers: {
+            'Authorization': 'Bearer ' + store.getters.traerToken
+        }
+    });
     const responseJson = await response.json();
     return responseJson
 }
@@ -8,7 +14,8 @@ export async function getUsuario(id) {
 export async function addUsuario(usuario) {
     const response = await fetch("/api/Usuarios", {
         method: "POST",
-        headers: { "Content-type": "application/json" },
+        headers: { "Content-type": "application/json",
+        'Authorization': 'Bearer ' + store.getters.traerToken },
         body: JSON.stringify(usuario),
     });
     const responseJson = await response.json();
@@ -18,7 +25,8 @@ export async function addUsuario(usuario) {
 export async function editUsuario(usuarioChange) {
     const response = await fetch("/api/Usuarios", {
         method: "PUT",
-        headers: { "Content-type": "application/json" },
+        headers: { "Content-type": "application/json",
+        'Authorization': 'Bearer ' + store.getters.traerToken },
         body: JSON.stringify(usuarioChange),
     });
 

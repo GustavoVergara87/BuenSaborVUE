@@ -1,5 +1,11 @@
+import store from "../store/index"
+
 export async function fetchTodosLosRubrosArticulos() {
-    const response = await fetch("/api/RubrosArticulos");
+    const response = await fetch("/api/RubrosArticulos", {
+        headers: {
+            'Authorization': 'Bearer ' + store.getters.traerToken
+        }
+    });
     const responseJson = await response.json();
     return responseJson
 }
@@ -7,7 +13,8 @@ export async function fetchTodosLosRubrosArticulos() {
 export async function addRubroArticulo(rubroArticulo){
     const response =  await fetch(`/api/RubrosArticulos`, {
         method: "POST",
-        headers: { "Content-type": "application/json" },
+        headers: { "Content-type": "application/json",
+        'Authorization': 'Bearer ' + store.getters.traerToken },
         body: JSON.stringify(rubroArticulo),
     });
     const responseJson = await response.json();
@@ -20,7 +27,8 @@ export async function deleteRubroArticulo(id){
     rubroArticuloAborrarJson.disabled = true;
     await fetch(`/api/RubrosArticulos/${id}`, { //disable el articulo del backEnd
         method: "PUT",
-        headers: { "Content-type": "application/json" },
+        headers: { "Content-type": "application/json",
+        'Authorization': 'Bearer ' + store.getters.traerToken },
         body: JSON.stringify(rubroArticuloAborrarJson),
     });
 }
@@ -28,7 +36,8 @@ export async function deleteRubroArticulo(id){
 export async function editRubroArticulo(rubroArticuloEditado) {
     await fetch(`/api/Articulos/${rubroArticuloEditado.id}`, {
         method: "PUT",
-        headers: { "Content-type": "application/json" },
+        headers: { "Content-type": "application/json",
+        'Authorization': 'Bearer ' + store.getters.traerToken },
         body: JSON.stringify(rubroArticuloEditado),
     });
 }
