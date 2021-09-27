@@ -34,8 +34,8 @@ const routes = [
       },
       {
         //En el back, en la preferencia de MercadoPago, está seteado para que se dirija a esta pagina cuando el pago sea aprobado
-        path: "/cliente/Carrito/aprobado",
-        name: "pagoAprobado",
+        path: "/cliente/Carrito/MercadoPagoResultado",
+        name: "MercadoPagoResultado",
         component: () => import("../views/MercadoPagoResultado.vue"),
       },
       {
