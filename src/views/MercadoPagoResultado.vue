@@ -24,6 +24,7 @@ import {
   getPedido,
 } from "../services/PedidosController";
 import PE from "../services/PedidoEstados";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -42,13 +43,20 @@ export default {
         console.log(error)
       );
     }
-    //si se aprueba el pago, el pedido pasa a pendiente
+
     if (this.$route.query.status == "approved") {
-      getPedido(this.$route.query.external_reference).then((pedido) => {
-        pedido.Estado = PE.PENDIENTE;
-        editPedido(pedido)
-      });
+      //Como la compra fue exitosa borrar el carrito
+      this.resetCarrito();
+      getPedido(this.$route.query.external_reference)
+        //si se aprueba el pago, el pedido pasa a pendiente
+        .then((pedido) => {
+          pedido.Estado = PE.PENDIENTE;
+          editPedido(pedido);
+        });
     }
+  },
+  methods: {
+    ...mapActions(["resetCarrito"]),
   },
 };
 </script>

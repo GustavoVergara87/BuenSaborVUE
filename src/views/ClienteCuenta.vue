@@ -89,7 +89,7 @@
     <h5>Lista de Pedidos</h5>
 
     <div class="container">
-      <b-table striped hover :items="pedidos">
+      <b-table striped hover :items="pedidos" :fields="fields">
         <template #cell(verFactura)="data">
           <!-- `data.value` is the value after formatted by the Formatter -->
           <a :href="data.value">ver factura</a>
@@ -106,6 +106,7 @@ import { getFacturas } from "../services/FacturasController";
 import { fetchTodosLosPedidos } from "../services/PedidosController";
 import { getCliente, editCliente } from "../services/ClientesController";
 import { editUsuario } from "../services/UsuariosController";
+import { numFormat } from "../services/Auxiliares";
 
 export default {
   components: {
@@ -131,9 +132,18 @@ export default {
       },
       facturas: null,
       pedidos: null,
+      fields: [
+        { key: "id", label: "N°" },
+        { key: "formaPago", label: "Forma de Pago" },
+        { key: "tipoEnvio", label: "Tipo de Envio" },
+        { key: "fecha", label: "Fecha" },
+        { key: "total", label: "Total" },
+        { key: "verFactura", label: "Ver factura" },
+      ],
     };
   },
   methods: {
+    numFormat,
     ...mapActions(["setCliente"]),
     async filtrarPedidos(clienteId) {
       const pedidos = await fetchTodosLosPedidos();
@@ -146,9 +156,13 @@ export default {
           id: pedido.id,
           formaPago: pedido.formaPago,
           tipoEnvio: pedido.tipoEnvio ? "domicilio" : "local",
-          fecha: pedido.fecha,
-          total: pedido.total,
-          verFactura: "http://elbuensabor.ddns.net:82/api/Facturas/PDF/" + pedido.id,
+          fecha:
+            pedido.fecha.substring(0, 10) +
+            " " +
+            pedido.fecha.substring(11, 19),
+          total: '$ ' + numFormat(pedido.total) ,
+          verFactura:
+            "http://elbuensabor.ddns.net:82/api/Facturas/PDF/" + pedido.id,
         };
       });
       return pedidosFiltradosCampos;
