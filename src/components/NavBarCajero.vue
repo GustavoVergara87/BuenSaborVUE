@@ -84,7 +84,7 @@ export default {
     Notificaciones,
   },
   computed: {
-    ...mapGetters(["todosLosRubrosArticulos", "traerUsuario", "getCarrito"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
+    ...mapGetters(["traerUsuario", "getCarrito"]), // pasamos un array de los }, getters que queremos usar. Esto nos permite usarlo
     cantidadCarrito() {
       return this.getCarrito.length;
     },
@@ -97,11 +97,8 @@ export default {
     handleBusqueda(event) {
       event.preventDefault();
       this.$router
-        .push({ query: { porPalabraClave: event.target[0].value } })
+        .push({ query: { cliente: event.target[0].value } })
         .catch(() => {}); //el catch evita que salte un error
-    },
-    handleBusquedaPorRubro(rubro) {
-      this.$router.push({ query: { porRubro: rubro } }).catch(() => {}); //el catch evita que salte un error
     },
     async handleNotificacion(mensaje, pedido) {
       //si entra un pedido, actualizar el vuex

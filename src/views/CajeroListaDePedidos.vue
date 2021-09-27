@@ -6,7 +6,7 @@
         <ul>
           <li
             :key="pedido.id"
-            v-for="pedido in todosLosPedidos.filter(
+            v-for="pedido in losPedidos.filter(
               (pedido) => pedido.estado == PE.PENDIENTE
             )"
           >
@@ -40,7 +40,7 @@
         <ul>
           <li
             :key="pedido.id"
-            v-for="pedido in todosLosPedidos.filter(
+            v-for="pedido in losPedidos.filter(
               (pedido) => pedido.estado == PE.APROBADO
             )"
           >
@@ -68,7 +68,7 @@
         <ul>
           <li
             :key="pedido.id"
-            v-for="pedido in todosLosPedidos.filter(
+            v-for="pedido in losPedidos.filter(
               (pedido) => pedido.estado == PE.COCINANDO
             )"
           >
@@ -96,7 +96,7 @@
         <ul>
           <li
             :key="pedido.id"
-            v-for="pedido in todosLosPedidos.filter(
+            v-for="pedido in losPedidos.filter(
               (pedido) => pedido.estado == PE.LISTO_ENTREGA_LOCAL
             )"
           >
@@ -127,7 +127,7 @@
         <ul>
           <li
             :key="pedido.id"
-            v-for="pedido in todosLosPedidos.filter(
+            v-for="pedido in losPedidos.filter(
               (pedido) => pedido.estado == PE.PENDIENTE_ENTREGA
             )"
           >
@@ -158,7 +158,7 @@
         <ul>
           <li
             :key="pedido.id"
-            v-for="pedido in todosLosPedidos.filter(
+            v-for="pedido in losPedidos.filter(
               (pedido) => pedido.estado == PE.ENTREGADO
             )"
           >
@@ -191,12 +191,12 @@
         <ul>
           <li
             :key="pedido.id"
-            v-for="pedido in todosLosPedidos.filter(
+            v-for="pedido in losPedidos.filter(
               (pedido) => pedido.estado == PE.CANCELADO
             )"
           >
             <div class="estado">
-             <div>Cliente: {{ pedido.cliente.nombre }}</div>
+              <div>Cliente: {{ pedido.cliente.nombre }}</div>
               <div>Pedido: {{ pedido.id }}</div>
               <div>Forma de Pago: {{ pedido.formaPago }}</div>
               <b-spinner
@@ -234,6 +234,20 @@ export default {
   },
   computed: {
     ...mapGetters(["todosLosPedidos", "cargando", "todosLosClientes"]),
+    losPedidos() {
+      if (this.$route.query.cliente !== undefined) {
+        return this.todosLosPedidos
+          .filter(
+            (pedido) => pedido.cliente.nombre !== null && pedido.cliente.nombre !== undefined
+          )
+          .filter((pedido) =>
+            pedido.cliente.nombre
+              .toLowerCase()
+              .includes(this.$route.query.cliente.toLowerCase())
+          );
+      }
+      return this.todosLosPedidos
+    },
   },
   methods: {
     ...mapActions(["fetchTodosLosPedidos", "editPedido", "getPedido"]),
