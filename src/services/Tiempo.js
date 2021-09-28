@@ -1,9 +1,9 @@
 import Vue from "vue"
 
-export async function ServerNow() {
-    const resp = await fetch("http://worldtimeapi.org/api/timezone/America/Argentina/Mendoza")
-    return await resp.json()
-}
+// export async function ServerNow() {
+    // const resp = await fetch("http://worldtimeapi.org/api/timezone/America/Argentina/Mendoza")
+    // return await resp.json()
+// }
 
 export function CorrectNow() {
     const _now = Date.now() + Vue.prototype.$horaDiff

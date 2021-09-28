@@ -367,7 +367,7 @@ export default {
       let domicilioID;
 
       if (this.form.direccionEntrega == "Cajero") {
-        domicilioID = 1; //Aqui debe ir la direccion reservada para el local. xq' todo pedido lleva dir
+        domicilioID = 4; //Aqui debe ir la direccion reservada para el local. xq' todo pedido lleva dir
       } else {
         domicilioID = await this.$refs.DomiciliosListaCarrito.getId();
       }
