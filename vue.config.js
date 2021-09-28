@@ -4,19 +4,19 @@ const path = require('path');
 
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/BuenSaborVUE/'
+    ? '/dist/'
     : '/',
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://localhost:44350',
+        target: 'http://elbuensabor.ddns.net:82',
       },
       '/image': {
-        target: 'https://localhost:44350/api/Images',
+        target: 'http://elbuensabor.ddns.net:82/api/Images',
         pathRewrite: { '^/image': '' }
       },
       '/notificacionesHub': {
-        target: 'https://localhost:44350/notificacionesHub',
+        target: 'http://elbuensabor.ddns.net:82/notificacionesHub',
         pathRewrite: { '^/notificacionesHub': '' }
       }
     },
