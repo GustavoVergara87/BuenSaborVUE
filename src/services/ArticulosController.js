@@ -65,7 +65,10 @@ export async function getArticulo(id) {
 }
 
 export default {
+    stockTotalParaArticulosManufacturados,
+    stockTotalParaArticulosNoManufacturados,
     fetchTodosLosArticulos,
     fetchTodosLosPlatos,
     getArticulo,
+    getPlato
 }
