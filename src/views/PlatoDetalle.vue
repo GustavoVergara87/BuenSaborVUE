@@ -4,6 +4,11 @@
       <b-spinner class="spinner" variant="primary" label="Spinning"></b-spinner>
     </div>
     <div v-if="plato">
+      <div class="derecha">
+        <b-button id="goBackButton" @click="$router.go(-1)"
+          ><i class="fas fa-arrow-left"></i
+        ></b-button>
+      </div>
       <b-container>
         <b-row>
           <b-col>
@@ -50,12 +55,6 @@
         <br />
         <br />
         <br />
-        <b-row style="text-align: center">
-          <b-col>
-            <!-- <router-link :to="['/']" > VOLVER</router-link> -->
-            <b-button @click="$router.go(-1)">VOLVER</b-button>
-          </b-col>
-        </b-row>
       </b-container>
     </div>
   </div>
@@ -64,7 +63,6 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-
   name: "DetallePlato",
 
   beforeDestroy() {
@@ -82,15 +80,27 @@ export default {
   methods: {
     ...mapActions(["getPlato", "deletePlatoTemporal"]),
   },
-
 };
 </script>
 
 <style scoped>
-.imagen {
-  width: 100%;
+#goBackButton{
+width: 5em;
+opacity: 70%;
+background-color: darkgoldenrod;
+border: 0px;
 }
 
-
-
+.imagen {
+  max-width: 100%;
+  max-height: 500px;
+}
+.derecha {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-right: 1em;
+  /* float: right; */
+  text-align: right;
+  /* outline: 1px solid red; */
+}
 </style>

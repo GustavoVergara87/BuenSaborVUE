@@ -1,6 +1,6 @@
-// http://elbuensabor.ddns.net:82
-// https://localhost:44350
 const path = require('path');
+const serverURL = 'http://elbuensabor.ddns.net:82'
+// const serverURL = 'https://localhost:44350'
 
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
@@ -9,14 +9,14 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://elbuensabor.ddns.net:82',
+        target: serverURL,
       },
       '/image': {
-        target: 'http://elbuensabor.ddns.net:82/api/Images',
+        target: serverURL + '/api/Images',
         pathRewrite: { '^/image': '' }
       },
       '/notificacionesHub': {
-        target: 'http://elbuensabor.ddns.net:82/notificacionesHub',
+        target: serverURL + '/notificacionesHub',
         pathRewrite: { '^/notificacionesHub': '' }
       }
     },

@@ -344,7 +344,7 @@ export default {
       if (!(await this.CheckearStock())) return;
 
       //Validar si esta abierto
-      if (!(await this.CheckearSiEstaAbierto())) return;
+      //if (!(await this.CheckearSiEstaAbierto())) return;
 
       //Validar un direccion de entrega no nula
       if (this.form.direccionEntrega == "") {
@@ -355,7 +355,7 @@ export default {
       //Validar PrecioTotal no puede ser cero pesos porque MP explota
       if (this.PrecioTotal == 0) {
         alert(
-          "nada es gratis. El carrito no puede salir 0 pesos. ESTO DEBE VERIFICARSE ANTES"
+          "nada es gratis. El carrito no puede salir 0 pesos."
         );
         return;
       }
