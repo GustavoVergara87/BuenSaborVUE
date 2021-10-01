@@ -93,9 +93,11 @@ const mutations = {
         state.cliente.id = 0;
         state.cliente.nombre = "";
         state.cliente.apellido = "";
+        state.cliente.telefono = "";
         if (state.cliente.domicilios != null) {
             state.cliente.domicilios.splice(0);
         }
+        console.log("resetCliente")
     },
     resetToken: (state) => {
         state.token = "";

@@ -12,7 +12,7 @@
       <b-card-img
         :src="'/image/' + plato.Imagen"
         :alt="plato.Imagen"
-        style="max-width:100%; max-height:250px;   object-fit: contain;"
+        style="max-width: 100%; max-height: 250px; object-fit: contain"
         loading="lazy"
         :class="imageState"
         @load="imagenCargada"

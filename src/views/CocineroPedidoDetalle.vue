@@ -47,11 +47,12 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import PE from "../services/PedidoEstados";
+import TE from "../services/TipoEnvio";
 import { editDetallePedido } from "../services/DetallesPedidosController";
 
 export default {
   data() {
-    return { PE: PE };
+    return { PE: PE, TE: TE };
   },
 
   computed: {
@@ -88,7 +89,7 @@ export default {
         editDetallePedido(detalle);
       });
 
-      if (this.elPedido.tipoEnvio == 0) {
+      if (this.elPedido.tipoEnvio == TE.DOMICILIO) {
         this.elPedido.estado = PE.PENDIENTE_ENTREGA;
       } else {
         this.elPedido.estado = PE.LISTO_ENTREGA_LOCAL;
@@ -97,6 +98,7 @@ export default {
 
       this.$router.push({ name: "CocineroListaDePedidos" });
     },
+
     volver() {
       this.$router.push({ name: "CocineroListaDePedidos" });
     },

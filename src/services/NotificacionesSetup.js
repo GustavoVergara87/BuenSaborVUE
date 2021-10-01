@@ -17,12 +17,16 @@ export default {
                 const clienteId = store.getters.traerCliente.id
                 const rolID = store.getters.traerUsuario.rolID
 
-                if (clienteId != 0) {
-                    connection.invoke("JoinClienteIDToGroup", clienteId)
-                    console.log("cliente reconectado a SignalR")
-                } else if (rolID != 0) {
+                //Si el rol no es Cliente y no es cero, vincularlo a SignalR
+                if (rolID != 0 && rolID != 1) {
                     connection.invoke("JoinRolIDToGroup", rolID)
-                    console.log("usuario reconectado a SignalR")
+                    console.log("usuario reconectado a SignalR, ID", rolID)
+                }
+
+                //Si el rol es Cliente y el cliente no es cero, vincularlo a SignalR
+                if (rolID == 1 && clienteId != 0) {
+                    connection.invoke("JoinClienteIDToGroup", clienteId)
+                    console.log("cliente reconectado a SignalR, ID", clienteId)
                 }
 
             }
