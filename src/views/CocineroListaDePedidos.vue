@@ -1,107 +1,110 @@
 <template>
   <div class="contenedor">
-    <div class="lista">
+    <div class="tipoPedidos">
       <h2>Esperando Preparación</h2>
-      <ul>
-        <li
-          :key="pedido.id"
-          v-for="pedido in todosLosPedidos.filter(
-            (pedido) => pedido.estado == PE.APROBADO
-          )"
-        >
-          <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
-
-          <span class="estado">
-            Cliente:
-            <span v-show="!cargando[pedido.id]">{{
-              pedido.cliente.nombre
-            }}</span>
-            <div>Pedido: {{ pedido.id }}</div>
-            <b-spinner
-              class="spinnerChico"
-              v-show="cargando[pedido.id]"
-              variant="primary"
-              label="Spinning"
-            ></b-spinner>
-          </span>
-
-          <b-button variant="success" @click="aprobarPedido(pedido.id)"
-            >Aprobar
-          </b-button>
-        </li>
-      </ul>
-    </div>
-
-    <div class="lista">
-      <h2>Pedidos Cocinando</h2>
-      <ul>
-        <li
-          :key="pedido.id"
-          v-for="pedido in todosLosPedidos.filter(
-            (pedido) => pedido.estado == PE.COCINANDO
-          )"
-        >
-          <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
-
-          <span class="estado">
-            Cliente:
-            <span v-show="!cargando[pedido.id]">{{
-              pedido.cliente.nombre
-            }}</span>
-            <div>Pedido: {{ pedido.id }}</div>
-            <b-spinner
-              class="spinnerChico"
-              v-show="cargando[pedido.id]"
-              variant="primary"
-              label="Spinning"
-            ></b-spinner>
-          </span>
-
-          <b-button variant="danger" @click="retornarPedidoPendiente(pedido.id)"
-            >Retornar a Pendientes
-          </b-button>
-          <b-button variant="success" @click="pedidoCocinado(pedido.id)"
-            >PedidoCocinado</b-button
+      <div class="lista">
+        <ul>
+          <li
+            :key="pedido.id"
+            v-for="pedido in todosLosPedidos.filter(
+              (pedido) => pedido.estado == PE.APROBADO
+            )"
           >
-        </li>
-      </ul>
+            <div class="estado">
+              Cliente:
+              <span v-show="!cargando[pedido.id]">{{
+                pedido.cliente.nombre
+              }}</span>
+              <div>Pedido: {{ pedido.id }}</div>
+              <b-spinner
+                class="spinnerChico"
+                v-show="cargando[pedido.id]"
+                variant="primary"
+                label="Spinning"
+              ></b-spinner>
+
+            <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+            <b-button variant="success" @click="aprobarPedido(pedido.id)"
+              >Aprobar
+            </b-button>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
+    <div class="tipoPedidos">
+      <h2>Pedidos Cocinando</h2>
+      <div class="lista">
+        <ul>
+          <li
+            :key="pedido.id"
+            v-for="pedido in todosLosPedidos.filter(
+              (pedido) => pedido.estado == PE.COCINANDO
+            )"
+          >
+            <div class="estado">
+              Cliente:
+              <span v-show="!cargando[pedido.id]">{{
+                pedido.cliente.nombre
+              }}</span>
+              <div>Pedido: {{ pedido.id }}</div>
+              <b-spinner
+                class="spinnerChico"
+                v-show="cargando[pedido.id]"
+                variant="primary"
+                label="Spinning"
+              ></b-spinner>
 
-    <div class="lista">
+            <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+            <b-button
+              variant="danger"
+              @click="retornarPedidoPendiente(pedido.id)"
+              >Retornar a Pendientes
+            </b-button>
+            <b-button variant="success" @click="pedidoCocinado(pedido.id)"
+              >PedidoCocinado</b-button
+            >
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="tipoPedidos">
       <h2>Pedidos Cocinados</h2>
-      <ul>
-        <li
-          :key="pedido.id"
-          v-for="pedido in todosLosPedidos.filter(
-            (pedido) =>
-              pedido.estado == PE.LISTO_ENTREGA_LOCAL ||
-              pedido.estado == PE.PENDIENTE_ENTREGA
-          )"
-        >
-          <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+      <div class="lista">
+        <ul>
+          <li
+            :key="pedido.id"
+            v-for="pedido in todosLosPedidos.filter(
+              (pedido) =>
+                pedido.estado == PE.LISTO_ENTREGA_LOCAL ||
+                pedido.estado == PE.PENDIENTE_ENTREGA
+            )"
+          >
+            <div class="estado">
+              Cliente:
+              <span v-show="!cargando[pedido.id]">{{
+                pedido.cliente.nombre
+              }}</span>
+              <div>Pedido: {{ pedido.id }}</div>
+              <b-spinner
+                class="spinnerChico"
+                v-show="cargando[pedido.id]"
+                variant="primary"
+                label="Spinning"
+              ></b-spinner>
 
-          <span class="estado">
-            Cliente:
-            <span v-show="!cargando[pedido.id]">{{
-              pedido.cliente.nombre
-            }}</span>
-            <div>Pedido: {{ pedido.id }}</div>
-            <b-spinner
-              class="spinnerChico"
-              v-show="cargando[pedido.id]"
-              variant="primary"
-              label="Spinning"
-            ></b-spinner>
-          </span>
-
-          <!-- <b-button variant="success" @click="pedidoTermiando(pedido.id)"
+            <!-- <b-button variant="success" @click="pedidoTermiando(pedido.id)"
             >Pedido terminado
           </b-button> -->
-          <b-button variant="danger" @click="pedidoNoCocinado(pedido.id)"
-            >Retornar a Cocinando</b-button
-          >
-        </li>
-      </ul>
+            <b-button @click="verDetallePedido(pedido.id)">Ver</b-button>
+            <b-button variant="danger" @click="pedidoNoCocinado(pedido.id)"
+              >Retornar a Cocinando</b-button
+            >
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -174,6 +177,10 @@ export default {
 
 <style scoped>
 @media screen and (max-width: 801px) {
+  h2 {
+    font-size: 1rem;
+  }
+
   li {
     display: flex;
     width: 75%;
@@ -185,16 +192,40 @@ export default {
   .estado {
     font-size: 0.8rem !important;
   }
+  .tipoPedidos {
+    width: 100% !important;
+  }
+}
+
+h2 {
+  font-size: 150%;
 }
 
 .estado {
   display: inline-block;
-  width: 6em;
-  margin-left: 1em;
+  width: 100%;
+  padding: 0.5em;
+  /* border: 1px solid grey; */
+  background-color: lightgray;
+  margin-bottom: 1em;
+}
+
+.tipoPedidos {
+  float: left;
+  width: 33.3%;
+  border: 1px solid gray;
+  height: 300px;
+  padding: 0.5em;
+  overflow: hidden;
 }
 
 .lista {
-  float: left;
-  width: 33.3%;
+  height: calc(300px - 2em);
+  overflow: auto;
+}
+
+.lista ul {
+  list-style-type: none;
+  padding: 0;
 }
 </style>

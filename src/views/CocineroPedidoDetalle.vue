@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <h1>Detalle Pedido</h1>
+      <h3>Detalle Pedido</h3>
       <div>
         <b-row>
           <b-col class="informacionPrincipal" sm="2">
@@ -114,15 +114,15 @@ export default {
   }
 }
 p {
-  font-size: 30px;
+  font-size: 15px;
   font-weight: 500;
-  padding: 10px;
+  padding: 5px;
 }
 .elemento {
   padding: 15px;
   background-color: rgb(63, 216, 63);
   border: 1px solid black;
-  width: 25%;
+  width: 50%;
 }
 button {
   margin: 10px;
