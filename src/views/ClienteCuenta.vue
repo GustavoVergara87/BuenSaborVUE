@@ -92,7 +92,10 @@
       <b-table striped hover :items="pedidos" :fields="fields">
         <template #cell(verFactura)="data">
           <!-- `data.value` is the value after formatted by the Formatter -->
-          <a :href="data.value">ver factura</a>
+          <b-button @click="traerFacturaSegunPedido(data.value)"
+            >factura</b-button
+          >
+          <!-- <a :href="data.value">ver factura</a> -->
         </template>
       </b-table>
     </div>
@@ -144,7 +147,7 @@ export default {
   },
   methods: {
     numFormat,
-    ...mapActions(["setCliente"]),
+    ...mapActions(["setCliente", "setClienteManteniendoDomicilio"]),
     async filtrarPedidos(clienteId) {
       const pedidos = await fetchTodosLosPedidos();
       const pedidosFiltrados = await pedidos.filter(
@@ -160,13 +163,44 @@ export default {
             pedido.fecha.substring(0, 10) +
             " " +
             pedido.fecha.substring(11, 19),
-          total: '$ ' + numFormat(pedido.total) ,
+          total: "$ " + numFormat(pedido.total),
           verFactura:
-            "http://elbuensabor.ddns.net:82/api/Facturas/PDF/" + pedido.id,
+             "/api/Facturas/PDF/" + pedido.id,
         };
       });
       return pedidosFiltradosCampos;
     },
+    async traerFacturaSegunPedido(facturaDePedido) {
+      let filename = '';
+      await fetch(facturaDePedido, {
+        headers: {
+          "Content-Type": "application/pdf",
+          Authorization: "Bearer " + this.traerToken,
+        },
+      })
+        .then((response) => {
+          const header = response.headers.get("Content-Disposition");
+          const parts = header.split(";");
+          filename = parts[1].split("=")[1];
+          return response.blob();
+        })
+        .then((blob) => {
+          // Create blob link to download
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link = document.createElement("a");
+          link.href = url;
+          filename=filename.replaceAll("\"","")
+          link.setAttribute("download", filename);
+          // Append to html link element page
+          document.body.appendChild(link);
+          // Start download
+          link.click();
+          // Clean up and remove the link
+          link.parentNode.removeChild(link);
+        });
+      console.log(facturaDePedido);
+    },
+
     async handleGuardarCambios() {
       const cliente = await getCliente(this.traerCliente.id);
       let clienteAGuardar = {
@@ -186,10 +220,10 @@ export default {
 
       this.setClienteManteniendoDomicilio(clienteVuex);
 
-      if (errores != null) {
+      if (errores == null) {
         alert("Cambios guardados");
       }
-      // console.log(errores);
+      //  console.log(errores);
     },
 
     async handleGuardarCambiosUsuario() {
@@ -214,6 +248,7 @@ export default {
       "traerUsuario",
       "traerCliente",
       "traerGoogleLogin",
+      "traerToken",
     ]),
     noHayLoggin() {
       return this.traerCliente.nombre == "";

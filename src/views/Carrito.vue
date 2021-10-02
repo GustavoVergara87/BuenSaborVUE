@@ -348,7 +348,13 @@ export default {
 
       //Validar un direccion de entrega no nula
       if (this.form.direccionEntrega == "") {
-        alert("debe ingresar la dirección");
+        alert("Debe ingresar la dirección");
+        return;
+      }
+
+      //Validar un telefono no cero
+      if (this.traerCliente.telefono == "" || this.traerCliente.telefono == "0") {
+        alert("Debe actualizar su telefono en Mi Cuenta");
         return;
       }
 

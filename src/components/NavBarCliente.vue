@@ -14,7 +14,10 @@
       <b-collapse id="nav-collapse" is-nav class="m-1">
         <b-navbar-nav>
           <!-- --------------------------------------------------------Login -->
-          <LoginDropdown :nombre="traerCliente.nombre" rol="cliente"></LoginDropdown>
+          <LoginDropdown
+            :nombre="traerCliente.nombre"
+            rol="cliente"
+          ></LoginDropdown>
           <!-- --------------------------------------------------------FinLogin -->
 
           <!-- -------------------------------------------------------Platos -->
@@ -79,28 +82,20 @@
             </div>
           </b-nav-form>
           <!-- -------------------------------------------------------Fin Buscar -->
-
-
         </b-navbar-nav>
-
-
-
       </b-collapse>
-                <!-- -------------------------------------------------------Notificaciones -->
-          <div>
-            <button
-              id="campana-notificacion"
-              @click="handleToogleNotificaciones"
-              class="btn m-2 nav-link-mod nav-link-semiopaco"
-            >
-              <i class="fas fa-bell campana"></i>
-            </button>
-          </div>
-          <Notificaciones ref="notificacion"></Notificaciones>
-          <!-- -------------------------------------------------------Fin Notificaciones-->
+      <!-- -------------------------------------------------------Notificaciones -->
+      <button
+        id="campana-notificacion"
+        @click="handleToogleNotificaciones"
+        class="btn m-2 nav-link-mod nav-link-semiopaco"
+      >
+        <i class="fas fa-bell campana"></i>
+      </button>
+
+      <Notificaciones ref="notificacion"></Notificaciones>
+      <!-- -------------------------------------------------------Fin Notificaciones-->
     </b-navbar>
-
-
   </div>
 </template>
 
@@ -115,10 +110,9 @@ export default {
   },
   data() {
     return {
-      now:Date.now,
+      now: Date.now,
       showNotificaciones: false,
-
-    }
+    };
   },
   computed: {
     ...mapGetters([
@@ -130,7 +124,6 @@ export default {
     cantidadCarrito() {
       return this.getCarritoCantidad;
     },
-
   },
   methods: {
     ...mapActions(["fetchTodosLosRubrosArticulos"]),
@@ -160,9 +153,8 @@ export default {
     this.fetchTodosLosRubrosArticulos();
   },
   mounted() {
-     this.$title="Cliente"
+    this.$title = "Cliente";
   },
-
 };
 </script>
 
@@ -172,20 +164,18 @@ export default {
   width: 19em;
   height: 1vh;
 }
-
-
-
-
-
 </style>
 
 <style scoped>
-
-
-@media (max-width: 768px){
-div#nav-collapse {
+@media (max-width: 768px) {
+  div#nav-collapse {
     background-image: url("../../public/images/hamb.jpg");
-}}
+  }
+
+  #campana-notificacion {
+    display: none;
+  }
+}
 
 .campana {
   transform: translateY(0.25em);

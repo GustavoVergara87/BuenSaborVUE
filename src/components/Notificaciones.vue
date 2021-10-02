@@ -5,14 +5,11 @@
         <transition name="slide-fade">
           <div v-show="show" class="contenedor-scrolleable">
             <div class="scrolleable">
-              <template v-if="traerTodasLasNotificaciones.length==0">
-                <div class="texto-centrado">
-                No hay notificaciones
-                </div>
+              <template v-if="traerTodasLasNotificaciones.length == 0">
+                <div class="texto-centrado">No hay notificaciones</div>
               </template>
               <template v-for="notificacion in traerTodasLasNotificaciones">
                 <div :key="notificacion.id">
-
                   <Notificacion
                     :id="notificacion.id"
                     :mensaje="notificacion.mensaje"
@@ -55,19 +52,18 @@ export default {
       this.deleteFromNotificaciones(id);
     },
     handleNotificacion(notificacion) {
-      console.log("notificacion",notificacion)
-      console.log("pedido",notificacion.pedido)
+      console.log("notificacion", notificacion);
+      console.log("pedido", notificacion.pedido);
       //guarda como viene la notificacion en vuex
       this.addNotificacion(notificacion);
       //mostrar las notificaciones
       //this.showNotificacion();
       this.show = true;
     },
-    toggleVisibility(){
+    toggleVisibility() {
       this.show = !this.show;
-    }
+    },
   },
-
 
   created() {
     // Listen to score changes coming from SignalR events
@@ -91,7 +87,6 @@ export default {
 </style>
 
 <style scoped>
-
 .texto-centrado {
   display: flex;
   margin: auto;
@@ -99,7 +94,18 @@ export default {
   justify-content: center;
   background-color: white;
   height: 3em;
+  opacity: 0%;
+  animation: anim 3s ;
+  outline: 2px solid red;
 }
+
+@keyframes anim {
+    0% {opacity: 0%;}
+    10% {opacity: 100%;}
+    90% {opacity: 100%;}
+    100% {opacity: 0%;}
+}
+
 
 .marco {
   position: absolute;
@@ -173,7 +179,8 @@ export default {
 .slide-fade-leave-active {
   transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
-.slide-fade-enter, .slide-fade-leave-to{
+.slide-fade-enter,
+.slide-fade-leave-to {
   transform: translateY(-150px);
   opacity: 0;
 }
@@ -185,6 +192,5 @@ export default {
   /*espera que el contenido termine su animacion y luego desaparece*/
 }
 
- 
 /*Fin Animacion*/
 </style>
