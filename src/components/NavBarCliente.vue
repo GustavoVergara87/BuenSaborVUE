@@ -10,6 +10,17 @@
       </router-link>
       <!-- ------------------------------------------------------FinTitulo y Rol -->
 
+      <!-- -------------------------------------------------------Notificaciones -->
+      <div id="campana-notificacion-collapse">
+        <button
+          @click="handleToogleNotificaciones"
+          class="btn m-2 nav-link-mod nav-link-semiopaco"
+        >
+          <i class="fas fa-bell campana"></i>
+        </button>
+      </div>
+      <!-- -------------------------------------------------------Fin Notificaciones-->
+
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav class="m-1">
         <b-navbar-nav>
@@ -85,17 +96,17 @@
         </b-navbar-nav>
       </b-collapse>
       <!-- -------------------------------------------------------Notificaciones -->
-      <button
-        id="campana-notificacion"
-        @click="handleToogleNotificaciones"
-        class="btn m-2 nav-link-mod nav-link-semiopaco"
-      >
-        <i class="fas fa-bell campana"></i>
-      </button>
-
-      <Notificaciones ref="notificacion"></Notificaciones>
+      <div id="campana-notificacion">
+        <button
+          @click="handleToogleNotificaciones"
+          class="btn m-2 nav-link-mod nav-link-semiopaco"
+        >
+          <i class="fas fa-bell campana"></i>
+        </button>
+      </div>
       <!-- -------------------------------------------------------Fin Notificaciones-->
     </b-navbar>
+    <Notificaciones ref="notificacion"></Notificaciones>
   </div>
 </template>
 
@@ -155,6 +166,7 @@ export default {
   mounted() {
     this.$title = "Cliente";
   },
+
 };
 </script>
 
@@ -164,18 +176,29 @@ export default {
   width: 19em;
   height: 1vh;
 }
+  #campana-notificacion-collapse{
+    display: none;
+    /* visibility: hidden; */
+  }
 </style>
 
 <style scoped>
 @media (max-width: 768px) {
   div#nav-collapse {
     background-image: url("../../public/images/hamb.jpg");
+    padding: 2em;
   }
 
   #campana-notificacion {
     display: none;
   }
+
+  #campana-notificacion-collapse{
+    display: initial;
+  }
 }
+
+
 
 .campana {
   transform: translateY(0.25em);

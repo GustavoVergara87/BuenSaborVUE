@@ -84,13 +84,14 @@ export default {
       this.AuthRequest.NombreUsuario = this.form.Email;
       this.AuthRequest.Clave = this.form.Clave;
 
-
-      await this.registrarNuevoCliente(this.form).then(() => {
-        //this.$root.$emit() emite un evento que puede ser escuchado globalmente
-        this.$root.$emit("nuevoClienteRegistrado", this.AuthRequest);
-        this.$bvModal.hide("modal-registro");
-        this.$bvModal.show("modal-login");
-      }).catch((a)=>alert(a))  ;
+      await this.registrarNuevoCliente(this.form)
+        .then(() => {
+          //this.$root.$emit() emite un evento que puede ser escuchado globalmente
+          this.$root.$emit("nuevoClienteRegistrado", this.AuthRequest);
+          this.$bvModal.hide("modal-registro");
+          this.$bvModal.show("modal-login");
+        })
+        .catch((a) => alert(a));
     },
   },
 };
@@ -101,7 +102,8 @@ export default {
 input[type="text"],
 input[type="password"],
 input[type="email"],
-input[type="number"] {
+input[type="number"],
+input[type="phone"] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
