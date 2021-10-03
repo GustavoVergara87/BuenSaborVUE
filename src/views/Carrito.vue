@@ -261,12 +261,12 @@ export default {
 
           if (stockParaArt.StockTotal < carritoElement.cantidad) {
             console.log(carritoElement);
-            alert(
+            const mensaje =
               "lo sentimos, no contamos con esa cantidad de " +
-                stockParaArt.Denominacion +
-                ". Hay " +
-                stockParaArt.StockTotal
-            );
+              stockParaArt.Denominacion +
+              ". Hay " +
+              stockParaArt.StockTotal;
+            this.$root.$emit("alerta", mensaje);
             return false;
           }
         }
@@ -333,7 +333,9 @@ export default {
           pHdA.hora1 +
           " horas.";
 
-        alert(rta);
+        const mensaje = rta;
+        this.$root.$emit("alerta", mensaje);
+
         return false;
       }
       return false;
@@ -348,21 +350,26 @@ export default {
 
       //Validar un direccion de entrega no nula
       if (this.form.direccionEntrega == "") {
-        alert("Debe ingresar la dirección");
+        //emite un evento que puede ser escuchado globalmente. App.vue lo escucha
+        const mensaje = "Debe ingresar la dirección";
+        this.$root.$emit("alerta", mensaje);
         return;
       }
 
       //Validar un telefono no cero
-      if (this.traerCliente.telefono == "" || this.traerCliente.telefono == "0") {
-        alert("Debe actualizar su telefono en Mi Cuenta");
+      if (
+        this.traerCliente.telefono == "" ||
+        this.traerCliente.telefono == "0"
+      ) {
+        const mensaje = "Debe actualizar su telefono en Mi Cuenta";
+        this.$root.$emit("alerta", mensaje);
         return;
       }
 
       //Validar PrecioTotal no puede ser cero pesos porque MP explota
       if (this.PrecioTotal == 0) {
-        alert(
-          "nada es gratis. El carrito no puede salir 0 pesos."
-        );
+        const mensaje = "El carrito no puede salir 0 pesos.";
+        this.$root.$emit("alerta", mensaje);
         return;
       }
 
@@ -498,6 +505,13 @@ export default {
 
 .resumenPedidoMarco {
   margin: 2em;
+}
+
+@media (max-width: 768px) {
+  .resumenPedidoMarco {
+    margin: 0.5em;
+    padding: 0.5em;
+  }
 }
 
 .imagenMP {

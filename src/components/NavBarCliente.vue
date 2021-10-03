@@ -10,7 +10,7 @@
       </router-link>
       <!-- ------------------------------------------------------FinTitulo y Rol -->
 
-      <!-- -------------------------------------------------------Notificaciones -->
+      <!-- -------------------------------------------------------Notificaciones-collapse -->
       <div id="campana-notificacion-collapse">
         <button
           @click="handleToogleNotificaciones"
@@ -19,7 +19,20 @@
           <i class="fas fa-bell campana"></i>
         </button>
       </div>
-      <!-- -------------------------------------------------------Fin Notificaciones-->
+      <!-- -------------------------------------------------------Fin Notificaciones-collapse-->
+
+      <!-- -------------------------------------------------------carrito-icon-collapse-->
+      <b-nav-item class="outlined carrito-icon-collapse">
+        <router-link
+          :to="{ name: 'Carrito' }"
+          class="nav-link carritoBox outlined"
+        >
+          <span class="carritoRedCircle">&#11044;</span>
+          <span class="carritoNum outlined">{{ cantidadCarrito }}</span>
+          <i class="fas fa-shopping-cart carritoIco outlined"></i>
+        </router-link>
+      </b-nav-item>
+      <!-- -------------------------------------------------------Fincarrito-icon-collapse-->
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav class="m-1">
@@ -68,7 +81,7 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto outlined">
           <!-- -------------------------------------------------------Carrito -->
-          <b-nav-item class="outlined">
+          <b-nav-item class="outlined carrito-icon">
             <router-link
               :to="{ name: 'Carrito' }"
               class="nav-link carritoBox outlined"
@@ -79,6 +92,7 @@
             </router-link>
           </b-nav-item>
           <!-- -------------------------------------------------------FinCarrito -->
+
           <!-- -------------------------------------------------------Buscar -->
           <b-nav-form @submit="handleBusqueda">
             <div class="form-busqueda">
@@ -87,7 +101,7 @@
                 size="sm"
                 placeholder="Buscar"
               ></b-form-input>
-              <button class="responsiveHide boton-lupa" type="submit">
+              <button class="boton-lupa" type="submit">
                 <i class="fas fa-search"></i>
               </button>
             </div>
@@ -166,7 +180,6 @@ export default {
   mounted() {
     this.$title = "Cliente";
   },
-
 };
 </script>
 
@@ -176,14 +189,20 @@ export default {
   width: 19em;
   height: 1vh;
 }
-  #campana-notificacion-collapse{
-    display: none;
-    /* visibility: hidden; */
-  }
 </style>
 
 <style scoped>
+.carrito-icon-collapse {
+  list-style: none;
+  display: none;
+}
+
 @media (max-width: 768px) {
+  .carrito-icon {
+    display: none;
+  }
+
+  
   div#nav-collapse {
     background-image: url("../../public/images/hamb.jpg");
     padding: 2em;
@@ -193,12 +212,14 @@ export default {
     display: none;
   }
 
-  #campana-notificacion-collapse{
+  #campana-notificacion-collapse {
+    display: initial;
+  }
+
+  .carrito-icon-collapse {
     display: initial;
   }
 }
-
-
 
 .campana {
   transform: translateY(0.25em);

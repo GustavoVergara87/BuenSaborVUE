@@ -91,7 +91,9 @@ export default {
           this.$bvModal.hide("modal-registro");
           this.$bvModal.show("modal-login");
         })
-        .catch((a) => alert(a));
+        .catch((a) => {
+          this.$root.$emit("alerta", a);
+        });
     },
   },
 };

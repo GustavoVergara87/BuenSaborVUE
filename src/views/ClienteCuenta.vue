@@ -92,9 +92,9 @@
       <b-table striped hover :items="pedidos" :fields="fields">
         <template #cell(verFactura)="data">
           <!-- `data.value` is the value after formatted by the Formatter -->
-          <b-button @click="traerFacturaSegunPedido(data.value)"
-            >factura</b-button
-          >
+          <b-button @click="traerFacturaSegunPedido(data.value)">
+            <i class="fas fa-file-invoice-dollar"></i>
+          </b-button>
           <!-- <a :href="data.value">ver factura</a> -->
         </template>
       </b-table>
@@ -137,8 +137,8 @@ export default {
       pedidos: null,
       fields: [
         { key: "id", label: "N°" },
-        { key: "formaPago", label: "Forma de Pago" },
-        { key: "tipoEnvio", label: "Tipo de Envio" },
+        // { key: "formaPago", label: "Forma de Pago" },
+        // { key: "tipoEnvio", label: "Tipo de Envio" },
         { key: "fecha", label: "Fecha" },
         { key: "total", label: "Total" },
         { key: "verFactura", label: "Ver factura" },
@@ -159,19 +159,18 @@ export default {
           id: pedido.id,
           formaPago: pedido.formaPago,
           tipoEnvio: pedido.tipoEnvio ? "domicilio" : "local",
-          fecha:
-            pedido.fecha.substring(0, 10) +
+          fecha: " "+
+            pedido.fecha.substring(2, 10) +
             " " +
-            pedido.fecha.substring(11, 19),
+            pedido.fecha.substring(11, 16),
           total: "$ " + numFormat(pedido.total),
-          verFactura:
-             "/api/Facturas/PDF/" + pedido.id,
+          verFactura: "/api/Facturas/PDF/" + pedido.id,
         };
       });
       return pedidosFiltradosCampos;
     },
     async traerFacturaSegunPedido(facturaDePedido) {
-      let filename = '';
+      let filename = "";
       await fetch(facturaDePedido, {
         headers: {
           "Content-Type": "application/pdf",
@@ -189,7 +188,7 @@ export default {
           const url = window.URL.createObjectURL(new Blob([blob]));
           const link = document.createElement("a");
           link.href = url;
-          filename=filename.replaceAll("\"","")
+          filename = filename.replaceAll('"', "");
           link.setAttribute("download", filename);
           // Append to html link element page
           document.body.appendChild(link);
@@ -220,8 +219,9 @@ export default {
 
       this.setClienteManteniendoDomicilio(clienteVuex);
 
-      if (errores == null) {
-        alert("Cambios guardados");
+      if (errores != null) {
+        const mensaje = "Cambios guardados";
+        this.$root.$emit("alerta", mensaje);
       }
       //  console.log(errores);
     },
@@ -237,7 +237,8 @@ export default {
 
       if (errores == null) {
         this.$root.$emit("logout"); //emite un evento que puede ser escuchado globalmente. LoginModal lo escucha y desloguea al usuario para que se reloguee
-        alert("Cambios guardados. Logueese de nuevo");
+        const mensaje = "Cambios guardados. Logueese de nuevo";
+        this.$root.$emit("alerta", mensaje);
       }
       // console.log(errores);
     },
@@ -293,4 +294,18 @@ input[type="number"] {
   height: 6em;
   overflow-y: auto;
 }
+
+
+
+</style>
+
+<style>
+  @media (max-width: 768px) {
+    .table td, .table th {
+      padding: 0.0rem;
+      vertical-align: middle;
+      border-top: 1px solid #dee2e6;
+      text-align: center;
+    }
+  }
 </style>

@@ -31,8 +31,8 @@ export async function editUsuario(usuarioChange) {
     });
 
     if (response.status == 400) {
-        alert("Error usuario no encontrado")
-        // console.log(await response.text())
+        const mensaje = "Error usuario no encontrado";
+        this.$root.$emit("alerta", mensaje);
         return await response.text()
     }
     

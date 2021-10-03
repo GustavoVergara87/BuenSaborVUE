@@ -6,7 +6,21 @@
           <div v-show="show" class="contenedor-scrolleable">
             <div class="scrolleable">
               <template v-if="traerTodasLasNotificaciones.length == 0">
-                <div class="texto-centrado">No hay notificaciones</div>
+                <b-alert
+                  :show="dismissCountDown"
+                  dismissible
+                  variant="warning"
+                  @dismissed="dismissCountDown = 0"
+                  @dismiss-count-down="countDownChanged"
+                >
+                  <div class="texto-centrado">No hay notificaciones</div>
+                  <b-progress
+                    variant="warning"
+                    :max="dismissSecs"
+                    :value="dismissCountDown"
+                    height="4px"
+                  ></b-progress>
+                </b-alert>
               </template>
               <template v-for="notificacion in traerTodasLasNotificaciones">
                 <div :key="notificacion.id">
@@ -43,11 +57,20 @@ export default {
   data() {
     return {
       show: false,
+
+      dismissSecs: 6,
+      dismissCountDown: 0,
     };
   },
 
   methods: {
     ...mapActions(["addNotificacion", "deleteFromNotificaciones"]),
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown;
+      if (this.dismissCountDown == 1) {
+        this.toggleVisibility();
+      }
+    },
     deleteNotificacion(id) {
       this.deleteFromNotificaciones(id);
     },
@@ -62,6 +85,9 @@ export default {
     },
     toggleVisibility() {
       this.show = !this.show;
+      if (this.show) {
+        this.dismissCountDown = 6;
+      }
     },
   },
 
@@ -84,28 +110,41 @@ export default {
   color: white;
   /* padding: 1em; */
 }
+
+.alert-dismissible .close{
+display: none;
+}
+.alert-dismissible{
+padding: 0px;
+}
 </style>
 
 <style scoped>
+
+
 .texto-centrado {
   display: flex;
   margin: auto;
   align-items: center;
   justify-content: center;
-  background-color: white;
   height: 3em;
-  opacity: 0%;
-  animation: anim 3s ;
-  outline: 2px solid red;
+  opacity: 100%;
 }
 
 @keyframes anim {
-    0% {opacity: 0%;}
-    10% {opacity: 100%;}
-    90% {opacity: 100%;}
-    100% {opacity: 0%;}
+  0% {
+    opacity: 0%;
+  }
+  10% {
+    opacity: 100%;
+  }
+  90% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0%;
+  }
 }
-
 
 .marco {
   position: absolute;

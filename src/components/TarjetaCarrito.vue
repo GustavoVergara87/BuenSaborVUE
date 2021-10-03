@@ -79,21 +79,43 @@ export default {
   margin-left: 0.5em;
   margin-right: 0.5em;
 }
-
-.borde {
-  /* background: rgb(245, 245, 245); */
-  background: white;
-  padding: 1em;
-  display: flex;
-  /* color: rgba(255, 255, 255, 1)!important; */
-  filter: drop-shadow(0px 0px 4px rgb(220, 220, 220, 0.5));
+.cantidad {
+  font-size: 200%;
+  width: 1.5em;
+  text-align: center;
 }
+
 
 .textFloatLeft {
   order: 1;
   flex-grow: 1;
   margin: auto;
 }
+
+@media (max-width: 768px) {
+  .contenedorImagen {
+    display: none;
+  }
+
+  .cantidad {
+    font-size: 150%;
+  }
+
+
+}
+
+.borde {
+  /* background: rgb(245, 245, 245); */
+  background: white;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  /* color: rgba(255, 255, 255, 1)!important; */
+  filter: drop-shadow(0px 0px 4px rgb(220, 220, 220, 0.5));
+}
+
+
+
 .textFloatRight {
   order: 2;
   margin: auto;
@@ -115,11 +137,7 @@ export default {
   border-radius: 0.5em;
 }
 
-.cantidad {
-  font-size: 200%;
-  width: 1.5em;
-  text-align: center;
-}
+
 
 .aumentarDisminuir {
   font-size: 150%;
@@ -131,7 +149,7 @@ export default {
   font-size: 150%;
   transform: scaleY(0.75);
   font-weight: 100;
-  right:1em;
+  right: 1em;
   line-height: 0%;
   margin-top: -0.5em;
   margin-right: -0.5em;

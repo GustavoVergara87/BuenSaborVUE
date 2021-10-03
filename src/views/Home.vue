@@ -33,11 +33,7 @@ export default {
   },
 
   methods: {},
-  async mounted() {
-    const resp = await fetch("http://elbuensabor.ddns.net:82/api/articulos");
-    const respJson = await resp.json();
-    this.dummy = respJson;
-  },
+
 };
 </script>
 
