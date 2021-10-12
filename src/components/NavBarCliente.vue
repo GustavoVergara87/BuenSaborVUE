@@ -48,16 +48,7 @@
           ></LoginDropdown>
           <!-- --------------------------------------------------------FinLogin -->
 
-          <!-- -------------------------------------------------------Platos -->
-          <b-nav-item>
-            <router-link
-              :to="{ name: 'ClientePlatos' }"
-              class="nav-link nav-link-mod"
-            >
-              Platos <i class="fas fa-utensils responsiveHide"></i>
-            </router-link>
-          </b-nav-item>
-          <!-- -------------------------------------------------------FinPlatos -->
+      
 
           <!-- -------------------------------------------------------Rubros -->
           <b-nav-item-dropdown
@@ -80,6 +71,19 @@
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <!-- -------------------------------------------------------FinRubros -->
+
+    <!-- -------------------------------------------------------Platos -->
+          <b-nav-item>
+            <router-link
+              :to="{ name: 'ClientePlatos' }"
+              class="nav-link nav-link-mod"
+            >
+              Platos <i class="fas fa-utensils responsiveHide"></i>
+            </router-link>
+          </b-nav-item>
+          <!-- -------------------------------------------------------FinPlatos -->
+
+
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->

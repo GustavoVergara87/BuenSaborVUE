@@ -58,7 +58,7 @@ export default {
     return {
       show: false,
 
-      dismissSecs: 6,
+      dismissSecs: 3,
       dismissCountDown: 0,
     };
   },
@@ -86,7 +86,7 @@ export default {
     toggleVisibility() {
       this.show = !this.show;
       if (this.show) {
-        this.dismissCountDown = 6;
+        this.dismissCountDown = 3;
       }
     },
   },

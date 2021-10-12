@@ -91,7 +91,7 @@
       <b-table striped hover :items="pedidos" :fields="fields">
         <template #cell(verFactura)="data">
           <!-- `data.value` is the value after formatted by the Formatter -->
-          <b-button @click="traerFacturaSegunPedido(data.value)">
+          <b-button v-show="data.value != ''" @click="traerFacturaSegunPedido(data.value)">
             <i class="fas fa-file-invoice-dollar"></i>
           </b-button>
           <!-- <a :href="data.value">ver factura</a> -->
@@ -152,7 +152,6 @@ export default {
       const pedidosFiltrados = await pedidos.filter(
         (pedido) => pedido.clienteID == clienteId
       );
-      // console.log(pedidosFiltrados);
       const pedidosFiltradosCampos = pedidosFiltrados.map((pedido) => {
         return {
           id: pedido.id,
@@ -163,9 +162,10 @@ export default {
             " " +
             pedido.fecha.substring(11, 16),
           total: "$ " + numFormat(pedido.total),
-          verFactura: "/api/Facturas/PDF/" + pedido.id,
+          verFactura: pedido.estado !=0 ?  "/api/Facturas/PDF/" + pedido.id : "",
         };
       }).reverse();
+      // console.log(pedidosFiltrados);
       return pedidosFiltradosCampos;
     },
     async traerFacturaSegunPedido(facturaDePedido) {

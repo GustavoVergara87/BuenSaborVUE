@@ -27,12 +27,7 @@
             <PlatosCarrito></PlatosCarrito>
           </b-col>
 
-          <b-col>
-            <div>
-              <p v-show="traerCliente.nombre == ''">
-                Debe loggearse para poder pagar
-              </p>
-            </div>
+          <b-col v-show="traerCliente.nombre != ''">
             <form
               v-show="traerCliente.nombre != ''"
               class="columnaDerecha"
@@ -146,6 +141,11 @@
           </b-col>
         </b-row>
       </b-container>
+      <!-- <div>
+              <p v-show="traerCliente.nombre == ''">
+                Debe loggearse para poder pagar
+              </p>
+            </div> -->
     </div>
   </div>
 </template>
@@ -488,7 +488,16 @@ export default {
           // Failed to fetch script
         });
     },
+
+
   },
+      mounted() {
+      console.log(this.traerCliente.nombre)
+      if (this.traerCliente.nombre == "") {
+        const mensaje = "Debe loggearse para poder pagar";
+        this.$root.$emit("alerta", mensaje);
+      }
+    },
 };
 </script>
 

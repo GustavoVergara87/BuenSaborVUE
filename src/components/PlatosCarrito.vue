@@ -30,4 +30,17 @@ export default {
   /* overflow-y: scroll; */
   overflow-y: auto;
 }
+
+@media (max-width: 768px) {
+  .contenedor {
+  height: 100%;
+}
+}
+
+@media (min-width: 769px) {
+  .contenedor {
+  height: calc(95vh - 150px);
+}
+}
+
 </style>
