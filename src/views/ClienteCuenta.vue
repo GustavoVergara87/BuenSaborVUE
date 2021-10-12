@@ -85,8 +85,7 @@
       ></DomiciliosLista>
     </form>
 
-    <h4>Mis Pedidos</h4>
-    <h5>Lista de Pedidos</h5>
+    <h4>Lista de Pedidos</h4>
 
     <div class="container">
       <b-table striped hover :items="pedidos" :fields="fields">
@@ -166,7 +165,7 @@ export default {
           total: "$ " + numFormat(pedido.total),
           verFactura: "/api/Facturas/PDF/" + pedido.id,
         };
-      });
+      }).reverse();
       return pedidosFiltradosCampos;
     },
     async traerFacturaSegunPedido(facturaDePedido) {

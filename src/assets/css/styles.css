@@ -74,11 +74,28 @@
   float: left;
   filter: drop-shadow(5px 5px 4px #444);
 }
+.logoPrincipalChico {
+    /* width: 10vh; */
+    height: 75px;
+    float: left;
+    filter: drop-shadow(1.5px 1.5px 3px #444);
+}
+@media (min-width: 769px) {
+  .logoPrincipalChico {
+    display: none;
+  }
+}
 
 @media (max-width: 768px) {
   .logoPrincipal {
-    width: 5.5em;
+    /* width: 5.5em; */
+    display: none;
   }
+
+  .logoPrincipalChico {
+    display: initial;
+  }
+
   .router-link-active {
     width: 6em;
   }

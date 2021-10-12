@@ -2,7 +2,7 @@
   <div id="app">
     <LoginModal></LoginModal>
     <RegistroModal></RegistroModal>
-    <b-modal id="modal-alertas" title="El Buen Sabor">
+    <b-modal id="modal-alertas" title="El Buen Sabor" ok-only >
       <p class="my-4">{{mensaje}}</p>
     </b-modal>
     <router-view />

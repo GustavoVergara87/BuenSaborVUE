@@ -1,6 +1,6 @@
 <template>
   <div class="zocalo">
-    <span class="DireccionLocal">Av. El Buen Sabor, GodoyCruz, Mendoza</span>
+    <span class="DireccionLocal">Av. El Buen Sabor, G.Cruz, Mendoza</span>
     <span class="hora">{{ now | moment("h:mm a") }}</span>
     <span class="abierto" v-show="abierto">
       Abierto
@@ -51,6 +51,7 @@ export default {
 
 .DireccionLocal {
   color: white;
+  float: left;
   margin-left: 1em;
   font-size: 80%;
   opacity: 80%;

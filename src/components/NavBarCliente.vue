@@ -6,6 +6,10 @@
       <router-link :to="{ name: 'Home' }">
         <b-navbar-brand>
           <img src="../../public/images/logo.svg" class="logoPrincipal" />
+          <img
+            src="../../public/images/logo_chico.svg"
+            class="logoPrincipalChico"
+          />
         </b-navbar-brand>
       </router-link>
       <!-- ------------------------------------------------------FinTitulo y Rol -->
@@ -202,7 +206,8 @@ export default {
     display: none;
   }
 
-  
+
+
   div#nav-collapse {
     background-image: url("../../public/images/hamb.jpg");
     padding: 2em;
@@ -213,11 +218,16 @@ export default {
   }
 
   #campana-notificacion-collapse {
-    display: initial;
+    display: block;
   }
 
   .carrito-icon-collapse {
     display: initial;
+  }
+}
+@media (min-width: 769px) {
+  #campana-notificacion-collapse {
+    display: none;
   }
 }
 

@@ -138,7 +138,11 @@ export default {
 
     async login(AuthRequest) {
       const resp = await this.obtenerJwToken(AuthRequest);
-      if (resp == null) return null;
+      if (resp == null) {
+        const mensaje = "Usuario y/o Contraseña incorrectos";
+        this.$root.$emit("alerta", mensaje);
+        return null;
+      }
       AuthRequest.NombreUsuario = "";
       AuthRequest.Clave = "";
       return true;
