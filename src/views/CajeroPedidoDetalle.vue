@@ -15,6 +15,10 @@
         <b-col sm="2"><label>usuario: </label> </b-col>
         <b-col>{{ elCliente.usuario.nombreUsuario }} </b-col>
       </b-row>
+        <b-row>
+        <b-col sm="2"><label>telefono: </label> </b-col>
+        <b-col>{{ elCliente.telefono }} </b-col>
+      </b-row>
       <b-row>
         <b-col sm="2"><label>Detalles del Pedido: </label> </b-col>
 
@@ -110,6 +114,7 @@ export default {
     await this.getPedido(this.$route.params.idPedido);
 
     await this.getCliente(this.elPedido.clienteID);
+    console.log(this.elPedido)
 
   },
 };

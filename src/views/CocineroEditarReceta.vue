@@ -146,11 +146,13 @@ export default {
       let platoActual = JSON.parse(JSON.stringify(this.plato));
       platoActual.ingredientes = platoActual.ingredientes.filter(
         (ingrediente) => ingrediente.detalleRecetasId != detalleRecetaId
+      
       );
-
+console.log(platoActual);
       this.setPlato(platoActual);
       deleteDetalleReceta(detalleRecetaId);
       this.articulosFiltrados();
+     
     },
     volver() {
       this.$router.push({ name: "Recetario" });
