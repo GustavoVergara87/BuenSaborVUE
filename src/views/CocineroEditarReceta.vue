@@ -10,9 +10,9 @@
         <thead>
           <tr>
             <th>Denominación</th>
-            <th>Cantidad</th>
-            <th>Unidad de Medida</th>
-            <th>Agregar/Quitar</th>
+            <th>Cant.</th>
+            <th>U. de Medida</th>
+            <th>Agregar / Quitar</th>
           </tr>
         </thead>
         <tbody>
@@ -28,13 +28,12 @@
               <i class="fas fa-times"></i>
             </td>
           </tr>
-          <tr>
+          <tr style="border-top:1px solid gray; height:3em">
             <td>
-              <label for="cars">Elija un ingrediente</label>
+              <label for="cars"></label>
               <select
                 class="m-md-2"
                 v-model="ingredienteSeleccionado"
-                text="Elija el ingrediente"
                 @change="cambiarUnidadMedida()"
               >
                 <template v-for="ingrediente in articulosFiltrados()">
@@ -51,8 +50,9 @@
               <input
                 type="number"
                 v-model="cantidadIngrediente"
-                placeholder="ingrese la cantidad"
+                placeholder="cant."
                 min="1"
+                class="input-cant"
               />
             </td>
             <td>{{ cambiarUnidadMedida() }}</td>
@@ -61,7 +61,7 @@
         </tbody>
       </table>
     </div>
-    <button @click="volver()">Volver</button>
+    <button id="btn-volver" @click="volver()">Volver</button>
   </div>
 </template>
 
@@ -133,7 +133,7 @@ export default {
         articuloID: this.plato.id,
         cantidad: this.cantidadIngrediente,
         denominacion: ingrediente[0].denominacion,
-        detalleRecetasId: "",
+        detalleRecetasId: "", 
         insumoID: ingrediente[0].id,
         unidadMedida: ingrediente[0].unidadMedida,
       };
@@ -176,8 +176,18 @@ export default {
 </script>
 
 <style scoped>
+.input-cant{
+  width: 100%;
+}
+#btn-volver{
+position: fixed;
+bottom: 2em;
+right: 0em;
+}
+
 table {
   width: 100%;
+  table-layout: auto;
 }
 input {
   border: solid 1px black;

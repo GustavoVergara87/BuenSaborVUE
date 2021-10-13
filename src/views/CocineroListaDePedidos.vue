@@ -195,6 +195,12 @@ export default {
   .tipoPedidos {
     width: 100% !important;
   }
+
+  .lista {
+  /* height: calc(300px - 2em); */
+  height: 50vh;
+  overflow: auto;
+}
 }
 
 h2 {
@@ -218,13 +224,13 @@ h2 {
   padding: 0.5em;
   overflow: hidden;
 }
-
+@media screen and (min-width: 802px) {
 .lista {
   /* height: calc(300px - 2em); */
   height: 100vh;
   overflow: auto;
 }
-
+}
 .lista ul {
   list-style-type: none;
   padding: 0;
