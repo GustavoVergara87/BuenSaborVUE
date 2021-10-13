@@ -138,7 +138,7 @@ export default {
         unidadMedida: ingrediente[0].unidadMedida,
       };
 
-      console.log(this.plato);
+      // console.log(this.plato);
 
       const responseJson = await addDetalleReceta(detalleReceta);
       detalleRecetaFront.detalleRecetasId = responseJson.id;

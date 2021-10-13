@@ -214,13 +214,14 @@ h2 {
   float: left;
   width: 33.3%;
   border: 1px solid gray;
-  height: 300px;
+  height: 100%;
   padding: 0.5em;
   overflow: hidden;
 }
 
 .lista {
-  height: calc(300px - 2em);
+  /* height: calc(300px - 2em); */
+  height: 100vh;
   overflow: auto;
 }
 
