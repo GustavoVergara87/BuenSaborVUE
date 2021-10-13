@@ -12,9 +12,10 @@ const getters = {
 
 //Las acciones llaman a las mutaciones(mutations) a traves de commits
 const actions = {
-    resetPlatos({ commit }) {
+    async resetPlatos({ commit }) {
         commit('resetPlatos')
     },
+
     async fetchTodosLosPlatos({ commit }) {
         const responseJson = await servicio.fetchTodosLosPlatos()
         commit('setTodosLosPlatos', responseJson); //sintaxis commit("mutacion",variable)
@@ -25,9 +26,13 @@ const actions = {
         commit('setPlato', responseJson); //sintaxis commit("mutacion",variable)
     },
 
-    deletePlatoTemporal({ commit }) {
-        commit('setPlato', null); //sintaxis commit("mutacion",variable)
-    },
+    // deletePlatoTemporal({ commit }) {
+    //     commit('setPlato', null); //sintaxis commit("mutacion",variable)
+    // },
+
+    async setPlato({ commit }, plato) {
+        commit('setPlato', plato); //sintaxis commit("mutacion",variable)
+    }
 };
 
 //Las mutaciones(mutations) cambian los estados (states)

@@ -4,7 +4,7 @@
       <b-spinner class="spinner" variant="primary" label="Spinning"></b-spinner>
     </div>
     <div v-if="plato">
-      <h1>{{plato.plato}}</h1>
+      <h1>{{ plato.plato }}</h1>
       <h3>Ingredientes</h3>
       <table>
         <thead>
@@ -24,6 +24,7 @@
             <td>{{ ingrediente.cantidad }}</td>
             <td>{{ ingrediente.unidadMedida }}</td>
             <td @click="quitarIngrediente(ingrediente.detalleRecetasId)">
+              <!-- {{ ingrediente.detalleRecetasId }} -->
               <i class="fas fa-times"></i>
             </td>
           </tr>
@@ -65,7 +66,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import {
   addDetalleReceta,
   deleteDetalleReceta,
@@ -83,13 +84,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getPlato", "fetchTodosLosArticulos"]),
-    ...mapMutations(["setPlato"]),
+    ...mapActions(["getPlato", "fetchTodosLosArticulos", "setPlato"]),
+
     articulosFiltrados() {
       var tmpArticulosFiltrados = [];
       tmpArticulosFiltrados = this.todosLosArticulos.filter(
         (articulo) => articulo.aLaVenta == false
       );
+
       let arrayElementos = this.plato.ingredientes.map(
         (ingrediente) => ingrediente.denominacion
       );
@@ -100,6 +102,7 @@ export default {
 
       return filtradosFinal;
     },
+
     cambiarUnidadMedida() {
       let ingrediente = this.ingredientes.filter(
         (ingrediente) =>
@@ -111,7 +114,8 @@ export default {
 
       return "";
     },
-    agregarIngrediente() {
+
+    async agregarIngrediente() {
       let ingrediente = this.ingredientes.filter(
         (ingrediente) =>
           ingrediente.denominacion == this.ingredienteSeleccionado
@@ -129,31 +133,36 @@ export default {
         articuloID: this.plato.id,
         cantidad: this.cantidadIngrediente,
         denominacion: ingrediente[0].denominacion,
-        detalleRecetasId: this.plato.RecetaId,
+        detalleRecetasId: "",
         insumoID: ingrediente[0].id,
         unidadMedida: ingrediente[0].unidadMedida,
       };
 
-      addDetalleReceta(detalleReceta);
+      console.log(this.plato);
+
+      const responseJson = await addDetalleReceta(detalleReceta);
+      detalleRecetaFront.detalleRecetasId = responseJson.id;
       platoActual.ingredientes.push(detalleRecetaFront);
-      this.setPlato(platoActual);
+      await this.setPlato(platoActual);
       this.cantidadIngrediente = "";
       this.ingredienteSeleccionado = "";
       this.articulosFiltrados();
     },
 
-    quitarIngrediente(detalleRecetaId) {
+    async quitarIngrediente(detalleRecetaId) {
       let platoActual = JSON.parse(JSON.stringify(this.plato));
+
       platoActual.ingredientes = platoActual.ingredientes.filter(
         (ingrediente) => ingrediente.detalleRecetasId != detalleRecetaId
       
       );
-console.log(platoActual);
-      this.setPlato(platoActual);
-      deleteDetalleReceta(detalleRecetaId);
+
+      await this.setPlato(platoActual);
+      await deleteDetalleReceta(detalleRecetaId);
       this.articulosFiltrados();
      
     },
+
     volver() {
       this.$router.push({ name: "Recetario" });
     },
