@@ -40,6 +40,12 @@
 
 /* ----------------------------------Bootstraup Fixes */
 
+.navbar-toggler-icon {
+  width: 1.0em;
+  height: 1.0em;
+}
+
+
 .navbar-nav {
   /*Hace que los items de las navbar se alinien verticalmente*/
   align-items: center;
@@ -76,7 +82,7 @@
 }
 .logoPrincipalChico {
     /* width: 10vh; */
-    height: 65px;
+    height: 43px;
     float: left;
     filter: drop-shadow(1.5px 1.5px 3px #444);
 }
@@ -96,9 +102,14 @@
     display: initial;
   }
 
-  .router-link-active {
+  /* .router-link-active {
     width: 6em;
+  } */
+
+  .nav-link {
+    padding: 0rem 0rem;
   }
+
   .col {
     padding: 0px;
   }
@@ -111,6 +122,7 @@
 
 .nav-link-mod {
   color: rgba(255, 255, 255, 1)!important;
+
 }
 
 /* Modifica el span dentro de categorias */

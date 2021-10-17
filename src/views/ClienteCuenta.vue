@@ -299,7 +299,7 @@ input[type="number"] {
 </style>
 
 <style>
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .table td, .table th {
       padding: 0.0rem;
       vertical-align: middle;

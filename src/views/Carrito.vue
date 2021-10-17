@@ -23,11 +23,11 @@
       <h5>Resumen de pedido</h5>
       <b-container fluid>
         <b-row>
-          <b-col>
+          <b-col sm="auto">
             <PlatosCarrito></PlatosCarrito>
           </b-col>
 
-          <b-col v-show="traerCliente.nombre != ''">
+          <b-col v-show="traerCliente.nombre != ''" sm="auto">
             <form
               v-show="traerCliente.nombre != ''"
               class="columnaDerecha"
@@ -337,9 +337,9 @@ export default {
         const mensaje = rta;
         this.$root.$emit("alerta", mensaje);
 
-        return false;
+        return true; //DEBE DECIR false PARA QUE BLOQUEE LA COMPRA
       }
-      return false;
+      return true;
     },
 
     async confirmarCompra() {
@@ -492,7 +492,7 @@ export default {
     },
   },
   mounted() {
-    console.log(this.traerCliente.nombre);
+    // console.log(this.traerCliente.nombre);
     if (this.traerCliente.nombre == "") {
       const mensaje = "Debe loggearse para poder pagar";
       this.$root.$emit("alerta", mensaje);
@@ -516,7 +516,7 @@ export default {
   margin: 2em;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .resumenPedidoMarco {
     margin: 0.5em;
     padding: 0.5em;

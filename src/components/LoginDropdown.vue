@@ -10,15 +10,17 @@
       <template slot="button-content">
         <div class="avatar-nombre-contenedor">
           <i class="fas fa-user-circle avatar"></i>
-          {{ nombre }}
+          <span class="responsiveHide"> {{ nombre }}</span>
         </div>
       </template>
-      <div v-show="nombre==''">
+      <div v-show="nombre == ''">
         <b-dropdown-item v-b-modal.modal-login> Login </b-dropdown-item>
         <b-dropdown-item v-b-modal.modal-registro>Registrarse</b-dropdown-item>
       </div>
-      <div v-show="nombre!=''">
-        <b-dropdown-item v-show="rol == 'cliente'" @click="irAMiCuenta()">Mi cuenta</b-dropdown-item>
+      <div v-show="nombre != ''">
+        <b-dropdown-item v-show="rol == 'cliente'" @click="irAMiCuenta()"
+          >Mi cuenta</b-dropdown-item
+        >
         <b-dropdown-item @click="logout()"> Salir </b-dropdown-item>
       </div>
     </b-nav-item-dropdown>

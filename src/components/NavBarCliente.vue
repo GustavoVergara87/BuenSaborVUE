@@ -13,6 +13,26 @@
         </b-navbar-brand>
       </router-link>
       <!-- ------------------------------------------------------FinTitulo y Rol -->
+      <!-- --------------------------------------------------------Login -->
+      <div id="login-collapse">
+        <LoginDropdown
+          :nombre="traerCliente.nombre"
+          rol="cliente"
+        ></LoginDropdown>
+      </div>
+      <!-- --------------------------------------------------------FinLogin -->
+
+      <!-- -------------------------------------------------------Platos -->
+
+      <router-link
+        :to="{ name: 'ClientePlatos' }"
+        class="nav-link nav-link-mod"
+      >
+        <span class="responsiveHide">Platos </span>
+        <i class="fas fa-utensils icon-platos"></i>
+      </router-link>
+
+      <!-- -------------------------------------------------------FinPlatos -->
 
       <!-- -------------------------------------------------------Notificaciones-collapse -->
       <div id="campana-notificacion-collapse">
@@ -41,15 +61,6 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav class="m-1">
         <b-navbar-nav>
-          <!-- --------------------------------------------------------Login -->
-          <LoginDropdown
-            :nombre="traerCliente.nombre"
-            rol="cliente"
-          ></LoginDropdown>
-          <!-- --------------------------------------------------------FinLogin -->
-
-      
-
           <!-- -------------------------------------------------------Rubros -->
           <b-nav-item-dropdown
             text="Categorias"
@@ -71,19 +82,6 @@
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <!-- -------------------------------------------------------FinRubros -->
-
-    <!-- -------------------------------------------------------Platos -->
-          <b-nav-item>
-            <router-link
-              :to="{ name: 'ClientePlatos' }"
-              class="nav-link nav-link-mod"
-            >
-              Platos <i class="fas fa-utensils responsiveHide"></i>
-            </router-link>
-          </b-nav-item>
-          <!-- -------------------------------------------------------FinPlatos -->
-
-
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -197,6 +195,10 @@ export default {
   width: 19em;
   height: 1vh;
 }
+
+#login-collapse {
+  list-style: none;
+}
 </style>
 
 <style scoped>
@@ -205,12 +207,10 @@ export default {
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .carrito-icon {
     display: none;
   }
-
-
 
   div#nav-collapse {
     background-image: url("../../public/images/hamb.jpg");
@@ -228,8 +228,13 @@ export default {
   .carrito-icon-collapse {
     display: initial;
   }
+
+.test {
+  font-size: 70%;
 }
-@media (min-width: 769px) {
+
+}
+@media (min-width: 768px) {
   #campana-notificacion-collapse {
     display: none;
   }
@@ -295,12 +300,19 @@ export default {
   opacity: 80;
 }
 
+.icon-platos{
+font-size: 150%;
+}
+
 .test {
   block-size: 80px; /*alto de la nav bar*/
-  background-color: blueviolet !important;
+  background-color: brown !important;
   background-image: url("../../public/images/hamb.jpg");
   background-size: 200 500;
   filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.5));
+  padding: 0.1rem 0.20rem;
+  /* justify-content: flex-start; */
+  /* font-size: 70%; */
 }
 
 .input-busqueda {

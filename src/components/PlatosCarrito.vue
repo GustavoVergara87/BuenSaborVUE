@@ -26,18 +26,18 @@ export default {
   border: 1px;
   margin-top: 1em;
   /* height: calc(95vh - 150px); */
-  height: calc(95vh - 150px);
+  /* height: calc(95vh - 150px); */
   /* overflow-y: scroll; */
   overflow-y: auto;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 686px) {
   .contenedor {
   height: 100%;
-}
-}
+} */
+/* } */
 
-@media (min-width: 769px) {
+@media (min-width: 848px) {
   .contenedor {
   height: calc(95vh - 150px);
 }

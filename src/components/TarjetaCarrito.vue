@@ -24,7 +24,7 @@
     </div>
 
     <div class="tablaTarjetaCarrito outlined">
-      <div class="textFloatLeft outlined">
+      <div class="textFloatLeft outlined titulo-plato">
         {{ plato.plato }}
       </div>
 
@@ -85,14 +85,13 @@ export default {
   text-align: center;
 }
 
-
 .textFloatLeft {
   order: 1;
   flex-grow: 1;
   margin: auto;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .contenedorImagen {
     display: none;
   }
@@ -100,8 +99,10 @@ export default {
   .cantidad {
     font-size: 150%;
   }
-
-
+  
+  .titulo-plato {
+    font-size: 80%;
+  }
 }
 
 .borde {
@@ -113,8 +114,6 @@ export default {
   /* color: rgba(255, 255, 255, 1)!important; */
   filter: drop-shadow(0px 0px 4px rgb(220, 220, 220, 0.5));
 }
-
-
 
 .textFloatRight {
   order: 2;
@@ -136,8 +135,6 @@ export default {
   background: rgb(252, 252, 252);
   border-radius: 0.5em;
 }
-
-
 
 .aumentarDisminuir {
   font-size: 150%;
