@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div style="padding: 1em">
     <h4>Mi cuenta</h4>
-
+    <div style="margin-top: 1.5em"></div>
     <form class="container">
       <label for="Email">Email</label>
       <input
@@ -76,7 +76,9 @@
       </b-button>
     </form>
 
-    <h3>Domicilios registrados</h3>
+    <h4>Domicilios registrados</h4>
+    <div style="margin-top: 1.5em"></div>
+
     <form class="container">
       <DomiciliosLista
         :disabled="noHayLoggin"
@@ -85,15 +87,23 @@
       ></DomiciliosLista>
     </form>
 
-    <h4>Lista de Pedidos</h4>
+    <h4>Historial de Pedidos</h4>
+
+    <div style="margin-top: 1.5em"></div>
 
     <div class="container">
       <b-table striped hover :items="pedidos" :fields="fields">
         <template #cell(verFactura)="data">
           <!-- `data.value` is the value after formatted by the Formatter -->
-          <b-button v-show="data.value != ''" @click="traerFacturaSegunPedido(data.value)">
-            <i class="fas fa-file-invoice-dollar"></i>
-          </b-button>
+          <div class="div-boton-tabla">
+            <b-button
+              v-show="data.value != ''"
+              @click="traerFacturaSegunPedido(data.value)"
+            >
+              <i class="fas fa-file-invoice-dollar"></i>
+            </b-button>
+          </div>
+
           <!-- <a :href="data.value">ver factura</a> -->
         </template>
       </b-table>
@@ -140,7 +150,7 @@ export default {
         // { key: "tipoEnvio", label: "Tipo de Envio" },
         { key: "fecha", label: "Fecha" },
         { key: "total", label: "Total" },
-        { key: "verFactura", label: "Ver factura" },
+        { key: "verFactura", label: "Factura" },
       ],
     };
   },
@@ -152,19 +162,28 @@ export default {
       const pedidosFiltrados = await pedidos.filter(
         (pedido) => pedido.clienteID == clienteId
       );
-      const pedidosFiltradosCampos = pedidosFiltrados.map((pedido) => {
-        return {
-          id: pedido.id,
-          formaPago: pedido.formaPago,
-          tipoEnvio: pedido.tipoEnvio ? "domicilio" : "local",
-          fecha: " "+
-            pedido.fecha.substring(2, 10) +
-            " " +
-            pedido.fecha.substring(11, 16),
-          total: "$ " + numFormat(pedido.total),
-          verFactura: pedido.estado !=0 ?  "/api/Facturas/PDF/" + pedido.id : "",
-        };
-      }).reverse();
+      const pedidosFiltradosCampos = pedidosFiltrados
+        .map((pedido) => {
+          return {
+            id: pedido.id,
+            formaPago: pedido.formaPago,
+            tipoEnvio: pedido.tipoEnvio ? "domicilio" : "local",
+            fecha:
+              " " +
+              // pedido.fecha.substring(2, 10) +
+              pedido.fecha.substring(8, 10) +
+              "/" +
+              pedido.fecha.substring(5, 7) +
+              "/" +
+              pedido.fecha.substring(2, 4) +
+              " " +
+              pedido.fecha.substring(11, 16),
+            total: "$ " + numFormat(pedido.total),
+            verFactura:
+              pedido.estado != 0 ? "/api/Facturas/PDF/" + pedido.id : "",
+          };
+        })
+        .reverse();
       // console.log(pedidosFiltrados);
       return pedidosFiltradosCampos;
     },
@@ -293,18 +312,24 @@ input[type="number"] {
   height: 6em;
   overflow-y: auto;
 }
-
-
-
 </style>
 
 <style>
-  @media (max-width: 767px) {
-    .table td, .table th {
-      padding: 0.0rem;
-      vertical-align: middle;
-      border-top: 1px solid #dee2e6;
-      text-align: center;
-    }
+@media (max-width: 767px) {
+  .table td,
+  .table th {
+    padding: 0rem;
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+    text-align: center;
   }
+}
+
+.div-boton-tabla {
+  height: 3em;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
 </style>
