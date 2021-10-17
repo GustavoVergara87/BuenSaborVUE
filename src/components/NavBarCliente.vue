@@ -218,7 +218,8 @@ export default {
   }
 
   div#nav-collapse {
-    background-image: url("../../public/images/hamb.jpg");
+    font-size: 1.5em;
+    /* background-image: url("../../public/images/hamb.jpg"); */
     padding: 2em;
   }
 
@@ -309,7 +310,7 @@ export default {
 }
 
 .test {
-  block-size: 80px; /*alto de la nav bar*/
+  /* block-size: 80px; alto de la nav bar */
   background-color: brown;
   background-image: url("../../public/images/hamb.jpg");
   background-size: 200 500;

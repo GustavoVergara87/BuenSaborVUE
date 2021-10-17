@@ -21,126 +21,133 @@
     </div>
     <div class="resumenPedidoMarco">
       <h5>Resumen de pedido</h5>
-      <b-container fluid>
-        <b-row>
-          <b-col sm="auto">
-            <PlatosCarrito></PlatosCarrito>
-          </b-col>
+      <div class="carrito-col-cont">
+        <div>
+          <PlatosCarrito></PlatosCarrito>
+        </div>
 
-          <b-col v-show="traerCliente.nombre != ''" sm="auto">
-            <form
-              v-show="traerCliente.nombre != ''"
-              class="columnaDerecha"
-              :class="{ formDisabled: noHayLoggin }"
-            >
-              <div class="dottedRow">
-                <label class="precio dottedLeft">Cliente:</label>
-                <span class="dottedDots"></span>
-                <span class="precio dottedRight"
-                  >{{ traerCliente.nombre }} {{ traerCliente.apellido }}</span
-                >
-              </div>
+        <div v-show="traerCliente.nombre != ''" class="col-derecha">
+          <form
+            v-show="traerCliente.nombre != ''"
+            class="columnaDerecha"
+            :class="{ formDisabled: noHayLoggin }"
+          >
+            <div class="dottedRow">
+              <label class="precio dottedLeft">Cliente:</label>
+              <span class="dottedDots"></span>
+              <span class="precio dottedRight"
+                >{{ traerCliente.nombre }} {{ traerCliente.apellido }}</span
+              >
+            </div>
 
-              <div class="dottedRow">
-                <label class="precio dottedLeft">Telefono:</label>
-                <span class="dottedDots"></span>
-                <span class="precio dottedRight">{{
-                  traerCliente.telefono
-                }}</span>
-              </div>
-              <!-- ---------------------------------------------------------Direccion de Entrega -->
-              <b-form-group label="Retira en:" class="grupoEncabezado">
-                <b-form-radio
-                  v-model="form.retiraEn"
-                  :value="TE.DOMICILIO"
-                  :disabled="noHayLoggin"
-                  @change="soloHabilitarMercadoPago"
-                  >Domicilio</b-form-radio
-                >
-                <b-form-radio
-                  v-model="form.retiraEn"
-                  :value="TE.LOCAL"
-                  :disabled="noHayLoggin"
-                  @change="cargarDireccionCajero"
-                  >Local</b-form-radio
-                >
-              </b-form-group>
-
-              <div v-show="form.retiraEn == TE.DOMICILIO">
-                <b-form-group label="Direccion de entrega:">
-                  <DomiciliosLista
-                    :disabled="noHayLoggin"
-                    v-model="form.direccionEntrega"
-                    :modoEditar="false"
-                    ref="DomiciliosListaCarrito"
-                  ></DomiciliosLista>
-                </b-form-group>
-              </div>
-              <!-- ----------------------------------------------------------------------Fin Direccion de Entrega -->
-
-              <div v-show="descuento != 0" class="dottedRow">
-                <label class="precio dottedLeft">Descuento 10%:</label>
-                <span class="dottedDots"></span>
-                <span class="precio dottedRight">
-                  $ {{ numFormat(sumaDeDetalles * descuento, 0) }}</span
-                >
-              </div>
-
-              <!-- ----------------------------------------------------------------------Forma de pago-->
-              <b-form-group label="Forma de pago:" class="grupoEncabezado">
-                <b-form-radio
-                  v-model="form.formaPago"
-                  name="Efectivo"
-                  value="Efectivo"
-                  :disabled="noHayLoggin || form.retiraEn == TE.DOMICILIO"
-                  >Efectivo</b-form-radio
-                >
-                <b-form-radio
-                  v-model="form.formaPago"
-                  name="MercadoPago"
-                  value="MercadoPago"
-                  :disabled="noHayLoggin"
-                  >Mercado Pago</b-form-radio
-                >
-              </b-form-group>
-              <!-- ----------------------------------------------------------------------Fin Forma de pago-->
-
-              <div class="dottedRow">
-                <label class="precio dottedLeft">Total:</label>
-                <span class="dottedDots"></span>
-                <span class="precio dottedRight"
-                  ><b>$ {{ numFormat(PrecioTotal) }}</b></span
-                >
-              </div>
-
-              <b-button
-                class="btn btn-success abajoDerecha"
-                @click="confirmarCompra"
+            <div class="dottedRow">
+              <label class="precio dottedLeft">Telefono:</label>
+              <span class="dottedDots"></span>
+              <span class="precio dottedRight">{{
+                traerCliente.telefono
+              }}</span>
+            </div>
+            <!-- ---------------------------------------------------------Direccion de Entrega -->
+            <b-form-group label="Retira en:" class="grupoEncabezado">
+              <b-form-radio
+                v-model="form.retiraEn"
+                :value="TE.DOMICILIO"
                 :disabled="noHayLoggin"
-                >Confirmar compra</b-button
+                @change="soloHabilitarMercadoPago"
+                >Domicilio</b-form-radio
               >
+              <b-form-radio
+                v-model="form.retiraEn"
+                :value="TE.LOCAL"
+                :disabled="noHayLoggin"
+                @change="cargarDireccionCajero"
+                >Local</b-form-radio
+              >
+            </b-form-group>
 
-              <b-modal
-                v-model="mercadoPagoModalShow"
-                ok-only
-                ok-variant="secondary"
-                ok-title="Cancelar"
-                @hide="cancelarPedido"
-                @show="generandoPedidoYDetallesPedidoFin"
-                :hide-header="true"
+            <div v-show="form.retiraEn == TE.DOMICILIO">
+              <b-form-group label="Direccion de entrega:">
+                <DomiciliosLista
+                  :disabled="noHayLoggin"
+                  v-model="form.direccionEntrega"
+                  :modoEditar="false"
+                  ref="DomiciliosListaCarrito"
+                ></DomiciliosLista>
+              </b-form-group>
+            </div>
+            <!-- ----------------------------------------------------------------------Fin Direccion de Entrega -->
+
+            <!-- ----------------------------------------------------------------------Forma de pago-->
+            <b-form-group label="Forma de pago:" class="grupoEncabezado">
+              <b-form-radio
+                v-model="form.formaPago"
+                name="Efectivo"
+                value="Efectivo"
+                :disabled="noHayLoggin || form.retiraEn == TE.DOMICILIO"
+                >Efectivo</b-form-radio
               >
-                <div class="cho-container centerDiv">
-                  <img
-                    src="../../public/images/mercadoPagoLogo.svg"
-                    width="20%"
-                    class="imagenMP"
-                  />
-                </div>
-              </b-modal>
-            </form>
-          </b-col>
-        </b-row>
-      </b-container>
+              <b-form-radio
+                v-model="form.formaPago"
+                name="MercadoPago"
+                value="MercadoPago"
+                :disabled="noHayLoggin"
+                >Mercado Pago</b-form-radio
+              >
+            </b-form-group>
+            <!-- ----------------------------------------------------------------------Fin Forma de pago-->
+            <div style="margin-top: 1.5em"></div>
+
+            <div class="dottedRow">
+              <label class="precio dottedLeft">Sub total:</label>
+              <span class="dottedDots"></span>
+              <span class="precio dottedRight"
+                >$ {{ numFormat(sumaDeDetalles) }}</span
+              >
+            </div>
+
+            <div v-show="descuento != 0" class="dottedRow">
+              <label class="precio dottedLeft">Descuento 10%:</label>
+              <span class="dottedDots"></span>
+              <span class="precio dottedRight">
+                $ {{ numFormat(sumaDeDetalles * descuento, 0) }}</span
+              >
+            </div>
+
+            <div class="dottedRow">
+              <label class="precio dottedLeft">Total:</label>
+              <span class="dottedDots"></span>
+              <span class="precio dottedRight"
+                ><b>$ {{ numFormat(PrecioTotal) }}</b></span
+              >
+            </div>
+
+            <b-button
+              class="btn btn-success abajoDerecha"
+              @click="confirmarCompra"
+              :disabled="noHayLoggin"
+              >Confirmar compra</b-button
+            >
+
+            <b-modal
+              v-model="mercadoPagoModalShow"
+              ok-only
+              ok-variant="secondary"
+              ok-title="Cancelar"
+              @hide="cancelarPedido"
+              @show="generandoPedidoYDetallesPedidoFin"
+              :hide-header="true"
+            >
+              <div class="cho-container centerDiv">
+                <img
+                  src="../../public/images/mercadoPagoLogo.svg"
+                  width="20%"
+                  class="imagenMP"
+                />
+              </div>
+            </b-modal>
+          </form>
+        </div>
+      </div>
       <!-- <div>
               <p v-show="traerCliente.nombre == ''">
                 Debe loggearse para poder pagar
@@ -311,7 +318,8 @@ export default {
               " para esa cantidad de " +
               carritoElement.plato +
               ". Hay para " +
-              ingredienteLimitante.hayIngredientePara + ".";
+              ingredienteLimitante.hayIngredientePara +
+              ".";
 
             this.$root.$emit("alerta", a);
             return false;
@@ -406,7 +414,9 @@ export default {
       let preferencia = {
         pedidoId: nuevoPedidoId,
         total: this.PrecioTotal,
-        frontURL: process.env.VUE_APP_FRONTURL + "/cliente/Carrito/MercadoPagoResultado"
+        frontURL:
+          process.env.VUE_APP_FRONTURL +
+          "/cliente/Carrito/MercadoPagoResultado",
       };
 
       console.log(preferencia);
@@ -503,6 +513,11 @@ export default {
 
 
 <style  scoped>
+.carrito-col-cont {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .abajoDerecha {
   margin-top: 1em;
   float: right;
@@ -516,10 +531,23 @@ export default {
   margin: 2em;
 }
 
+.col-derecha {
+  padding: 1em;
+  width: 40%;
+}
+
 @media (max-width: 767px) {
   .resumenPedidoMarco {
     margin: 0.5em;
     padding: 0.5em;
+  }
+
+  .col-derecha {
+    width: 100%;
+  }
+
+  .carrito-col-cont {
+    flex-direction: column;
   }
 }
 

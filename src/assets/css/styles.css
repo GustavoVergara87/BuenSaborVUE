@@ -40,6 +40,11 @@
 
 /* ----------------------------------Bootstraup Fixes */
 
+.col-sm-auto{
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
 .navbar-toggler-icon {
   width: 1.0em;
   height: 1.0em;

@@ -109,8 +109,9 @@ export default {
   /* background: rgb(245, 245, 245); */
   background: white;
   padding: 1em;
+  padding-left: 0.7em;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   /* color: rgba(255, 255, 255, 1)!important; */
   filter: drop-shadow(0px 0px 4px rgb(220, 220, 220, 0.5));
 }
@@ -146,7 +147,7 @@ export default {
   font-size: 150%;
   transform: scaleY(0.75);
   font-weight: 100;
-  right: 1em;
+  right: 0.5em;
   line-height: 0%;
   margin-top: -0.5em;
   margin-right: -0.5em;
@@ -169,9 +170,10 @@ export default {
 
 .tablaTarjetaCarrito {
   display: inline-block;
-  width: calc(100% - 9em) !important;
+  width: calc(100% - 3em) !important;
   display: flex;
   height: 3em;
+  padding-left: 1em;
 }
 
 .descripcionCarrito {
