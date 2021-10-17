@@ -45,7 +45,6 @@
   height: 1.0em;
 }
 
-
 .navbar-nav {
   /*Hace que los items de las navbar se alinien verticalmente*/
   align-items: center;
@@ -80,49 +79,51 @@
   float: left;
   filter: drop-shadow(5px 5px 4px #444);
 }
+
 .logoPrincipalChico {
-    /* width: 10vh; */
-    height: 43px;
-    float: left;
-    filter: drop-shadow(1.5px 1.5px 3px #444);
+  /* width: 10vh; */
+  height: 43px;
+  float: left;
+  filter: drop-shadow(1.5px 1.5px 3px #444);
 }
-@media (min-width: 769px) {
+
+@media (min-width: 768px) {
   .logoPrincipalChico {
     display: none;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .logoPrincipal {
     /* width: 5.5em; */
     display: none;
   }
-
   .logoPrincipalChico {
     display: initial;
   }
-
   /* .router-link-active {
     width: 6em;
   } */
-
+  .navbar-toggler {
+    padding: 0px;
+  }
+  .navbar-brand {
+    margin-right: 0rem;
+    margin-left: 0.25rem;
+  }
   .nav-link {
     padding: 0rem 0rem;
   }
-
   .col {
     padding: 0px;
   }
   .container-fluid {
     padding: 0.5em;
   }
-
-
 }
 
 .nav-link-mod {
   color: rgba(255, 255, 255, 1)!important;
-
 }
 
 /* Modifica el span dentro de categorias */

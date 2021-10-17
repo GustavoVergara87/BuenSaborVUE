@@ -2,9 +2,11 @@
   <div class="home">
     <div>
       <NavBarCliente></NavBarCliente>
-      <b-jumbotron header="El Buen Sabor" lead="Horario de atención:">
-        <p>Lunes a Domingos de 20:00 a 00:00</p>
-        <p>Sábados y Domingos de 11:00 a 15:00</p>
+      <b-jumbotron style="font-size:90%;" header="El Buen Sabor" lead="Horario de atención:">
+        <!-- <p>Lunes a Domingos de 20:00 a 00:00</p>
+        <p>Sábados y Domingos de 11:00 a 15:00</p> -->
+        <p>Lunes a Viernes <br> 20hs a 00hs</p>
+        <p>Sábados y Domingos <br> 11hs a 15hs y de 20hs a 00hs</p>
         <!-- {{ dummy }} -->
         <reloj-analogico></reloj-analogico>
       </b-jumbotron>

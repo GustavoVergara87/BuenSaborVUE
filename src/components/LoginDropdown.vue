@@ -3,7 +3,7 @@
     <b-nav-item-dropdown
       text=""
       block
-      class="m-2 nav-link-mod nav-link-semiopaco"
+      class="nav-link-mod nav-link-semiopaco"
       no-caret
       menu-class=""
     >

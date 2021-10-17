@@ -14,7 +14,7 @@
       </router-link>
       <!-- ------------------------------------------------------FinTitulo y Rol -->
       <!-- --------------------------------------------------------Login -->
-      <div id="login-collapse">
+      <div id="login-collapse" class="boton-navbar">
         <LoginDropdown
           :nombre="traerCliente.nombre"
           rol="cliente"
@@ -26,7 +26,7 @@
 
       <router-link
         :to="{ name: 'ClientePlatos' }"
-        class="nav-link nav-link-mod"
+        class="nav-link nav-link-mod boton-navbar"
       >
         <span class="responsiveHide">Platos </span>
         <i class="fas fa-utensils icon-platos"></i>
@@ -36,17 +36,17 @@
 
       <!-- -------------------------------------------------------Notificaciones-collapse -->
       <div id="campana-notificacion-collapse">
-        <button
+        <div
           @click="handleToogleNotificaciones"
-          class="btn m-2 nav-link-mod nav-link-semiopaco"
+          class="nav-link-mod nav-link-semiopaco boton-navbar"
         >
           <i class="fas fa-bell campana"></i>
-        </button>
+        </div>
       </div>
       <!-- -------------------------------------------------------Fin Notificaciones-collapse-->
 
       <!-- -------------------------------------------------------carrito-icon-collapse-->
-      <b-nav-item class="outlined carrito-icon-collapse">
+      <b-nav-item class="outlined carrito-icon-collapse boton-navbar">
         <router-link
           :to="{ name: 'Carrito' }"
           class="nav-link carritoBox outlined"
@@ -208,6 +208,11 @@ export default {
 }
 
 @media (max-width: 767px) {
+  /* el tamaño de los botones crece segun el ancho de la pantalla desde un minimo */
+  .boton-navbar {
+    font-size: calc(100% + 1vw);
+  }
+
   .carrito-icon {
     display: none;
   }
@@ -229,10 +234,9 @@ export default {
     display: initial;
   }
 
-.test {
-  font-size: 70%;
-}
-
+  .test {
+    font-size: 70%;
+  }
 }
 @media (min-width: 768px) {
   #campana-notificacion-collapse {
@@ -300,18 +304,19 @@ export default {
   opacity: 80;
 }
 
-.icon-platos{
-font-size: 150%;
+.icon-platos {
+  font-size: 150%;
 }
 
 .test {
   block-size: 80px; /*alto de la nav bar*/
-  background-color: brown !important;
+  background-color: brown;
   background-image: url("../../public/images/hamb.jpg");
   background-size: 200 500;
   filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.5));
-  padding: 0.1rem 0.20rem;
-  /* justify-content: flex-start; */
+  padding: 0.2rem 0.3rem;
+  padding-right: 0.9rem;
+  justify-content: space-evenly;
   /* font-size: 70%; */
 }
 
