@@ -305,14 +305,15 @@ export default {
             ingredienteLimitante.hayIngredientePara < carritoElement.cantidad
           ) {
             // console.log(carritoElement);
-            alert(
+            const a =
               "lo sentimos, no contamos con " +
-                ingredienteLimitante.Denominacion1 +
-                " para esa cantidad de " +
-                carritoElement.plato +
-                ". Hay para " +
-                ingredienteLimitante.hayIngredientePara
-            );
+              ingredienteLimitante.Denominacion1 +
+              " para esa cantidad de " +
+              carritoElement.plato +
+              ". Hay para " +
+              ingredienteLimitante.hayIngredientePara + ".";
+
+            this.$root.$emit("alerta", a);
             return false;
           }
         }
@@ -346,7 +347,7 @@ export default {
       if (!(await this.CheckearStock())) return;
 
       //Validar si esta abierto
-      //if (!(await this.CheckearSiEstaAbierto())) return;
+      if (!(await this.CheckearSiEstaAbierto())) return;
 
       //Validar un direccion de entrega no nula
       if (this.form.direccionEntrega == "") {
@@ -405,6 +406,7 @@ export default {
       let preferencia = {
         pedidoId: nuevoPedidoId,
         total: this.PrecioTotal,
+        frontURL: process.env.VUE_APP_FRONTURL + "/cliente/Carrito/MercadoPagoResultado"
       };
 
       console.log(preferencia);
@@ -488,16 +490,14 @@ export default {
           // Failed to fetch script
         });
     },
-
-
   },
-      mounted() {
-      console.log(this.traerCliente.nombre)
-      if (this.traerCliente.nombre == "") {
-        const mensaje = "Debe loggearse para poder pagar";
-        this.$root.$emit("alerta", mensaje);
-      }
-    },
+  mounted() {
+    console.log(this.traerCliente.nombre);
+    if (this.traerCliente.nombre == "") {
+      const mensaje = "Debe loggearse para poder pagar";
+      this.$root.$emit("alerta", mensaje);
+    }
+  },
 };
 </script>
 

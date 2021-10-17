@@ -1,7 +1,4 @@
 const path = require("path");
-const serverURL = "http://elbuensabor.ddns.net:82";
-//const serverURL = "https://localhost:44350";
-// const serverURL = "http://192.168.1.35:82";
 
 module.exports = {
 	publicPath: process.env.NODE_ENV === "production" ? "./" : "/",
@@ -13,14 +10,14 @@ module.exports = {
 		disableHostCheck: true,
 		proxy: {
 			"/api": {
-				target: serverURL,
+				target: process.env.VUE_APP_FRONTURL,
 			},
 			"/image": {
-				target: serverURL + "/api/Images",
+				target: process.env.VUE_APP_FRONTURL + "/api/Images",
 				pathRewrite: { "^/image": "" },
 			},
 			"/notificacionesHub": {
-				target: serverURL + "/notificacionesHub",
+				target: process.env.VUE_APP_FRONTURL + "/notificacionesHub",
 				pathRewrite: { "^/notificacionesHub": "" },
 			},
 		},
