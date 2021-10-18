@@ -1,7 +1,10 @@
 <template>
   <div class="fixed">
     <!-- toggleable="sm" puede ser tambien lg md, varia en cuando se toggle -->
-    <b-navbar toggleable="sm" type="dark" variant="primary">
+
+    <b-navbar toggleable="md" type="dark" variant="primary">
+
+
       <!-- ------------------------------------------------------Titulo y Rol -->
       <router-link :to="'/cajero/ListaDePedidos'">
         <b-navbar-brand>
@@ -15,6 +18,19 @@
         </b-navbar-brand>
       </router-link>
       <!-- ------------------------------------------------------FinTitulo y Rol -->
+
+            <!-- -------------------------------------------------------Notificaciones -->
+      <div class="notificaciones-narrow">
+        <button
+          id="campana-notificacion"
+          @click="handleToogleNotificaciones"
+          class="btn m-2 nav-link-mod nav-link-semiopaco"
+        >
+          <i class="fas fa-bell campana"></i>
+        </button>
+      </div>
+      <Notificaciones ref="notificacion"></Notificaciones>
+      <!-- -------------------------------------------------------Fin Notificaciones-->
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
@@ -54,21 +70,20 @@
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
-      </b-collapse>
 
-      <!-- -------------------------------------------------------Notificaciones -->
-      <!-- <div @mouseover="onOver" @mouseleave="onLeave"> -->
-      <div>
-        <button
-          id="campana-notificacion"
-          @click="handleToogleNotificaciones"
-          class="btn m-2 nav-link-mod nav-link-semiopaco"
-        >
-          <i class="fas fa-bell campana"></i>
-        </button>
-      </div>
-      <Notificaciones ref="notificacion"></Notificaciones>
-      <!-- -------------------------------------------------------Fin Notificaciones-->
+        <!-- -------------------------------------------------------Notificaciones -->
+        <div class="notificaciones-wide">
+          <button
+            id="campana-notificacion"
+            @click="handleToogleNotificaciones"
+            class="btn m-2 nav-link-mod nav-link-semiopaco"
+          >
+            <i class="fas fa-bell campana"></i>
+          </button>
+        </div>
+        <Notificaciones ref="notificacion"></Notificaciones>
+        <!-- -------------------------------------------------------Fin Notificaciones-->
+      </b-collapse>
     </b-navbar>
   </div>
 </template>
@@ -173,6 +188,18 @@ export default {
   text-align: center;
   align-content: center;
   align-items: center;
+}
+
+@media (max-width: 767px) {
+  .notificaciones-wide {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .notificaciones-narrow {
+    display: none;
+  }
 }
 </style>
 
