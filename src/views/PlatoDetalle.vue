@@ -11,7 +11,7 @@
       </div>
       <b-container>
         <b-row>
-          <b-col>
+          <b-col sm="auto">
             <div style="padding: 10px">
               <br />
               <b-img
@@ -23,37 +23,39 @@
               <br /><br />
               <!-- <b-row>Descripción</b-row> -->
               <div v-if="plato.Descripcion">
-                <h5>Descripción</h5>
+                <!-- <h5>Descripción</h5> -->
                 {{ plato.Descripcion }}
               </div>
             </div>
           </b-col>
-          <b-col style="border-left: 1px solid; text-align: left">
-            <br />
-            <h2 style="font-weight: bold">{{ plato.plato }}</h2>
-            <h1>$ {{ plato.PrecioVenta }}</h1>
-            <br />
-
-            <div v-if="plato.TiempoEstimadoCocina">
-              <h5>Tiempo estimado en cocina</h5>
-              <p>{{ plato.TiempoEstimadoCocina }} min</p>
+          <b-col class="col-derecha" style="text-align: left">
+            <div style="padding: 10px">
               <br />
-            </div>
-            <h5>Categoria</h5>
-            <p>{{ plato.grupo }}</p>
-            <br />
+              <h2 style="font-weight: bold">{{ plato.plato }}</h2>
+              <h1>$ {{ plato.PrecioVenta }}</h1>
+              <br />
 
-            <div v-if="plato.ingredientes.length != 0">
-              <h5>Ingredientes</h5>
-              <ul>
-                <li
-                  v-for="ingrediente in plato.ingredientes"
-                  :key="ingrediente.id"
-                >
-                  {{ ingrediente.denominacion }}, {{ ingrediente.cantidad }}
-                  {{ ingrediente.unidadMedida }}
-                </li>
-              </ul>
+              <div v-if="plato.TiempoEstimadoCocina">
+                <h5>Tiempo estimado en cocina</h5>
+                <p>{{ plato.TiempoEstimadoCocina }} min</p>
+                <br />
+              </div>
+              <h5>Categoria</h5>
+              <p>{{ plato.grupo }}</p>
+              <br />
+
+              <div v-if="plato.ingredientes.length != 0">
+                <h5>Ingredientes</h5>
+                <ul>
+                  <li
+                    v-for="ingrediente in plato.ingredientes"
+                    :key="ingrediente.id"
+                  >
+                    {{ ingrediente.denominacion }}, {{ ingrediente.cantidad }}
+                    {{ ingrediente.unidadMedida }}
+                  </li>
+                </ul>
+              </div>
             </div>
           </b-col>
         </b-row>
@@ -89,6 +91,16 @@ export default {
 </script>
 
 <style scoped>
+.col-derecha {
+  border-left: 1px solid;
+}
+
+@media (max-width: 991px) {
+  .col-derecha {
+    border-left: 0px solid;
+  }
+}
+
 #goBackButton {
   width: 5em;
   opacity: 70%;
