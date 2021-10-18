@@ -22,8 +22,10 @@
               ></b-img>
               <br /><br />
               <!-- <b-row>Descripción</b-row> -->
-              <h5>Descripción</h5>
-              {{ plato.Descripcion }}
+              <div v-if="plato.Descripcion">
+                <h5>Descripción</h5>
+                {{ plato.Descripcion }}
+              </div>
             </div>
           </b-col>
           <b-col style="border-left: 1px solid; text-align: left">
@@ -32,24 +34,27 @@
             <h1>$ {{ plato.PrecioVenta }}</h1>
             <br />
 
-            <h5>TiempoEstimadoCocina</h5>
-            <p>{{ plato.TiempoEstimadoCocina }} min</p>
-            <br />
-
+            <div v-if="plato.TiempoEstimadoCocina">
+              <h5>Tiempo estimado en cocina</h5>
+              <p>{{ plato.TiempoEstimadoCocina }} min</p>
+              <br />
+            </div>
             <h5>Categoria</h5>
             <p>{{ plato.grupo }}</p>
             <br />
 
-            <h5>Ingredientes</h5>
-            <ul>
-              <li
-                v-for="ingrediente in plato.ingredientes"
-                :key="ingrediente.id"
-              >
-                {{ ingrediente.denominacion }}, {{ ingrediente.cantidad }}
-                {{ ingrediente.unidadMedida }}
-              </li>
-            </ul>
+            <div v-if="plato.ingredientes.length != 0">
+              <h5>Ingredientes</h5>
+              <ul>
+                <li
+                  v-for="ingrediente in plato.ingredientes"
+                  :key="ingrediente.id"
+                >
+                  {{ ingrediente.denominacion }}, {{ ingrediente.cantidad }}
+                  {{ ingrediente.unidadMedida }}
+                </li>
+              </ul>
+            </div>
           </b-col>
         </b-row>
         <br />
@@ -84,11 +89,11 @@ export default {
 </script>
 
 <style scoped>
-#goBackButton{
-width: 5em;
-opacity: 70%;
-background-color: darkgoldenrod;
-border: 0px;
+#goBackButton {
+  width: 5em;
+  opacity: 70%;
+  background-color: darkgoldenrod;
+  border: 0px;
 }
 
 .imagen {

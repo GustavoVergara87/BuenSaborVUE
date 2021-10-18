@@ -238,7 +238,9 @@ export default {
       if (this.$route.query.cliente !== undefined) {
         return this.todosLosPedidos
           .filter(
-            (pedido) => pedido.cliente.nombre !== null && pedido.cliente.nombre !== undefined
+            (pedido) =>
+              pedido.cliente.nombre !== null &&
+              pedido.cliente.nombre !== undefined
           )
           .filter((pedido) =>
             pedido.cliente.nombre
@@ -246,7 +248,7 @@ export default {
               .includes(this.$route.query.cliente.toLowerCase())
           );
       }
-      return this.todosLosPedidos
+      return this.todosLosPedidos;
     },
   },
   methods: {
@@ -264,8 +266,8 @@ export default {
 
       pedido.estado = PE.APROBADO;
       this.editPedido(pedido).catch((a) => {
-        alert(a);
         pedido.estado = PE.PENDIENTE;
+        alert(a);
       });
     },
 
@@ -355,5 +357,4 @@ h2 {
   list-style-type: none;
   padding: 0;
 }
-
 </style>

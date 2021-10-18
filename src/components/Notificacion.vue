@@ -51,7 +51,7 @@ export default {
     };
   },
   mounted() {
-    console.log("pedido", this.pedido);
+    // console.log("pedido", this.pedido);
   },
   methods: {
     ...mapActions(["deleteFromNotificaciones"]),

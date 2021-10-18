@@ -26,9 +26,9 @@ const actions = {
         commit('setPlato', responseJson); //sintaxis commit("mutacion",variable)
     },
 
-    // deletePlatoTemporal({ commit }) {
-    //     commit('setPlato', null); //sintaxis commit("mutacion",variable)
-    // },
+    deletePlatoTemporal({ commit }) {
+        commit('setPlato', null); //sintaxis commit("mutacion",variable)
+    },
 
     async setPlato({ commit }, plato) {
         commit('setPlato', plato); //sintaxis commit("mutacion",variable)

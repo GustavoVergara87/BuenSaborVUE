@@ -180,7 +180,7 @@ export default {
               pedido.fecha.substring(11, 16),
             total: "$ " + numFormat(pedido.total),
             verFactura:
-              pedido.estado != 0 ? "/api/Facturas/PDF/" + pedido.id : "",
+              pedido.estado != 0 ?  process.env.VUE_APP_BACKURL + "/api/Facturas/PDF/" + pedido.id : "",
           };
         })
         .reverse();

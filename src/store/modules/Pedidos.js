@@ -43,10 +43,13 @@ const actions = {
         const id = pedidoEditado.id
         commit('setCargando', { id: id, estado: true });
         // commit('setCargando', true);
-
-        await servicio.editPedido(pedidoEditado)
-        commit('editarPedido', pedidoEditado)
-
+        try {
+            await servicio.editPedido(pedidoEditado)
+            commit('editarPedido', pedidoEditado)
+        } catch(a) {
+            commit('setCargando', { id: id, estado: false });
+            throw a;
+        }
         commit('setCargando', { id: id, estado: false });
         // commit('setCargando', false);
     }
